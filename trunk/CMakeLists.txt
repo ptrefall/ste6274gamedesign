@@ -25,6 +25,7 @@ endif(MSVC)
 # add the header path
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/depends)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/depends/Factotum/src)
 
 # add an option for choosing the build type (shared or static)
 set(BUILD_SHARED_LIBS FALSE CACHE BOOL "TRUE to build project as shared libraries, FALSE to build it as static libraries")
@@ -60,5 +61,5 @@ set(CMAKE_SKIP_BUILD_RPATH TRUE)
 
 # add the subdirectories
 add_subdirectory(src)
-# add_subdirectory(depends)
+add_subdirectory(depends/Factotum/src)
 # add_subdirectory(shaders)
