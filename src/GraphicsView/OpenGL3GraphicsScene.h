@@ -1,16 +1,18 @@
 #pragma once
 
-#include "types.h"
+#include <types_config.h>
 #include <QGraphicsScene>
 #include <QLabel>
 #include <QTime>
+
+class Game;
 
 class OpenGL3GraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    OpenGL3GraphicsScene();
+    OpenGL3GraphicsScene(Game &game);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 
@@ -31,6 +33,9 @@ private:
     QTime m_time;
     int m_lastTime;
     int m_mouseEventTime;
+
+	bool first_time;
+	Game &game;
 
     QGraphicsRectItem *m_lightItem;
 };

@@ -1,6 +1,8 @@
 #include "OpenGL3GraphicsScene.h"
-//#include "OpenGL3GraphicsScene.moc"
+#include "../Game/game.h"
 
+#include <GL/glew.h>
+#include <GL/wglew.h>
 #include <QtGui>
 #include <QtOpenGL>
 
@@ -15,8 +17,8 @@ QDialog *OpenGL3GraphicsScene::createDialog(const QString &windowTitle) const
     return dialog;
 }
 
-OpenGL3GraphicsScene::OpenGL3GraphicsScene()
-    : m_backgroundColor(0, 170, 255)
+OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
+    : game(game), m_backgroundColor(0, 170, 255), first_time(true)
 {
     QWidget *controls = createDialog(tr("Controls"));
 
@@ -61,6 +63,20 @@ void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         qWarning("OpenGL3GraphicsScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view");
         return;
     }
+
+	if(first_time)
+	{
+		try
+		{
+			glewExperimental = GL_TRUE;
+			GLenum err = glewInit();
+			if(err != GLEW_OK)
+				throw T_Exception((const char *)glewGetErrorString(err));
+		} catch(T_Exception &/*e*/){
+			//std::cout << e.what() << std::endl;
+		}
+		first_time = false;
+	}
 
     glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
