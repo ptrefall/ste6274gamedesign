@@ -1,4 +1,5 @@
 
+#include "types.h"
 #include "GraphicsView/OpenGL3GraphicsScene.h"
 #include <QtGui>
 #include <QtOpenGL\qgl.h>
@@ -28,8 +29,22 @@ int main(int argc, char **argv)
  
     //assigning that scene to the view
     GraphicsView view;
-	view.setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+	QGLFormat format( QGL::AlphaChannel | QGL::DoubleBuffer | QGL::DepthBuffer | QGL::Rgba | QGL::SampleBuffers | QGL::StereoBuffers );
+	format.setProfile(QGLFormat::CompatibilityProfile); //Have to run in compatibility mode, because of Qt's PaintEngine working with GraphicsView...
+    format.setVersion(3,3);
+	QGLWidget *glWidget = new QGLWidget(format);
+	view.setViewport(glWidget);
     view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+	try{
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if(err != GLEW_OK)
+		throw T_Exception((const char *)glewGetErrorString(err));
+	} catch(T_Exception &e){
+		std::cout << e.what() << std::endl;
+	}
+
 	view.setScene(new OpenGL3GraphicsScene());
     view.show();
 	view.resize(1024, 768);

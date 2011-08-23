@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types.h"
 #include <QGraphicsScene>
 #include <QLabel>
 #include <QTime>

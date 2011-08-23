@@ -45,6 +45,8 @@ macro (CMP_QT_LIBRARIES_INSTALL_RULES QTLIBLIST destination)
                 message(STATUS "Generating Install Rule for Qt Debug DLL Library ${QT_DLL_PATH_tmp}/${qtlib}d4.dll -> ${destination}/Debug")  
                 INSTALL(FILES ${QT_DLL_PATH_tmp}/${qtlib}${type}d4.dll 
                     DESTINATION "${destination}/Debug")
+				INSTALL(FILES ${QT_DLL_PATH_tmp}/${qtlib}${type}d4.pdb 
+                    DESTINATION "${destination}/Debug")
                 message(STATUS "Generating Install Rule for Qt Release DLL Library ${QT_DLL_PATH_tmp}/${qtlib}4.dll -> ${destination}/Release")
                 INSTALL(FILES ${QT_DLL_PATH_tmp}/${qtlib}4.dll 
                     DESTINATION "${destination}/Release")

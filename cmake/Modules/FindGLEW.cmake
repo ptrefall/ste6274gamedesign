@@ -24,12 +24,22 @@ FIND_PATH(GLEW_INCLUDE_PATH GL/glew.h
       D:/Development/3rdParty/GLEW/include
     )
 
-FIND_LIBRARY(GLEW_LIBRARY_DEBUG
+FIND_LIBRARY(GLEW_LIBRARY_DEBUG_X64
   NAMES glew32sd
-  PATHS D:/Development/3rdParty/GLEW/lib
+  PATHS D:/Development/3rdParty/GLEW/lib/x64
     )
 	
-FIND_LIBRARY(GLEW_LIBRARY_RELEASE
+FIND_LIBRARY(GLEW_LIBRARY_RELEASE_X64
   NAMES glew32s
-  PATHS D:/Development/3rdParty/GLEW/lib
+  PATHS D:/Development/3rdParty/GLEW/lib/x64
+    )
+	
+FIND_LIBRARY(GLEW_LIBRARY_DEBUG_X86
+  NAMES glew32sd
+  PATHS D:/Development/3rdParty/GLEW/lib/x86
+    )
+	
+FIND_LIBRARY(GLEW_LIBRARY_RELEASE_X86
+  NAMES glew32s
+  PATHS D:/Development/3rdParty/GLEW/lib/x86
     )

@@ -57,13 +57,31 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene()
 
 void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
-    if (painter->paintEngine()->type() != QPaintEngine::OpenGL) {
+    if (painter->paintEngine()->type() != QPaintEngine::OpenGL2) {
         qWarning("OpenGL3GraphicsScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view");
         return;
     }
 
     glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//We'll have to deal with some OpenGl2 compatibility in order to keep Qt's paint engine happy :P
+	glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluPerspective(70, width() / height(), 0.01, 1000);
+
+	glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+	//////////////////////////////
+	//////////////////////////////
+
+	glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
 
     QTimer::singleShot(1/60*1000+1, this, SLOT(update()));
 }
