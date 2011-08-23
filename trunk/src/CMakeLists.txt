@@ -1,5 +1,16 @@
 
 set(SRC_ROOT ${GameDesignClient_SOURCE_DIR}/src)
+set(GV_SRC_ROOT ${SRC_ROOT}/GraphicsView)
+
+set(GV_HDRS
+	${GV_SRC_ROOT}/OpenGL3GraphicsScene.h
+)
+SOURCE_GROUP("Header Files\\GraphicsView" FILES ${GV_HDRS})
+
+set(GV_SRCS
+	${GV_SRC_ROOT}/OpenGL3GraphicsScene.cpp
+)
+SOURCE_GROUP("Source Files\\GraphicsView" FILES ${GV_SRCS})
 
 set(SRCS
     ${SRC_ROOT}/main.cpp
@@ -18,7 +29,10 @@ include_directories(${OPENGL_INCLUDE_PATH})
 include_directories(${GLEW_INCLUDE_PATH})
 include_directories(${GLM_DIR})
 
-add_executable(GameDesignClient ${SRCS})
+QT4_WRAP_CPP(GV_MOCS ${GV_HDRS})
+SOURCE_GROUP("Source Files\\GraphicsView" FILES ${GV_MOCS})
+
+add_executable(GameDesignClient ${GV_HDRS} ${GV_SRCS} ${GV_MOCS} ${SRCS})
 set_target_properties(GameDesignClient PROPERTIES DEBUG_POSTFIX _d)
 set_target_properties(GameDesignClient PROPERTIES LINKER_LANGUAGE CXX)
 
