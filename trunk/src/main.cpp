@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     GraphicsView view;
 	
 	QGLFormat format( QGL::AlphaChannel | QGL::DoubleBuffer | QGL::DepthBuffer | QGL::Rgba | QGL::SampleBuffers | QGL::StereoBuffers );
-	format.setProfile(QGLFormat::CompatibilityProfile); //Have to run in compatibility mode, because of Qt's PaintEngine working with GraphicsView...
+	format.setProfile(QGLFormat::CompatibilityProfile); //Have to run in compatibility mode, because of Qt's PaintEngine working with GraphicsView is GL2...
     format.setVersion(3,3);
 	
 	QGLWidget *glWidget = new QGLWidget(format);
