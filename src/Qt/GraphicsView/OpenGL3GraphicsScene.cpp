@@ -34,7 +34,9 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
     addWidget(instructions);
     addWidget(controls);
 	MainMenu *menu = new MainMenu();
+	menu->move(this->sceneRect().center().toPoint());
 	addWidget(menu);
+	
 
     QPointF pos(10, 10);
     foreach (QGraphicsItem *item, items()) {
