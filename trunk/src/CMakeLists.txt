@@ -36,12 +36,13 @@ set(UI_UIC_HDRS
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
-	${QT_UI_SRC_ROOT}/ui_mainMenu.h
+	#${QT_UI_SRC_ROOT}/ui_mainMenu.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
 )
-SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_HDRS} ${UI_SRCS})
+SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS})
+SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_SRCS})
 #---------------------------------------------------------------
 set(GAME_HDRS
 	${GAME_SRC_ROOT}/Game.h
@@ -94,6 +95,7 @@ include_directories(${OPENGL_INCLUDE_PATH})
 include_directories(${GLEW_INCLUDE_PATH})
 include(${QT_USE_FILE})
 include_directories(${GLM_DIR})
+include_directories(${GameDesignClient_BINARY_DIR}/src)
 #---------------------------------------------------------------
 QT4_WRAP_CPP(MOCS ${GV_HDRS} ${CLIENT_HDRS} ${UI_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\MOC" FILES ${MOCS})
@@ -121,4 +123,4 @@ target_link_libraries(GameDesignClient
   FactotumEDK
 )
 #---------------------------------------------------------------
-INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
+#INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
