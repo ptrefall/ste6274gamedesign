@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <Qt/Client/Client.h>
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
 #include <Entity.h>
@@ -6,12 +7,13 @@
 #include "Components\Renderable.h"
 
 Game::Game()
-	: entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR)
+	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR)
 {
 }
 
 Game::~Game()
 {
+	if(client) delete client;
 	if(entityMgr) delete entityMgr;
 	if(renderSystem) delete renderSystem;
 	if(componentFactory) delete componentFactory;
@@ -19,6 +21,7 @@ Game::~Game()
 
 void Game::initialize()
 {
+	//client = new Client();
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
 	componentFactory = new Factotum::ComponentFactory();

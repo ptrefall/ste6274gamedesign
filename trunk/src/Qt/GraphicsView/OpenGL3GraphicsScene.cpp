@@ -1,4 +1,5 @@
 #include "OpenGL3GraphicsScene.h"
+#include <Qt/UserInterface/MainMenu.h>
 #include <Game/Game.h>
 
 #include <GL/glew.h>
@@ -32,6 +33,8 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
 
     addWidget(instructions);
     addWidget(controls);
+	MainMenu *menu = new MainMenu();
+	addWidget(menu);
 
     QPointF pos(10, 10);
     foreach (QGraphicsItem *item, items()) {
