@@ -3,6 +3,7 @@
 #include <types_config.h>
 #include <TemplateEventHandler.h>
 
+class Client;
 class EntityManager;
 namespace Systems { class RenderSystem; }
 namespace Factotum { class Entity; class ComponentFactory; }
@@ -17,6 +18,7 @@ public:
 	void advanceFrame(const F32 &delta);
 
 private:
+	Client *client;
 	EntityManager *entityMgr;
 	Systems::RenderSystem *renderSystem;
 	Factotum::ComponentFactory *componentFactory;
