@@ -1,6 +1,6 @@
 
 #include <types_config.h>
-#include "GraphicsView/OpenGL3GraphicsScene.h"
+#include "Qt/GraphicsView/OpenGL3GraphicsScene.h"
 #include "Game/game.h"
 
 #include <QtGui>

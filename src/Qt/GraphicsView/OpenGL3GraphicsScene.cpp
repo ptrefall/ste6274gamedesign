@@ -1,5 +1,5 @@
 #include "OpenGL3GraphicsScene.h"
-#include "../Game/game.h"
+#include <Game/Game.h>
 
 #include <GL/glew.h>
 #include <GL/wglew.h>
