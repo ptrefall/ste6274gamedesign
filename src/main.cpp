@@ -30,6 +30,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
 	Game game;
+	game.initialize();
  
     //assigning that scene to the view
     GraphicsView view;

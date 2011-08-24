@@ -12,6 +12,7 @@ project(GameDesignClient)
 
 # include the configuration file
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 # setup version numbers
 set(VERSION_MAJOR 2)
