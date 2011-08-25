@@ -21,7 +21,7 @@ QDialog *OpenGL3GraphicsScene::createDialog(const QString &windowTitle) const
 OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
     : game(game), m_backgroundColor(0, 170, 255), first_time(true)
 {
-    QWidget *controls = createDialog(tr("Controls"));
+    /*QWidget *controls = createDialog(tr("Controls"));
 
     QPushButton *backgroundButton = new QPushButton(tr("Choose background color"));
     connect(backgroundButton, SIGNAL(clicked()), this, SLOT(setBackgroundColor()));
@@ -32,23 +32,23 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
     instructions->layout()->addWidget(new QLabel(tr("Move the sun around to change the light position")));
 
     addWidget(instructions);
-    addWidget(controls);
+    addWidget(controls);*/
 	MainMenu *menu = new MainMenu();
-	menu->move(this->sceneRect().center().toPoint());
+	//menu->move(this->sceneRect().center().toPoint());
 	addWidget(menu);
 	
 
-    QPointF pos(10, 10);
+	QPointF pos(this->sceneRect().center().x()/2 - menu->geometry().width()/4, this->sceneRect().center().y()/2 - menu->geometry().width());
     foreach (QGraphicsItem *item, items()) {
         item->setFlag(QGraphicsItem::ItemIsMovable);
         item->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
         const QRectF rect = item->boundingRect();
-        item->setPos(pos.x() - rect.x(), pos.y() - rect.y());
+        item->setPos(pos.x(), pos.y());
         pos += QPointF(0, 10 + rect.height());
     }
 
-    QRadialGradient gradient(40, 40, 40, 40, 40);
+    /*QRadialGradient gradient(40, 40, 40, 40, 40);
     gradient.setColorAt(0.2, Qt::yellow);
     gradient.setColorAt(1, Qt::transparent);
 
@@ -57,7 +57,7 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
     m_lightItem->setBrush(gradient);
     m_lightItem->setFlag(QGraphicsItem::ItemIsMovable);
     m_lightItem->setPos(800, 200);
-    addItem(m_lightItem);
+    addItem(m_lightItem);*/
 
     m_time.start();
 }
