@@ -6,9 +6,9 @@ Connect::Connect(Join *join, Game &/*game*/, QWidget *parent, Qt::WFlags flags)
 {
     setupUi(this);
 
-	QPalette palette = this->palette();
+	/*QPalette palette = this->palette();
 	palette.setColor(QPalette::Window, QColor(0,0,0,0));
-	this->setPalette(palette);
+	this->setPalette(palette);*/
 
 	//connect(this, SIGNAL(close()), SLOT(onClose()));
 	connect(connectCancelButton, SIGNAL(clicked()), SLOT(onClose()));
