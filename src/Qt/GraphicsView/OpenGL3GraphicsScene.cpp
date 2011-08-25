@@ -33,7 +33,7 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
 
     addWidget(instructions);
     addWidget(controls);*/
-	MainMenu *menu = new MainMenu(this);
+	MainMenu *menu = new MainMenu(this, game);
 	//menu->move(this->sceneRect().center().toPoint());
 	addWidget(menu);
 	
@@ -45,7 +45,6 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
 
         const QRectF rect = item->boundingRect();
         item->setPos(pos.x(), pos.y());
-        pos += QPointF(0, 10 + rect.height());
     }
 
     /*QRadialGradient gradient(40, 40, 40, 40, 40);

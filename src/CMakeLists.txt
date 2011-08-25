@@ -36,30 +36,35 @@ set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/join.ui
 	${QT_UI_SRC_ROOT}/options.ui
 	${QT_UI_SRC_ROOT}/exit.ui
+	${QT_UI_SRC_ROOT}/connect.ui
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
 	${QT_UI_SRC_ROOT}/Join.h
 	${QT_UI_SRC_ROOT}/Options.h
 	${QT_UI_SRC_ROOT}/Exit.h
+	${QT_UI_SRC_ROOT}/Connect.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
 	${QT_UI_SRC_ROOT}/Join.cpp
 	${QT_UI_SRC_ROOT}/Options.cpp
 	${QT_UI_SRC_ROOT}/Exit.cpp
+	${QT_UI_SRC_ROOT}/Connect.cpp
 )
 SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_SRCS})
 #---------------------------------------------------------------
 set(GAME_HDRS
 	${GAME_SRC_ROOT}/Game.h
+	${GAME_SRC_ROOT}/GameOptions.h
 	${GAME_SRC_ROOT}/EntityManager.h
 )
 SOURCE_GROUP("Header Files\\Game" FILES ${GAME_HDRS})
 
 set(GAME_SRCS
 	${GAME_SRC_ROOT}/Game.cpp
+	${GAME_SRC_ROOT}/GameOptions.cpp
 	${GAME_SRC_ROOT}/EntityManager.cpp
 )
 SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})

@@ -41,7 +41,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="lineIpAddr">
           <property name="text">
            <string>127.0.0.1</string>
           </property>
@@ -59,7 +59,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="linePort">
           <property name="inputMask">
            <string>6666; </string>
           </property>

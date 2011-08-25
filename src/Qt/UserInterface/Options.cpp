@@ -1,8 +1,9 @@
 #include "Options.h"
 #include "MainMenu.h"
+#include <Game/Game.h>
 
-Options::Options(MainMenu *menu, QWidget *parent, Qt::WFlags flags)
-: QDialog(parent, flags), menu(menu)
+Options::Options(MainMenu *menu, Game &game, QWidget *parent, Qt::WFlags flags)
+: QDialog(parent, flags), menu(menu), game(game)
 {
     setupUi(this);
 
@@ -12,6 +13,7 @@ Options::Options(MainMenu *menu, QWidget *parent, Qt::WFlags flags)
 
 	//connect(this, SIGNAL(close()), SLOT(onClose()));
 	connect(optCancelButton, SIGNAL(clicked()), SLOT(onClose()));
+	connect(optSaveButton, SIGNAL(clicked()), SLOT(onSave()));
 }
 Options::~Options()
 {
@@ -21,4 +23,9 @@ void Options::onClose()
 {
 	this->hide();
 	menu->show();
+}
+
+void Options::onSave()
+{
+	//Look at all option values, save to xml and make current...
 }

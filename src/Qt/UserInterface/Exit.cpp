@@ -1,7 +1,7 @@
 #include "Exit.h"
 #include "MainMenu.h"
 
-Exit::Exit(MainMenu *menu, QWidget *parent, Qt::WFlags flags)
+Exit::Exit(MainMenu *menu, Game &/*game*/, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), menu(menu)
 {
     setupUi(this);
@@ -12,6 +12,7 @@ Exit::Exit(MainMenu *menu, QWidget *parent, Qt::WFlags flags)
 
 	//connect(this, SIGNAL(close()), SLOT(onClose()));
 	connect(exitCancelButton, SIGNAL(clicked()), SLOT(onClose()));
+	connect(exitButton, SIGNAL(clicked()), SLOT(onExit()));
 }
 Exit::~Exit()
 {
@@ -21,4 +22,9 @@ void Exit::onClose()
 {
 	this->hide();
 	menu->show();
+}
+
+void Exit::onExit()
+{
+	QApplication::quit();
 }
