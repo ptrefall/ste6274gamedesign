@@ -33,13 +33,21 @@ SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_SRCS})
 #---------------------------------------------------------------
 set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/mainMenu.ui
+	${QT_UI_SRC_ROOT}/join.ui
+	${QT_UI_SRC_ROOT}/options.ui
+	${QT_UI_SRC_ROOT}/exit.ui
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
-	#${QT_UI_SRC_ROOT}/ui_mainMenu.h
+	${QT_UI_SRC_ROOT}/Join.h
+	${QT_UI_SRC_ROOT}/Options.h
+	${QT_UI_SRC_ROOT}/Exit.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
+	${QT_UI_SRC_ROOT}/Join.cpp
+	${QT_UI_SRC_ROOT}/Options.cpp
+	${QT_UI_SRC_ROOT}/Exit.cpp
 )
 SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_SRCS})
