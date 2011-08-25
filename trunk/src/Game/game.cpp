@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameOptions.h"
 #include <Qt/Client/Client.h>
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
@@ -7,12 +8,13 @@
 #include "Components\Renderable.h"
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR)
+	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
 {
 }
 
 Game::~Game()
 {
+	if(options) delete options;
 	if(client) delete client;
 	if(entityMgr) delete entityMgr;
 	if(renderSystem) delete renderSystem;
@@ -21,6 +23,7 @@ Game::~Game()
 
 void Game::initialize()
 {
+	options = new GameOptions();
 	//client = new Client();
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();

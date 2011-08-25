@@ -4,17 +4,22 @@
 #include <ui_join.h>
 
 class MainMenu;
+class Game;
+class Connect;
 
 class Join : public QDialog, public Ui::JoinDialog
 {
 Q_OBJECT
 public:
-    Join(MainMenu *menu, QWidget *parent = 0, Qt::WFlags flags = 0);
+    Join(MainMenu *menu, Game &game, QWidget *parent = 0, Qt::WFlags flags = 0);
     virtual ~Join();
 
 private slots:
 	void onClose();
+	void onConnect();
 
 private:
 	MainMenu *menu;
+	Game &game;
+	Connect *con;
 };

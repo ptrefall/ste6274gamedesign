@@ -4,6 +4,7 @@
 #include <ui_mainMenu.h>
 
 class QGraphicsScene;
+class Game;
 class Join;
 class Options;
 class Exit;
@@ -12,7 +13,7 @@ class MainMenu : public QDialog, public Ui::MainMenuDialog
 {
 Q_OBJECT
 public:
-    MainMenu(QGraphicsScene *scene, QWidget *parent = 0, Qt::WFlags flags = 0);
+    MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent = 0, Qt::WFlags flags = 0);
     virtual ~MainMenu();
 
 private slots:

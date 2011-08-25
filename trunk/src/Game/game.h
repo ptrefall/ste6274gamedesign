@@ -3,6 +3,7 @@
 #include <types_config.h>
 #include <TemplateEventHandler.h>
 
+class GameOptions;
 class Client;
 class EntityManager;
 namespace Systems { class RenderSystem; }
@@ -16,8 +17,10 @@ public:
 
 	void initialize();
 	void advanceFrame(const F32 &delta);
+	GameOptions &getOptions() { return *options; }
 
 private:
+	GameOptions *options;
 	Client *client;
 	EntityManager *entityMgr;
 	Systems::RenderSystem *renderSystem;

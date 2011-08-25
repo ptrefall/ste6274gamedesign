@@ -5,7 +5,7 @@
 
 #include <QGraphicsScene>
 
-MainMenu::MainMenu(QGraphicsScene *scene, QWidget *parent, Qt::WFlags flags)
+MainMenu::MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), join(0x0), options(0x0), exit(0x0)
 {
     setupUi(this);
@@ -14,13 +14,13 @@ MainMenu::MainMenu(QGraphicsScene *scene, QWidget *parent, Qt::WFlags flags)
 	palette.setColor(QPalette::Window, QColor(0,0,0,0));
 	this->setPalette(palette);
 
-	join = new Join(this);
+	join = new Join(this, game);
 	scene->addWidget(join);
 	join->hide();
-	options = new Options(this);
+	options = new Options(this, game);
 	scene->addWidget(options);
 	options->hide();
-	exit = new Exit(this);
+	exit = new Exit(this, game);
 	scene->addWidget(exit);
 	exit->hide();
 
