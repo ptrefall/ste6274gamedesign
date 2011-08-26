@@ -24,7 +24,7 @@ Game::~Game()
 void Game::initialize()
 {
 	options = new GameOptions();
-	//client = new Client();
+	client = new Client();
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
 	componentFactory = new Factotum::ComponentFactory();

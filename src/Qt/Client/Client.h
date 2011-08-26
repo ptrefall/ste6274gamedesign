@@ -12,18 +12,21 @@ public:
 	explicit Client(QObject *parent = 0);
 	virtual ~Client();
 
+signals:
+	void connectionSucceeded();
+	void connectionFailed(const QString &why);
+
 public slots:
 	void connectToServer(const QString &address, quint16);
 	void sendTestPkgToServer();
 
 private:
-	//NetworkSession *session;
-	QNetworkSession *networkSession;
 	QTcpSocket *socket;
 	unsigned int request_id;
 	QString ip_address;
 
 private slots:
+	void tcpConnectionSucceeded();
 	void displayError(QAbstractSocket::SocketError socketError);
 	void serverRequest();
 };

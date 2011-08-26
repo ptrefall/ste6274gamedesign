@@ -39,4 +39,6 @@ void Join::onConnect()
 	
 	this->hide();
 	con->show();
+
+	con->connectToServerAttempt();
 }
