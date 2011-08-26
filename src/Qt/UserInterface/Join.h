@@ -3,8 +3,13 @@
 #include <QtGui/QDialog.h>
 #include <ui_join.h>
 
-class MainMenu;
+
 class Game;
+
+namespace Ui
+{
+
+class MainMenu;
 class Connect;
 
 class Join : public QDialog, public Ui::JoinDialog
@@ -23,3 +28,4 @@ private:
 	Game &game;
 	Connect *con;
 };
+}

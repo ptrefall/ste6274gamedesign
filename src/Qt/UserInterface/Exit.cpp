@@ -1,6 +1,8 @@
 #include "Exit.h"
 #include "MainMenu.h"
 
+using namespace Ui;
+
 Exit::Exit(MainMenu *menu, Game &/*game*/, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), menu(menu)
 {

@@ -33,7 +33,7 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
 
     addWidget(instructions);
     addWidget(controls);*/
-	MainMenu *menu = new MainMenu(this, game);
+	Ui::MainMenu *menu = new Ui::MainMenu(this, game);
 	//menu->move(this->sceneRect().center().toPoint());
 	addWidget(menu);
 	

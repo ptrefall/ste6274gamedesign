@@ -3,8 +3,11 @@
 #include <QtGui/QDialog.h>
 #include <ui_options.h>
 
-class MainMenu;
 class Game;
+
+namespace Ui
+{
+class MainMenu;
 
 class Options : public QDialog, public Ui::OptionsDialog
 {
@@ -21,3 +24,4 @@ private:
 	MainMenu *menu;
 	Game &game;
 };
+}

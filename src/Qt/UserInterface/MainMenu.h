@@ -5,6 +5,9 @@
 
 class QGraphicsScene;
 class Game;
+
+namespace Ui
+{
 class Join;
 class Options;
 class Exit;
@@ -27,3 +30,4 @@ private:
 	Exit *exit;
 
 };
+}

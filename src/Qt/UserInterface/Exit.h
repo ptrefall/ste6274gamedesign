@@ -3,8 +3,12 @@
 #include <QtGui/QDialog.h>
 #include <ui_exit.h>
 
-class MainMenu;
 class Game;
+
+namespace Ui
+{
+
+class MainMenu;
 
 class Exit : public QDialog, public Ui::ExitDialog
 {
@@ -20,3 +24,5 @@ private slots:
 private:
 	MainMenu *menu;
 };
+
+}

@@ -4,8 +4,12 @@
 #include <ui_connect.h>
 #include <QTime>
 
-class Join;
 class Game;
+
+namespace Ui
+{
+
+class Join;
 class ConnectionFailed;
 
 class Connect : public QDialog, public Ui::ConnectDialog
@@ -30,4 +34,18 @@ private:
 	QTime timer;
 	bool tryingToConnect;
 	ConnectionFailed *connectionFailed;
+
+	enum eConnectionState
+	{
+		E_INITIATE_CONNECTION = 0,
+		E_HOST_FOUND,
+		E_CONNECTION_SUCCEEDED,
+		E_CONNECTION_FAILED,
+		E_CONNECTION_ABORTED,
+		E_SERVER_INFO_RECEIVED,
+		E_SERVER_INFO_PROCESSED,
+		E_FINISHED
+	} state;
 };
+
+}
