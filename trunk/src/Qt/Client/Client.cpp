@@ -1,14 +1,13 @@
 #include "client.h"
 
-#include "GameProtocol.h"
-#include "NetworkSession.h"
+#include <Protocol/gameprotocol.h>
 #include <QtNetwork>
 
 Client::Client(QObject *parent)
 	: QObject(parent)
 {
 	// Find host address
-	QList<QHostAddress> ip_address_list = QNetworkInterface::allAddresses();
+	/*QList<QHostAddress> ip_address_list = QNetworkInterface::allAddresses();
 	for(int i = 0; i < ip_address_list.size(); i++)
 	{
 		if((ip_address_list.at(i) != QHostAddress::LocalHost) && ip_address_list.at(i).toIPv4Address())
@@ -16,7 +15,7 @@ Client::Client(QObject *parent)
 			ip_address = ip_address_list.at(i).toString();
 			break;
 		}
-	}
+	}*/
 
 	// If no external address were available use localhost
 	if(ip_address.isEmpty())
@@ -24,31 +23,10 @@ Client::Client(QObject *parent)
 
 	socket = new QTcpSocket(this);
 //  connect( _socket, SIGNAL(readyRead()), this, SLOT(serverRequest()) );
-	connect(socket, SIGNAL(readyRead()), this, SLOT(serverRequest()));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
+	connect(socket, SIGNAL(connected()), this, SLOT(tcpConnectionSucceeded()));
+	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
 
-	QNetworkConfigurationManager manager;
-    if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
-        // Get saved network configuration
-        QSettings settings(QSettings::UserScope, QLatin1String("Trolltech"));
-        settings.beginGroup(QLatin1String("QtNetwork"));
-        const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
-        settings.endGroup();
 
-        // If the saved network configuration is not currently discovered use the system default
-        QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered) !=
-            QNetworkConfiguration::Discovered) {
-            config = manager.defaultConfiguration();
-        }
-
-        networkSession = new QNetworkSession(config, this);
-        connect(networkSession, SIGNAL(opened()), this, SLOT(sessionOpened()));
-
-        //getFortuneButton->setEnabled(false);
-        //statusLabel->setText(tr("Opening network session."));
-        networkSession->open();
-    }
 
 	request_id = 0;
 }
@@ -65,10 +43,15 @@ void Client::connectToServer(const QString &address, quint16 port )
   socket->connectToHost(address, port);
 }
 
+void Client::tcpConnectionSucceeded()
+{
+	emit connectionSucceeded();
+}
+
 void Client::sendTestPkgToServer()
 {
-  gp::gp_header header;
-  header.size = sizeof(gp::gp_header) - sizeof(gp::gp_header_prefix);
+  gp_header header;
+  header.size = sizeof(gp_header) - sizeof(gp_header_prefix);
   header.type = GP_REQUEST_TYPE_TEST;
   header.flags.answer = 0;
   header.request_id = ++request_id;
@@ -76,9 +59,9 @@ void Client::sendTestPkgToServer()
   qDebug() << "Client: Header test data";
   qDebug() << " quint16 size:           " << sizeof(quint16);
   qDebug() << " header size:            " << sizeof(header);
-  qDebug() << " gp header size:         " << sizeof(gp::gp_header);
-  qDebug() << " gp header flag size:    " << sizeof(gp::gp_header_flags);
-  qDebug() << " gp header prefix size:  " << sizeof(gp::gp_header_prefix);
+  qDebug() << " gp header size:         " << sizeof(gp_header);
+  qDebug() << " gp header flag size:    " << sizeof(gp_header_flags);
+  qDebug() << " gp header prefix size:  " << sizeof(gp_header_prefix);
   qDebug() << " p:id:                   " << header.prefix.id;
   qDebug() << " s:                      " << header.size;
   qDebug() << " t:                      " << header.type;
@@ -101,7 +84,7 @@ void Client::sendTestPkgToServer()
   qDebug() << "--> block.size(1): " << block.size();
 
 //  // Write data
-  out.writeRawData( (char*)(&header), sizeof(gp::gp_header) );
+  out.writeRawData( (char*)(&header), sizeof(gp_header) );
 
   qDebug() << "--> block.size(2): " << block.size();
 
@@ -150,12 +133,16 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
+		emit connectionFailed("Remote host closed");
         break;
     case QAbstractSocket::HostNotFoundError:
+		emit connectionFailed("Host not found");
         break;
     case QAbstractSocket::ConnectionRefusedError:
+		emit connectionFailed("Connection refused");
         break;
     default:
+		emit connectionFailed("Unknown error");
 		break;
     }
 }

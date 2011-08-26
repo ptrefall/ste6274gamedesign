@@ -20,14 +20,12 @@ SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
 set(CLIENT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
-	${QT_CLIENT_SRC_ROOT}/NetworkSession.h
-	${QT_CLIENT_SRC_ROOT}/GameProtocol.h
+	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
 )
 SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_HDRS})
 
 set(CLIENT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
-	${QT_CLIENT_SRC_ROOT}/NetworkSession.cpp
 )
 SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_SRCS})
 #---------------------------------------------------------------
@@ -37,6 +35,7 @@ set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/options.ui
 	${QT_UI_SRC_ROOT}/exit.ui
 	${QT_UI_SRC_ROOT}/connect.ui
+	${QT_UI_SRC_ROOT}/connectionFailed.ui
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
@@ -44,6 +43,7 @@ set(UI_HDRS
 	${QT_UI_SRC_ROOT}/Options.h
 	${QT_UI_SRC_ROOT}/Exit.h
 	${QT_UI_SRC_ROOT}/Connect.h
+	${QT_UI_SRC_ROOT}/ConnectionFailed.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
@@ -51,6 +51,7 @@ set(UI_SRCS
 	${QT_UI_SRC_ROOT}/Options.cpp
 	${QT_UI_SRC_ROOT}/Exit.cpp
 	${QT_UI_SRC_ROOT}/Connect.cpp
+	${QT_UI_SRC_ROOT}/ConnectionFailed.cpp
 )
 SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_SRCS})

@@ -18,6 +18,7 @@ public:
 	void initialize();
 	void advanceFrame(const F32 &delta);
 	GameOptions &getOptions() { return *options; }
+	Client &getClient() { return *client; }
 
 private:
 	GameOptions *options;
