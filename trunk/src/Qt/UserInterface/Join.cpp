@@ -4,6 +4,8 @@
 #include <Game/Game.h>
 #include <Game/GameOptions.h>
 
+using namespace Ui;
+
 Join::Join(MainMenu *menu, Game &game, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), menu(menu), game(game)
 {

@@ -2,6 +2,8 @@
 #include "MainMenu.h"
 #include <Game/Game.h>
 
+using namespace Ui;
+
 Options::Options(MainMenu *menu, Game &game, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), menu(menu), game(game)
 {

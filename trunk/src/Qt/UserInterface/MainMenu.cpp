@@ -5,6 +5,8 @@
 
 #include <QGraphicsScene>
 
+using namespace Ui;
+
 MainMenu::MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent, Qt::WFlags flags)
 : QDialog(parent, flags), join(0x0), options(0x0), exit(0x0)
 {

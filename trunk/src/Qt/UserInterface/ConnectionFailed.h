@@ -4,8 +4,12 @@
 #include <ui_connectionFailed.h>
 #include <QTime>
 
-class Join;
 class Game;
+
+namespace Ui
+{
+
+class Join;
 
 class ConnectionFailed : public QDialog, public Ui::connectionFailedDialog
 {
@@ -20,3 +24,6 @@ private slots:
 private:
 	Join *join;
 };
+
+}
+

@@ -22,10 +22,11 @@ Client::Client(QObject *parent)
 		ip_address = QHostAddress(QHostAddress::LocalHost).toString();
 
 	socket = new QTcpSocket(this);
-//  connect( _socket, SIGNAL(readyRead()), this, SLOT(serverRequest()) );
 	connect(socket, SIGNAL(hostFound()), this, SLOT(tcpHostFound()));
 	connect(socket, SIGNAL(connected()), this, SLOT(tcpConnectionSucceeded()));
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
+
+	connect(socket, SIGNAL(readyRead()), this, SLOT(serverRequest()));
 
 
 
@@ -52,6 +53,9 @@ void Client::tcpHostFound()
 void Client::tcpConnectionSucceeded()
 {
 	emit connectionSucceeded();
+
+	//Need to request some information about the server now
+
 }
 
 void Client::sendTestPkgToServer()
