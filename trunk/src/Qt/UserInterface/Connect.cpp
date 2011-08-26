@@ -32,7 +32,7 @@ void Connect::connectToServerAttempt()
 
 	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
 	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
-	connect(&game.getClient(), SIGNAL(connectionFailed()), SLOT(onConnectionFailed()));
+	connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
 
 	timer.start();
 	game.getClient().connectToServer(opt.ip_addr.c_str(), opt.port);
@@ -63,6 +63,7 @@ void Connect::onConnectionFailed(const QString &why)
 {
 	tryingToConnect = false;
 	progressBarConnection->setValue(0);
+	connectionFailed->labelConnectionFailed->setText(why);
 	this->hide();
 	connectionFailed->show();
 }
