@@ -63,4 +63,5 @@ set(CMAKE_SKIP_BUILD_RPATH TRUE)
 # add the subdirectories
 add_subdirectory(src)
 add_subdirectory(depends/Factotum/src)
+add_subdirectory(depends/Server)
 # add_subdirectory(shaders)
