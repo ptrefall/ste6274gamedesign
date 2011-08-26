@@ -19,6 +19,7 @@ public:
 
 private slots:
 	void onClose();
+	void onHostFound();
 	void onConnectionSucceeded();
 	void onConnectionFailed(const QString &why);
 	void onUpdateProgress();
