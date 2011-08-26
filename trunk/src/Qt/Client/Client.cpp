@@ -23,6 +23,7 @@ Client::Client(QObject *parent)
 
 	socket = new QTcpSocket(this);
 //  connect( _socket, SIGNAL(readyRead()), this, SLOT(serverRequest()) );
+	connect(socket, SIGNAL(hostFound()), this, SLOT(tcpHostFound()));
 	connect(socket, SIGNAL(connected()), this, SLOT(tcpConnectionSucceeded()));
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
 
@@ -41,6 +42,11 @@ void Client::connectToServer(const QString &address, quint16 port )
 {
   socket->abort();
   socket->connectToHost(address, port);
+}
+
+void Client::tcpHostFound()
+{
+	emit targetHostFound();
 }
 
 void Client::tcpConnectionSucceeded()

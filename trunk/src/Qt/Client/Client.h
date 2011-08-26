@@ -13,6 +13,7 @@ public:
 	virtual ~Client();
 
 signals:
+	void targetHostFound();
 	void connectionSucceeded();
 	void connectionFailed(const QString &why);
 
@@ -26,6 +27,7 @@ private:
 	QString ip_address;
 
 private slots:
+	void tcpHostFound();
 	void tcpConnectionSucceeded();
 	void displayError(QAbstractSocket::SocketError socketError);
 	void serverRequest();

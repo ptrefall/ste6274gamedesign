@@ -16,7 +16,7 @@ Connect::Connect(Join *join, Game &game, QWidget *parent, Qt::WFlags flags)
 
 	//connect(this, SIGNAL(close()), SLOT(onClose()));
 	connect(connectCancelButton, SIGNAL(clicked()), SLOT(onClose()));
-	connect(this, SIGNAL(connectToServer()), SLOT(onServerConnectionAttempt()));
+	//connect(this, SIGNAL(connectToServer()), SLOT(onServerConnectionAttempt()));
 }
 Connect::~Connect()
 {
@@ -30,7 +30,9 @@ void Connect::connectToServerAttempt()
 	if(opt.port < 1000)
 		return;
 
+	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
 	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
+	connect(&game.getClient(), SIGNAL(connectionFailed()), SLOT(onConnectionFailed()));
 
 	timer.start();
 	game.getClient().connectToServer(opt.ip_addr.c_str(), opt.port);
@@ -44,6 +46,10 @@ void Connect::onClose()
 	progressBarConnection->setValue(0);
 	this->hide();
 	join->show();
+}
+
+void Connect::onHostFound()
+{
 }
 
 void Connect::onConnectionSucceeded()
