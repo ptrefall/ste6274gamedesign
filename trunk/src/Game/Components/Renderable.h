@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Component.h>
+#include <glm/glm.hpp>
+
 
 namespace Systems { class RenderSystem; }
 namespace Components
@@ -16,5 +18,8 @@ namespace Components
 
 	private:
 		Systems::RenderSystem &renderSystem;
+
+		Factotum::PropertyList<glm::vec3> vertices;
+		Factotum::PropertyList<glm::vec3> colors;
 	};
 }
