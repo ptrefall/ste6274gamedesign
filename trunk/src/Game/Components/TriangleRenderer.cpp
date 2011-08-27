@@ -13,6 +13,7 @@ TriangleRenderer::TriangleRenderer(Entity &owner, const T_String &name)
 	vertices = owner.addPropertyList<glm::vec3>("Vertices");
 	colors = owner.addPropertyList<glm::vec3>("Colors");
 
+	render_group = owner.addProperty<T_String>("RenderGroup", "Triangle");
 	size = owner.addProperty<F32>("Size", 2.0f);
 
 	initialize();

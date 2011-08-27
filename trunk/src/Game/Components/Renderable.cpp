@@ -15,10 +15,18 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 
 	vertices = owner.addPropertyList<glm::vec3>("Vertices");
 	colors = owner.addPropertyList<glm::vec3>("Colors");
+
+	render_group = owner.addProperty<T_String>("RenderGroup", "None");
+	compiled = owner.addProperty<bool>("Compiled", false);
 }
 
 Renderable::~Renderable()
 {
+}
+
+void Renderable::compile()
+{
+	compiled = true;
 }
 
 void Renderable::render()

@@ -12,6 +12,8 @@ MeshRenderer::MeshRenderer(Entity &owner, const T_String &name)
 {
 	vertices = owner.addPropertyList<glm::vec3>("Vertices");
 	colors = owner.addPropertyList<glm::vec3>("Colors");
+
+	render_group = owner.addProperty<T_String>("RenderGroup", "Mesh");
 }
 
 MeshRenderer::~MeshRenderer()

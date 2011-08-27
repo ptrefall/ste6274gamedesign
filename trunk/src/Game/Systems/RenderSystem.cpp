@@ -28,6 +28,17 @@ void RenderSystem::addRenderable(Components::Renderable *renderable)
 	renderables.push_back(renderable);
 }
 
+void RenderSystem::compile()
+{
+	//TODO: Make renderables list into a new_pending list of renderables.
+	//On compilation, renderables should be moved into it's render group list.
+	for(U32 i = 0; i < renderables.size(); i++)
+	{
+		if(renderables[i]->isCompiled() == false)
+			renderables[i]->compile();
+	}
+}
+
 void RenderSystem::render()
 {
 	for(U32 i = 0; i < renderables.size(); i++)

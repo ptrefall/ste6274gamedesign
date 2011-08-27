@@ -14,12 +14,19 @@ namespace Components
 		Renderable(Factotum::Entity &owner, const T_String &name, Systems::RenderSystem &renderSystem);
 		virtual ~Renderable();
 
+		void compile();
 		void render();
+
+		const T_String &getRenderGroup();
+		const bool &isCompiled() const { return compiled; }
 
 	private:
 		Systems::RenderSystem &renderSystem;
 
 		Factotum::PropertyList<glm::vec3> vertices;
 		Factotum::PropertyList<glm::vec3> colors;
+
+		Factotum::Property<T_String> render_group;
+		Factotum::Property<bool> compiled;
 	};
 }
