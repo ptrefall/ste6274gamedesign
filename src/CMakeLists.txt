@@ -82,11 +82,15 @@ SOURCE_GROUP("Source Files\\Game\\Systems" FILES ${GAME_SYSTEMS_SRCS})
 #---------------------------------------------------------------
 set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/Renderable.h
+	${GAME_COMPONENTS_SRC_ROOT}/TriangleRenderer.h
+	${GAME_COMPONENTS_SRC_ROOT}/MeshRenderer.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
 set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/Renderable.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/TriangleRenderer.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/MeshRenderer.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
 #---------------------------------------------------------------

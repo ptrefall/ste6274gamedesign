@@ -12,6 +12,9 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 : Component(owner, name), renderSystem(renderSystem)
 {
 	renderSystem.addRenderable(this);
+
+	vertices = owner.addPropertyList<glm::vec3>("Vertices");
+	colors = owner.addPropertyList<glm::vec3>("Colors");
 }
 
 Renderable::~Renderable()
@@ -20,13 +23,16 @@ Renderable::~Renderable()
 
 void Renderable::render()
 {
-	glBegin(GL_TRIANGLES);
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-		glVertex3f(-2.0f, 0.0f, -4.0f);
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-		glVertex3f(2.0f, 0.0f, -4.0f);
-		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-		glVertex3f(0.0f, 2.0f, -4.0f);
-	glEnd();
+	if(vertices.empty() || vertices.size() != colors.size())
+		return;
 
+	glBegin(GL_TRIANGLES);
+	for(U32 i = 0; i < vertices.size(); i++)
+	{
+		const glm::vec3 &vertex = vertices[i].get();
+		const glm::vec3 &color = colors[i].get();
+		glColor4f(color.r, color.g, color.b, 1.0f);
+		glVertex3f(vertex.x, vertex.y, vertex.z);
+	}
+	glEnd();
 }
