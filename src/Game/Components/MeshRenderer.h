@@ -16,5 +16,7 @@ namespace Components
 	private:
 		Factotum::PropertyList<glm::vec3> vertices;
 		Factotum::PropertyList<glm::vec3> colors;
+
+		Factotum::Property<T_String> render_group;
 	};
 }

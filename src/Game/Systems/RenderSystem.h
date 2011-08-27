@@ -14,6 +14,7 @@ public:
 	~RenderSystem();
 
 	void addRenderable(Components::Renderable *renderable);
+	void compile();
 	void render();
 
 private:

@@ -40,5 +40,6 @@ void Game::initialize()
 void Game::advanceFrame(const F32 &delta)
 {
 	entityMgr->update(delta);
+	renderSystem->compile();
 	renderSystem->render();
 }
