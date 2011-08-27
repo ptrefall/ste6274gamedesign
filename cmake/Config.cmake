@@ -34,6 +34,23 @@ if(WINDOWS)
     set(INSTALL_MISC_DIR .)
 endif()
 
+macro (CMP_ASSIMP_INSTALL_RULES destination)
+	if (MSVC)
+		message(STATUS "Generating Install Rule for AssImp Debug DLL Library ${ASSIMP_LIB_PATH}/Debug/assimp.dll -> ${destination}/Debug")  
+		INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.dll 
+			DESTINATION "${destination}/Debug")
+		INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.pdb 
+			DESTINATION "${destination}/Debug")
+		message(STATUS "Generating Install Rule for AssImp Release DLL Library ${ASSIMP_LIB_PATH}/Release/assimp.dll -> ${destination}/Release")
+		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+			DESTINATION "${destination}/Release")
+		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+			DESTINATION "${destination}/MinSizeRel")
+		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+			DESTINATION "${destination}/RelWithDebInfo")
+	endif()
+endmacro()
+
 macro (CMP_QT_LIBRARIES_INSTALL_RULES QTLIBLIST destination)
    # message(STATUS "CMP_COPY_QT4_RUNTIME_LIBRARIES")
     if (MSVC)
