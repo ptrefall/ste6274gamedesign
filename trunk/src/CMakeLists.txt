@@ -102,6 +102,8 @@ find_package(Glew REQUIRED)
 find_package(Qt4 4.7.3 REQUIRED QtCore QtGui QtOpenGL QtNetwork)
 CMP_QT_LIBRARIES_INSTALL_RULES("QtCore;QtGui;QtOpenGL;QtNetwork" ${GameDesignClient_BINARY_DIR}/src)
 find_package(GLM REQUIRED)
+find_package(AssImp REQUIRED)
+CMP_ASSIMP_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 set(WINDOW_EXT_LIBS ${OPENGL_gl_LIBRARY})
 set(WINDOW_EXT_LIBS ${WINDOW_EXT_LIBS} winmm gdi32)
 #---------------------------------------------------------------
@@ -109,6 +111,7 @@ include_directories(${OPENGL_INCLUDE_PATH})
 include_directories(${GLEW_INCLUDE_PATH})
 include(${QT_USE_FILE})
 include_directories(${GLM_DIR})
+include_directories(${ASSIMP_INCLUDE_PATH})
 include_directories(${GameDesignClient_BINARY_DIR}/src)
 #---------------------------------------------------------------
 QT4_WRAP_CPP(MOCS ${GV_HDRS} ${CLIENT_HDRS} ${UI_HDRS})
@@ -135,6 +138,7 @@ target_link_libraries(GameDesignClient
   debug ${GLEW_LIBRARY_DEBUG_X86} optimized ${GLEW_LIBRARY_RELEASE_X86}
   ${QT_LIBRARIES}
   FactotumEDK
+  debug ${ASSIMP_LIBRARY_DEBUG_X86} optimized ${ASSIMP_LIBRARY_RELEASE_X86}
 )
 #---------------------------------------------------------------
 #INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
