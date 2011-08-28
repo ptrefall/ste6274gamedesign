@@ -21,11 +21,43 @@ void RenderSystem::addRenderable(Components::Renderable *renderable)
 	for(U32 i = 0; i < renderables.size(); i++)
 	{
 		if(renderables[i] == renderable)
-			return; //Already excist! BAD, BAD CODER!
+			return; //Already exist! BAD, BAD CODER!
 	}
 #endif
 
 	renderables.push_back(renderable);
+}
+
+bool RenderSystem::hasGroup(const U32 &groupName) const
+{
+	for(U32 i = 0; i < groups.size(); i++)
+	{
+		if(groups[i]->id == groupName)
+			return true;
+	}
+	return false;
+}
+
+void RenderSystem::addGroup(const U32 &groupName, const bool &instanced)
+{
+#ifdef _DEBUG
+	if(hasGroup(groupName) == false)
+		return; //BAD CODER!!!
+#endif
+
+	groups.push_back(new RenderGroup(groupName, instanced));
+}
+
+void RenderSystem::incrementGroup(const U32 &groupName)
+{
+	for(U32 i = 0; i < groups.size(); i++)
+	{
+		if(groups[i]->id == groupName)
+		{
+			groups[i]->instances++;
+			break;
+		}
+	}
 }
 
 void RenderSystem::compile()

@@ -16,7 +16,7 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 	vertices = owner.addPropertyList<glm::vec3>("Vertices");
 	colors = owner.addPropertyList<glm::vec3>("Colors");
 
-	render_group = owner.addProperty<T_String>("RenderGroup", "None");
+	render_group = owner.addProperty<U32>("RenderGroup", T_HashedString("None").getId());
 	compiled = owner.addProperty<bool>("Compiled", false);
 }
 

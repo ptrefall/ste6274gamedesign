@@ -34,7 +34,7 @@ void Game::initialize()
 
 	dummy = &entityMgr->create(*componentFactory);
 	dummy->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
-	dummy->addComponent("TriangleRenderer");
+	dummy->addComponent<Systems::RenderSystem>("TriangleRenderer", *renderSystem);
 }
 
 void Game::advanceFrame(const F32 &delta)
