@@ -1,4 +1,5 @@
 #include "MeshSystem.h"
+#include <Game/Components/MeshGeometry.h>
 
 //AssImp includes
 #include <assimp.hpp>
@@ -13,22 +14,34 @@ MeshSystem::MeshSystem()
 
 MeshSystem::~MeshSystem()
 {
+	for(unsigned int i = 0; i < meshes.size(); i++)
+		delete meshes[i];
 }
 
-void MeshSystem::addMesh(Components::MeshGeometry *mesh)
+void MeshSystem::loadMesh(Components::MeshGeometry *mesh, const T_String &location, const T_String &filename)
 {
-#if _DEBUG
-	if(mesh == NULL_PTR)
-		return; //BAD CODER!
-
-	for(U32 i = 0; i < meshes.size(); i++)
+	T_HashedString id(filename);
+	//Check if this sub-mesh is already loaded
+	for(unsigned int i = 0; i < meshes.size(); i++)
 	{
-		if(meshes[i] == mesh)
-			return; //Already exist! BAD, BAD CODER!
+		if(meshes[i]->id.getId() == id.getId())
+		{
+			mesh->injectData(*meshes[i]->data);
+			return;
+		}
 	}
-#endif
 
-	meshes.push_back(mesh);
+	const aiScene *scene = importer->ReadFile((location+filename).c_str(), aiProcessPreset_TargetRealtime_Quality);
+	if(scene == 0x0)
+		throw T_Exception(("Failed to load mesh from file: " + location + filename).c_str());
+
+	aiMesh *ai_mesh = scene->mMeshes[0];
+	if(ai_mesh == 0x0)
+		throw T_Exception(("Failed to load mesh with index 0 from file: " + location + filename).c_str());
+
+	mesh->injectData(*ai_mesh);
+
+	meshes.push_back(new MeshData(id, ai_mesh));
 }
 
 /*Mesh *MeshSystem::createMesh(const CL_String &relative_path, const CL_String &filename, Renderer::Shader &shader, bool loadTextures, const unsigned int &mesh_index)

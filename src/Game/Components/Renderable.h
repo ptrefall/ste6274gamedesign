@@ -28,7 +28,10 @@ namespace Components
 
 		Factotum::PropertyList<unsigned int> indices;
 		Factotum::PropertyList<glm::vec3> vertices;
+		Factotum::PropertyList<glm::vec3> normals;
+		Factotum::PropertyList<glm::vec3> tangents;
 		Factotum::PropertyList<glm::vec3> colors;
+		Factotum::PropertyList<glm::vec2> texCoords;
 
 		Factotum::Property<glm::mat4> modelMatrix;
 		Factotum::Property<glm::gtc::quaternion::quat> qRotation;

@@ -7,6 +7,8 @@
 #include <QtGui>
 #include <QtOpenGL>
 
+#include <iostream>
+
 QDialog *OpenGL2GraphicsScene::createDialog(const QString &windowTitle) const
 {
     QDialog *dialog = new QDialog(0, Qt::CustomizeWindowHint | Qt::WindowTitleHint);
@@ -78,8 +80,10 @@ void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 				throw T_Exception((const char *)glewGetErrorString(err));
 
 			game.initializeGame();
-		} catch(T_Exception &/*e*/){
-			//std::cout << e.what() << std::endl;
+		} catch(T_Exception &e){
+			std::cout << e.what() << std::endl;
+			system("pause");
+			QApplication::quit();
 		}
 		first_time = false;
 	}
@@ -91,7 +95,7 @@ void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 	glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluPerspective(70, (float)width() / (float)height(), 1, 1000);
+    gluPerspective(70, (float)width() / (float)height(), 1, 100000);
 
 	glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

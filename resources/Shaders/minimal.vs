@@ -1,10 +1,10 @@
 #version 330 core
 
-#define VERTEX		0
-#define NORMAL	 	1
-#define TEXCOORD 	2
-#define COLOR		3
-#define FRAG_COLOR	0
+#define VERTEX	 0
+#define NORMAL	 1
+#define TANGENT	 2
+#define COLOR	 3
+#define TEXCOORD 4
 
 layout(location = VERTEX) in vec3 Vertex;
 layout(location = COLOR) in vec3 Color;
