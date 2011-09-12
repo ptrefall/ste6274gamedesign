@@ -1,5 +1,5 @@
 #include "Renderable.h"
-#include "../Systems/RenderSystem.h"
+#include <Game/Systems/RenderSystem.h>
 #include <Game/Graphics/Utils.h>
 #include <Game/Graphics/VertexBufferObject.h>
 #include <Game/Graphics/Attribute.h>

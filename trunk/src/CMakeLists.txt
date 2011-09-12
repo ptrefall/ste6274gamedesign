@@ -73,11 +73,13 @@ SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})
 #---------------------------------------------------------------
 set(GAME_SYSTEMS_HDRS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.h
+	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.h
 )
 SOURCE_GROUP("Header Files\\Game\\Systems" FILES ${GAME_SYSTEMS_HDRS})
 
 set(GAME_SYSTEMS_SRCS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.cpp
+	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Systems" FILES ${GAME_SYSTEMS_SRCS})
 #---------------------------------------------------------------
