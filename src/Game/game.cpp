@@ -3,14 +3,16 @@
 #include <Qt/Client/Client.h>
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
+#include "Systems\MeshSystem.h"
 #include <Entity.h>
 #include <ComponentFactory.h>
 #include "Components\Renderable.h"
 #include "Components\TriangleGeometry.h"
+#include "Components\MeshGeometry.h"
 #include "Components\IdleSpin.h"
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
+	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
 {
 }
 
@@ -20,6 +22,7 @@ Game::~Game()
 	if(client) delete client;
 	if(entityMgr) delete entityMgr;
 	if(renderSystem) delete renderSystem;
+	if(meshSystem) delete meshSystem;
 	if(componentFactory) delete componentFactory;
 }
 
@@ -29,10 +32,12 @@ void Game::initializeCore()
 	client = new Client();
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
+	meshSystem = new Systems::MeshSystem();
 
 	componentFactory = new Factotum::ComponentFactory();
 	Components::Renderable::RegisterToFactory(*componentFactory);
 	Components::TriangleGeometry::RegisterToFactory(*componentFactory);
+	Components::MeshGeometry::RegisterToFactory(*componentFactory);
 	Components::IdleSpin::RegisterToFactory(*componentFactory);
 }
 
@@ -40,7 +45,8 @@ void Game::initializeGame()
 {
 	dummy = &entityMgr->create(*componentFactory);
 	dummy->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
-	dummy->addComponent("TriangleGeometry");
+	//dummy->addComponent("TriangleGeometry");
+	dummy->addComponent("MeshGeometry");
 	dummy->addComponent("IdleSpin");
 }
 

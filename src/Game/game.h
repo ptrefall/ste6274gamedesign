@@ -6,7 +6,7 @@
 class GameOptions;
 class Client;
 class EntityManager;
-namespace Systems { class RenderSystem; }
+namespace Systems { class RenderSystem; class MeshSystem; }
 namespace Factotum { class Entity; class ComponentFactory; }
 
 class Game : public Factotum::EventHandler
@@ -26,6 +26,7 @@ private:
 	Client *client;
 	EntityManager *entityMgr;
 	Systems::RenderSystem *renderSystem;
+	Systems::MeshSystem *meshSystem;
 	Factotum::ComponentFactory *componentFactory;
 	Factotum::Entity *dummy;
 };
