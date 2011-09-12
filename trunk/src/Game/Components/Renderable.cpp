@@ -16,7 +16,10 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 
 	indices = owner.addPropertyList<unsigned int>("Indices");
 	vertices = owner.addPropertyList<glm::vec3>("Vertices");
+	normals = owner.addPropertyList<glm::vec3>("Normals");
+	tangents = owner.addPropertyList<glm::vec3>("Tangents");
 	colors = owner.addPropertyList<glm::vec3>("Colors");
+	texCoords = owner.addPropertyList<glm::vec2>("TexCoords");
 
 	modelMatrix = owner.addProperty<glm::mat4>("ModelMatrix", glm::mat4(1.0f));
 	qRotation = owner.addProperty<glm::gtc::quaternion::quat>("Rotation", glm::gtc::quaternion::quat());
@@ -36,19 +39,22 @@ void Renderable::compile()
 {
 	program = renderSystem.getShaderSystem().create(GL_VERTEX_SHADER, "../../resources/Shaders/minimal.vs", GL_FRAGMENT_SHADER, "../../resources/Shaders/minimal.fs");
 	GL( glBindAttribLocation(program->id, ATTRIB_VERTEX, "Vertex"); );
+	GL( glBindAttribLocation(program->id, ATTRIB_NORMAL, "Normal"); );
+	GL( glBindAttribLocation(program->id, ATTRIB_TANGENT, "Tangent"); );
 	GL( glBindAttribLocation(program->id, ATTRIB_COLOR, "Color"); );
+	GL( glBindAttribLocation(program->id, ATTRIB_TEXCOORD, "TexCoord"); );
 	program->link();
 
 	//GL( glGenVertexArrays(1, &vao); );
 	//GL( glBindVertexArray(vao); );
 
-	vbo = new Graphics::VBO(sizeof(glm::vec3)*(vertices.size() + colors.size()), indices.size(), &indices.get()[0], GL_STATIC_DRAW);
+	/*vbo = new Graphics::VBO(sizeof(glm::vec3)*(vertices.size() + colors.size()), indices.size(), &indices.get()[0], GL_STATIC_DRAW);
 	vbo->bind(0);
 	vbo->buffer(GL_FLOAT, 3*vertices.size(), &vertices.get());
 	vbo->buffer(GL_FLOAT, 3*colors.size(), &colors.get());
 	//Graphics::Attribute(ATTRIB_VERTEX,	3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	//Graphics::Attribute(ATTRIB_COLOR,	3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(glm::vec3)*vertices.size()));
-	vbo->unbind();
+	vbo->unbind();*/
 
 	//GL( glBindVertexArray(0); );
 
@@ -72,8 +78,8 @@ void Renderable::prepare()
 	// Then, we calculate the local transformation matrix
 	modelMatrix = glm::mat4(1.0f);
 	//modelMatrix *= scale;
-	modelMatrix *= rotation;
 	modelMatrix *= translate;
+	modelMatrix *= rotation;
 
 	GLdouble p[16];
 	GLdouble v[16]; 
@@ -88,7 +94,7 @@ void Renderable::prepare()
 
 void Renderable::render()
 {
-	if(vertices.empty() || vertices.size() != colors.size())
+	if(vertices.empty())
 		return;
 
 	program->bind();
@@ -96,9 +102,32 @@ void Renderable::render()
 	glBegin(GL_TRIANGLES);
 	for(U32 i = 0; i < indices.size(); i++)
 	{
-		const glm::vec3 &vertex = vertices[indices[i].get()].get();
-		const glm::vec3 &color = colors[indices[i].get()].get();
-		glColor4f(color.r, color.g, color.b, 1.0f);
+		unsigned int index = indices[i].get();
+		/*if(!normals.empty())
+		{
+			const glm::vec3 &normal = normals[index].get();
+			glNormal3f(normal.x, normal.y, normal.z);
+		}
+
+		if(!tangents.empty())
+		{
+			const glm::vec3 &tangent = tangents[index].get();
+			glVertexAttrib3f(ATTRIB_TANGENT, tangent.x, tangent.y, tangent.z);
+		}
+
+		if(!colors.empty())
+		{
+			const glm::vec3 &color = colors[index].get();
+			glColor4f(color.r, color.g, color.b, 1.0f);
+		}
+
+		if(!texCoords.empty())
+		{
+			const glm::vec2 &texCoord = texCoords[index].get();
+			glTexCoord2f(texCoord.s, texCoord.t);
+		}*/
+
+		const glm::vec3 &vertex = vertices[index].get();
 		glVertex3f(vertex.x, vertex.y, vertex.z);
 	}
 	glEnd();

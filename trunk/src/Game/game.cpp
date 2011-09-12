@@ -46,8 +46,10 @@ void Game::initializeGame()
 	dummy = &entityMgr->create(*componentFactory);
 	dummy->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 	//dummy->addComponent("TriangleGeometry");
-	dummy->addComponent("MeshGeometry");
+	dummy->addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
 	dummy->addComponent("IdleSpin");
+	dummy->sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
+	dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);
 }
 
 void Game::advanceFrame(const F32 &delta)

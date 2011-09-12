@@ -20,5 +20,5 @@ IdleSpin::~IdleSpin()
 
 void IdleSpin::update(const F32 &deltaTime)
 {
-	qRotation = glm::gtc::quaternion::rotate(qRotation.get(), deltaTime * 40.0f, glm::vec3(0.0f, 0.0f, -1.0f));
+	qRotation = glm::gtc::quaternion::rotate(qRotation.get(), deltaTime * 40.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }

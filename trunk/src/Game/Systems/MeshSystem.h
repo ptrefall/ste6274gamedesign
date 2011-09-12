@@ -16,8 +16,7 @@ public:
 	MeshSystem();
 	~MeshSystem();
 
-	void addMesh(Components::MeshGeometry *mesh);
-
+	void loadMesh(Components::MeshGeometry *mesh, const T_String &location, const T_String &filename);
 	//Mesh *createMesh(const T_String &relative_path, const T_String &filename, bool loadTextures);
 	//std::vector<Mesh*> createMesh(const T_String &relative_path, const T_String &filename, Renderer::Shader &shader, bool loadTextures);
 
@@ -27,6 +26,12 @@ private:
 	Assimp::Importer *importer;
 
 	///
-	std::vector<Components::MeshGeometry*> meshes;
+	struct MeshData
+	{
+		T_HashedString id;
+		aiMesh *data;
+		MeshData(const T_HashedString &id, aiMesh *data) : id(id), data(data) {}
+	};
+	std::vector<MeshData*> meshes;
 };
 }
