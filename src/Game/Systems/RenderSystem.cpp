@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
-#include "../Components/Renderable.h"
+#include <Game/Components/Renderable.h>
+#include <Game/Graphics/Utils.h>
 
 using namespace Systems;
 using namespace Factotum;
@@ -28,38 +29,6 @@ void RenderSystem::addRenderable(Components::Renderable *renderable)
 	renderables.push_back(renderable);
 }
 
-bool RenderSystem::hasGroup(const U32 &groupName) const
-{
-	for(U32 i = 0; i < groups.size(); i++)
-	{
-		if(groups[i]->id == groupName)
-			return true;
-	}
-	return false;
-}
-
-void RenderSystem::addGroup(const U32 &groupName, const bool &instanced)
-{
-#ifdef _DEBUG
-	if(hasGroup(groupName) == false)
-		return; //BAD CODER!!!
-#endif
-
-	groups.push_back(new RenderGroup(groupName, instanced));
-}
-
-void RenderSystem::incrementGroup(const U32 &groupName)
-{
-	for(U32 i = 0; i < groups.size(); i++)
-	{
-		if(groups[i]->id == groupName)
-		{
-			groups[i]->instances++;
-			break;
-		}
-	}
-}
-
 void RenderSystem::compile()
 {
 	//TODO: Make renderables list into a new_pending list of renderables.
@@ -73,6 +42,8 @@ void RenderSystem::compile()
 
 void RenderSystem::render()
 {
+	for(U32 i = 0; i < renderables.size(); i++)
+		renderables[i]->prepare();
 	for(U32 i = 0; i < renderables.size(); i++)
 		renderables[i]->render();
 }
