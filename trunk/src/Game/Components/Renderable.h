@@ -2,9 +2,12 @@
 
 #include <Component.h>
 #include <glm/glm.hpp>
-
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Systems { class RenderSystem; }
+namespace Graphics { class VertexBufferObject; class Shader; class Uniform; }
 namespace Components
 {
 	class Renderable : public Factotum::Component
@@ -15,18 +18,29 @@ namespace Components
 		virtual ~Renderable();
 
 		void compile();
+		void prepare();
 		void render();
 
-		const T_String &getRenderGroup();
-		const bool &isCompiled() const { return compiled; }
+		const bool &isCompiled() const { return compiled.get(); }
 
 	private:
 		Systems::RenderSystem &renderSystem;
 
+		Factotum::PropertyList<unsigned int> indices;
 		Factotum::PropertyList<glm::vec3> vertices;
 		Factotum::PropertyList<glm::vec3> colors;
 
-		Factotum::Property<U32> render_group;
+		Factotum::Property<glm::mat4> modelMatrix;
+		Factotum::Property<glm::gtc::quaternion::quat> qRotation;
+		Factotum::Property<glm::vec3> position;
+
 		Factotum::Property<bool> compiled;
+
+		U32 vao;
+		Graphics::VertexBufferObject *vbo;
+		Graphics::Shader *program;
+
+		Graphics::Uniform *mvp;
+		glm::mat4 mvpMat;
 	};
 }

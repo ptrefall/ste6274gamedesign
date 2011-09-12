@@ -6,17 +6,15 @@
 
 namespace Components
 {
-	class MeshRenderer : public Factotum::Component
+	class MeshGeometry : public Factotum::Component
 	{
 	public:
-		COMPONENT_0(MeshRenderer)
-		MeshRenderer(Factotum::Entity &owner, const T_String &name);
-		virtual ~MeshRenderer();
+		COMPONENT_0(MeshGeometry)
+		MeshGeometry(Factotum::Entity &owner, const T_String &name);
+		virtual ~MeshGeometry();
 
 	private:
 		Factotum::PropertyList<glm::vec3> vertices;
 		Factotum::PropertyList<glm::vec3> colors;
-
-		Factotum::Property<U32> render_group;
 	};
 }

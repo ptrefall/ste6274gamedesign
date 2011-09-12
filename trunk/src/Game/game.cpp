@@ -6,7 +6,8 @@
 #include <Entity.h>
 #include <ComponentFactory.h>
 #include "Components\Renderable.h"
-#include "Components\TriangleRenderer.h"
+#include "Components\TriangleGeometry.h"
+#include "Components\IdleSpin.h"
 
 Game::Game()
 	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
@@ -22,19 +23,25 @@ Game::~Game()
 	if(componentFactory) delete componentFactory;
 }
 
-void Game::initialize()
+void Game::initializeCore()
 {
 	options = new GameOptions();
 	client = new Client();
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
+
 	componentFactory = new Factotum::ComponentFactory();
 	Components::Renderable::RegisterToFactory(*componentFactory);
-	Components::TriangleRenderer::RegisterToFactory(*componentFactory);
+	Components::TriangleGeometry::RegisterToFactory(*componentFactory);
+	Components::IdleSpin::RegisterToFactory(*componentFactory);
+}
 
+void Game::initializeGame()
+{
 	dummy = &entityMgr->create(*componentFactory);
 	dummy->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
-	dummy->addComponent<Systems::RenderSystem>("TriangleRenderer", *renderSystem);
+	dummy->addComponent("TriangleGeometry");
+	dummy->addComponent("IdleSpin");
 }
 
 void Game::advanceFrame(const F32 &delta)

@@ -1,6 +1,6 @@
 
 #include <types_config.h>
-#include "Qt/GraphicsView/OpenGL3GraphicsScene.h"
+#include "Qt/GraphicsView/OpenGL2GraphicsScene.h"
 #include "Game/game.h"
 
 #include <QtGui>
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
 	Game game;
-	game.initialize();
+	game.initializeCore();
  
     //assigning that scene to the view
     GraphicsView view;
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	view.setViewport(glWidget);
     view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-	view.setScene(new OpenGL3GraphicsScene(game));
+	view.setScene(new OpenGL2GraphicsScene(game));
     view.show();
 	view.resize(1024, 768);
 

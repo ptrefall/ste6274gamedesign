@@ -15,7 +15,8 @@ public:
 	Game();
 	~Game();
 
-	void initialize();
+	void initializeCore();
+	void initializeGame();
 	void advanceFrame(const F32 &delta);
 	GameOptions &getOptions() { return *options; }
 	Client &getClient() { return *client; }

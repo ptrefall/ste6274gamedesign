@@ -1,4 +1,4 @@
-#include "OpenGL3GraphicsScene.h"
+#include "OpenGL2GraphicsScene.h"
 #include <Qt/UserInterface/MainMenu.h>
 #include <Game/Game.h>
 
@@ -7,7 +7,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-QDialog *OpenGL3GraphicsScene::createDialog(const QString &windowTitle) const
+QDialog *OpenGL2GraphicsScene::createDialog(const QString &windowTitle) const
 {
     QDialog *dialog = new QDialog(0, Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
@@ -18,7 +18,7 @@ QDialog *OpenGL3GraphicsScene::createDialog(const QString &windowTitle) const
     return dialog;
 }
 
-OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
+OpenGL2GraphicsScene::OpenGL2GraphicsScene(Game &game)
     : game(game), m_backgroundColor(0, 170, 255), first_time(true)
 {
     /*QWidget *controls = createDialog(tr("Controls"));
@@ -61,10 +61,10 @@ OpenGL3GraphicsScene::OpenGL3GraphicsScene(Game &game)
     m_time.start();
 }
 
-void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
+void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
     if (painter->paintEngine()->type() != QPaintEngine::OpenGL2) {
-        qWarning("OpenGL3GraphicsScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view");
+        qWarning("OpenGL2GraphicsScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view");
         return;
     }
 
@@ -76,6 +76,8 @@ void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 			GLenum err = glewInit();
 			if(err != GLEW_OK)
 				throw T_Exception((const char *)glewGetErrorString(err));
+
+			game.initializeGame();
 		} catch(T_Exception &/*e*/){
 			//std::cout << e.what() << std::endl;
 		}
@@ -89,7 +91,7 @@ void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 	glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluPerspective(70, width() / height(), 0.01, 1000);
+    gluPerspective(70, (float)width() / (float)height(), 1, 1000);
 
 	glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -98,8 +100,9 @@ void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 	//////////////////////////////
 	const S32 delta = m_time.elapsed() - m_lastTime;
 	m_lastTime += delta;
-
+	//painter->beginNativePainting();
 	game.advanceFrame((F32)delta/1000.0f);
+	//painter->endNativePainting();
 	//////////////////////////////
 
 	glPopMatrix();
@@ -107,10 +110,10 @@ void OpenGL3GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
-    QTimer::singleShot(1/60*1000+1, this, SLOT(update()));
+    QTimer::singleShot(int(1.0f/60.0f*1000.0f)+1, this, SLOT(update()));
 }
 
-void OpenGL3GraphicsScene::setBackgroundColor()
+void OpenGL2GraphicsScene::setBackgroundColor()
 {
     const QColor color = QColorDialog::getColor(m_backgroundColor);
     if (color.isValid()) {
@@ -119,7 +122,7 @@ void OpenGL3GraphicsScene::setBackgroundColor()
     }
 }
 
-void OpenGL3GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void OpenGL2GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
     if (event->isAccepted())
@@ -132,7 +135,7 @@ void OpenGL3GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void OpenGL3GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void OpenGL2GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
     if (event->isAccepted())
@@ -142,7 +145,7 @@ void OpenGL3GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 }
 
-void OpenGL3GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void OpenGL2GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseReleaseEvent(event);
     if (event->isAccepted())
@@ -153,7 +156,7 @@ void OpenGL3GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //update();
 }
 
-void OpenGL3GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
+void OpenGL2GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
     QGraphicsScene::wheelEvent(event);
     if (event->isAccepted())

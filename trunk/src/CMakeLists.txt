@@ -7,14 +7,15 @@ set(QT_UI_SRC_ROOT ${QT_SRC_ROOT}/UserInterface)
 set(GAME_SRC_ROOT ${SRC_ROOT}/Game)
 set(GAME_SYSTEMS_SRC_ROOT ${GAME_SRC_ROOT}/Systems)
 set(GAME_COMPONENTS_SRC_ROOT ${GAME_SRC_ROOT}/Components)
+set(GAME_GRAPHICS_SRC_ROOT ${GAME_SRC_ROOT}/Graphics)
 #---------------------------------------------------------------
 set(GV_HDRS
-	${QT_GV_SRC_ROOT}/OpenGL3GraphicsScene.h
+	${QT_GV_SRC_ROOT}/OpenGL2GraphicsScene.h
 )
 SOURCE_GROUP("Header Files\\Qt\\GraphicsView" FILES ${GV_HDRS})
 
 set(GV_SRCS
-	${QT_GV_SRC_ROOT}/OpenGL3GraphicsScene.cpp
+	${QT_GV_SRC_ROOT}/OpenGL2GraphicsScene.cpp
 )
 SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
@@ -82,17 +83,40 @@ SOURCE_GROUP("Source Files\\Game\\Systems" FILES ${GAME_SYSTEMS_SRCS})
 #---------------------------------------------------------------
 set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/Renderable.h
-	${GAME_COMPONENTS_SRC_ROOT}/TriangleRenderer.h
-	${GAME_COMPONENTS_SRC_ROOT}/MeshRenderer.h
+	${GAME_COMPONENTS_SRC_ROOT}/TriangleGeometry.h
+	${GAME_COMPONENTS_SRC_ROOT}/MeshGeometry.h
+	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
 set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/Renderable.cpp
-	${GAME_COMPONENTS_SRC_ROOT}/TriangleRenderer.cpp
-	${GAME_COMPONENTS_SRC_ROOT}/MeshRenderer.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/TriangleGeometry.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/MeshGeometry.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
+#---------------------------------------------------------------
+set(GAME_GRAPHICS_HDRS
+	${GAME_GRAPHICS_SRC_ROOT}/IBufferObject.h
+	${GAME_GRAPHICS_SRC_ROOT}/VertexBufferObject.h
+	${GAME_GRAPHICS_SRC_ROOT}/UniformBufferObject.h
+	${GAME_GRAPHICS_SRC_ROOT}/Uniform.h
+	${GAME_GRAPHICS_SRC_ROOT}/Attribute.h
+	${GAME_GRAPHICS_SRC_ROOT}/Shader.h
+	${GAME_GRAPHICS_SRC_ROOT}/ShaderSystem.h
+	${GAME_GRAPHICS_SRC_ROOT}/Utils.h
+)
+SOURCE_GROUP("Header Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_HDRS})
+
+set(GAME_GRAPHICS_SRCS
+	${GAME_GRAPHICS_SRC_ROOT}/IBufferObject.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/VertexBufferObject.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/UniformBufferObject.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/Shader.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/ShaderSystem.cpp
+)
+SOURCE_GROUP("Source Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_SRCS})
 #---------------------------------------------------------------
 set(HDRS
 )
@@ -131,7 +155,8 @@ add_executable(GameDesignClient
 	${UI_HDRS} ${UI_UIC_HDRS} ${UI_SRCS}
 	${GAME_HDRS} ${GAME_SRCS} 
 	${GAME_SYSTEMS_HDRS} ${GAME_SYSTEMS_SRCS} 
-	${GAME_COMPONENTS_HDRS} ${GAME_COMPONENTS_SRCS} 
+	${GAME_COMPONENTS_HDRS} ${GAME_COMPONENTS_SRCS}
+	${GAME_GRAPHICS_HDRS} ${GAME_GRAPHICS_SRCS}
 	${HDRS} ${SRCS}
 )
 set_target_properties(GameDesignClient PROPERTIES DEBUG_POSTFIX _d)

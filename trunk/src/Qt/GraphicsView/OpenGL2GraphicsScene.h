@@ -7,12 +7,12 @@
 
 class Game;
 
-class OpenGL3GraphicsScene : public QGraphicsScene
+class OpenGL2GraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    OpenGL3GraphicsScene(Game &game);
+    OpenGL2GraphicsScene(Game &game);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 
