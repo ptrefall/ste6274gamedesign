@@ -33,6 +33,8 @@ void Connect::connectToServerAttempt()
 		return;
 
 	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
+	connect(&game.getClient(), SIGNAL(handshakeSucceeded()), SLOT(onHandshakeSucceeded()));
+	connect(&game.getClient(), SIGNAL(handshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
 	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
 	connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
 
@@ -45,6 +47,9 @@ void Connect::connectToServerAttempt()
 
 void Connect::onClose()
 {
+	if(state == E_CONNECTION_SUCCEEDED)
+		game.getClient().sendDisconnectRequest();
+
 	state = E_CONNECTION_ABORTED;
 	tryingToConnect = false;
 	progressBarConnection->setValue(0);
@@ -57,11 +62,32 @@ void Connect::onHostFound()
 	state = E_HOST_FOUND;
 }
 
+void Connect::onHandshakeSucceeded()
+{
+	state = E_HANDSHAKE_SUCCEEDED;
+
+	game.getClient().sendConnectRequest();
+}
+
+void Connect::onHandshakeFailed(const QString &why)
+{
+	state = E_HANDSHAKE_FAILED;
+	tryingToConnect = false;
+	progressBarConnection->setValue(0);
+	connectionFailed->labelConnectionFailed->setText(why);
+	this->hide();
+	connectionFailed->show();
+}
+
 void Connect::onConnectionSucceeded()
 {
 	state = E_CONNECTION_SUCCEEDED;
+
 	tryingToConnect = false;
 	progressBarConnection->setValue(100);
+
+	//From here, attempt to join and enter lobby
+	//game.getClient().sendJoinRequest();
 
 }
 
@@ -84,6 +110,12 @@ void Connect::onUpdateProgress()
 		break;
 	case E_HOST_FOUND:
 		this->setWindowTitle("Host found, trying to connect...");
+		break;
+	case E_HANDSHAKE_SUCCEEDED:
+		this->setWindowTitle("Handshake successful, requesting server connection...");
+		break;
+	case E_HANDSHAKE_FAILED:
+		this->setWindowTitle("Handshake failed!");
 		break;
 	case E_CONNECTION_SUCCEEDED:
 		this->setWindowTitle("Connection successful, requesting server information...");

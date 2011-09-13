@@ -14,12 +14,16 @@ public:
 
 signals:
 	void targetHostFound();
+	void handshakeSucceeded();
+	void handshakeFailed(const QString &why);
 	void connectionSucceeded();
 	void connectionFailed(const QString &why);
 
 public slots:
 	void connectToServer(const QString &address, quint16);
 	void sendTestPkgToServer();
+	void sendConnectRequest();
+	void sendDisconnectRequest();
 
 private:
 	QTcpSocket *socket;

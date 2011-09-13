@@ -24,6 +24,8 @@ public:
 private slots:
 	void onClose();
 	void onHostFound();
+	void onHandshakeSucceeded();
+	void onHandshakeFailed(const QString &why);
 	void onConnectionSucceeded();
 	void onConnectionFailed(const QString &why);
 	void onUpdateProgress();
@@ -39,6 +41,8 @@ private:
 	{
 		E_INITIATE_CONNECTION = 0,
 		E_HOST_FOUND,
+		E_HANDSHAKE_SUCCEEDED,
+		E_HANDSHAKE_FAILED,
 		E_CONNECTION_SUCCEEDED,
 		E_CONNECTION_FAILED,
 		E_CONNECTION_ABORTED,

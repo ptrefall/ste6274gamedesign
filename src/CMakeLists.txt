@@ -21,12 +21,14 @@ SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
 set(CLIENT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
+	${QT_CLIENT_SRC_ROOT}/Packet.h
 	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
 )
 SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_HDRS})
 
 set(CLIENT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
+	${QT_CLIENT_SRC_ROOT}/Packet.cpp
 )
 SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_SRCS})
 #---------------------------------------------------------------
