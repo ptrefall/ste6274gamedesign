@@ -1,0 +1,158 @@
+project(GameDesignServer)
+
+#---------------------------------------------------------------
+set(HDRS
+	../Protocol/gameprotocol.h
+)
+
+set(PKG_HDRS
+	./buildclienterrorpkgtask.h
+	./buildconnectanswerpkgtask.h
+	./builddsqpkgtask.h
+	./buildjoinanswerpkgtask.h
+	./buildpkgtask.h
+	./datapacket.h
+)
+
+set(CLIENT_HDRS
+	./clientconnection.h
+	./clientparsetask.h
+	./clientverificationtask.h
+	./connection.h
+	./connectrhtask.h
+)
+
+set(PLAYER_HDRS
+	./playerinstance.h
+	./playerjoininfo.h
+	./playerparsetask.h
+)
+
+set(SERVER_HDRS
+	./server.h
+	./serverinfo.h
+	./serverworker.h
+	./tcpparsetask.h
+	./tcpserver.h
+	./tcpsocket.h
+	./negotiationpfw.h
+	./packetfactoryworker.h
+	./requesthandlertask.h
+	./requestinfo.h
+	./sendpkgtask.h
+)
+
+set(GAME_HDRS
+	./gameinfo.h
+	./gameinstance.h
+	./gamepfw.h
+	./teaminfo.h
+	./mapinfo.h
+)
+
+SOURCE_GROUP("Header Files\\Package" FILES ${PKG_HDRS})
+SOURCE_GROUP("Header Files\\Client" FILES ${CLIENT_HDRS})
+SOURCE_GROUP("Header Files\\Player" FILES ${PLAYER_HDRS})
+SOURCE_GROUP("Header Files\\Server" FILES ${SERVER_HDRS})
+SOURCE_GROUP("Header Files\\Game" FILES ${GAME_HDRS})
+
+set(MOC_HDRS
+	./debugutils.h
+	./mainwindow.h
+	${PKG_HDRS}
+	${CLIENT_HDRS}
+	${PLAYER_HDRS}
+	${SERVER_HDRS}
+	${GAME_HDRS}
+)
+
+##---------------------------------------------------------------------
+
+set(PKG_SRCS
+	./buildclienterrorpkgtask.cpp
+	./buildconnectanswerpkgtask.cpp
+	./builddsqpkgtask.cpp
+	./buildjoinanswerpkgtask.cpp
+	./buildpkgtask.cpp
+	./datapacket.cpp
+)
+
+set(CLIENT_SRCS
+	./clientconnection.cpp
+	./clientparsetask.cpp
+	./clientverificationtask.cpp
+	./connection.cpp
+	./connectrhtask.cpp
+)
+
+set(PLAYER_SRCS
+	./playerinstance.cpp
+	./playerjoininfo.cpp
+	./playerparsetask.cpp
+)
+
+set(SERVER_SRCS
+	./server.cpp
+	./serverinfo.cpp
+	./serverworker.cpp
+	./tcpparsetask.cpp
+	./tcpserver.cpp
+	./tcpsocket.cpp
+	./negotiationpfw.cpp
+	./packetfactoryworker.cpp
+	./requesthandlertask.cpp
+	./requestinfo.cpp
+	./sendpkgtask.cpp
+)
+
+set(GAME_SRCS
+	./gameinfo.cpp
+	./gameinstance.cpp
+	./gamepfw.cpp
+	./teaminfo.cpp
+	./mapinfo.cpp
+)
+
+SOURCE_GROUP("Source Files\\Package" FILES ${PKG_SRCS})
+SOURCE_GROUP("Source Files\\Client" FILES ${CLIENT_SRCS})
+SOURCE_GROUP("Source Files\\Player" FILES ${PLAYER_SRCS})
+SOURCE_GROUP("Source Files\\Server" FILES ${SERVER_SRCS})
+SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})
+
+set(SRCS
+	./main.cpp
+	./debugutils.cpp
+	./mainwindow.cpp
+	${PKG_SRCS}
+	${CLIENT_SRCS}
+	${PLAYER_SRCS}
+	${SERVER_SRCS}
+	${GAME_SRCS}
+)
+
+include(${GameDesignClient_SOURCE_DIR}/cmake/Config.cmake)
+set(CMAKE_MODULE_PATH ${GameDesignClient_SOURCE_DIR}/cmake/Modules)
+
+#---------------------------------------------------------------
+find_package(Qt4 4.7.3 REQUIRED QtCore QtGui QtOpenGL QtNetwork)
+CMP_QT_LIBRARIES_INSTALL_RULES("QtCore;QtGui;QtOpenGL;QtNetwork" ${GameDesignClient_BINARY_DIR}/depends/server)
+#---------------------------------------------------------------
+include(${QT_USE_FILE})
+include_directories(${Server_BINARY_DIR}/src)
+include_directories(${GameDesignClient_SOURCE_DIR}/depends/Protocol)
+#---------------------------------------------------------------
+QT4_WRAP_CPP(MOCS ${MOC_HDRS})
+SOURCE_GROUP("Source Files\\MOC" FILES ${MOCS})
+#---------------------------------------------------------------
+add_executable(GameDesignServer
+	${MOCS} ${MOC_HDRS} 
+	${HDRS} ${SRCS}
+)
+set_target_properties(GameDesignServer PROPERTIES DEBUG_POSTFIX _d)
+set_target_properties(GameDesignServer PROPERTIES LINKER_LANGUAGE CXX)
+#---------------------------------------------------------------
+target_link_libraries(GameDesignServer
+  ${QT_LIBRARIES}
+)
+#---------------------------------------------------------------
+#INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
