@@ -19,18 +19,52 @@ set(GV_SRCS
 )
 SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
-set(CLIENT_HDRS
+set(CLIENT_PFW_HDRS
+	${QT_CLIENT_SRC_ROOT}/PacketFactoryWorker.h
+	${QT_CLIENT_SRC_ROOT}/NegotiationPFW.h
+)
+set(CLIENT_TASKS_HDRS
+	${QT_CLIENT_SRC_ROOT}/TcpParseTask.h
+	${QT_CLIENT_SRC_ROOT}/SendPkgTask.h
+)
+set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
-	${QT_CLIENT_SRC_ROOT}/Packet.h
+	${QT_CLIENT_SRC_ROOT}/ClientWorker.h
+	${QT_CLIENT_SRC_ROOT}/TcpSocket.h
+	${QT_CLIENT_SRC_ROOT}/DataPacket.h
+	${QT_CLIENT_SRC_ROOT}/RequestInfo.h
 	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
 )
-SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_HDRS})
-
-set(CLIENT_SRCS
-	${QT_CLIENT_SRC_ROOT}/Client.cpp
-	${QT_CLIENT_SRC_ROOT}/Packet.cpp
+set(CLIENT_HDRS
+	${CLIENT_ROOT_HDRS}
+	${CLIENT_PFW_HDRS}
+	${CLIENT_TASKS_HDRS}
 )
-SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_SRCS})
+SOURCE_GROUP("Header Files\\Qt\\Client\\PFW" FILES ${CLIENT_PFW_HDRS})
+SOURCE_GROUP("Header Files\\Qt\\Client\\Tasks" FILES ${CLIENT_TASKS_HDRS})
+SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_ROOT_HDRS})
+
+set(CLIENT_PFW_SRCS
+	${QT_CLIENT_SRC_ROOT}/PacketFactoryWorker.cpp
+	${QT_CLIENT_SRC_ROOT}/NegotiationPFW.cpp
+)
+set(CLIENT_TASKS_SRCS
+	${QT_CLIENT_SRC_ROOT}/TcpParseTask.cpp
+	${QT_CLIENT_SRC_ROOT}/SendPkgTask.cpp
+)
+set(CLIENT_ROOT_SRCS
+	${QT_CLIENT_SRC_ROOT}/Client.cpp
+	${QT_CLIENT_SRC_ROOT}/ClientWorker.cpp
+	${QT_CLIENT_SRC_ROOT}/TcpSocket.cpp
+)
+set(CLIENT_SRCS
+	${CLIENT_PFW_SRCS}
+	${CLIENT_TASKS_SRCS}
+	${CLIENT_ROOT_SRCS}
+)
+SOURCE_GROUP("Source Files\\Qt\\Client\\PFW" FILES ${CLIENT_PFW_SRCS})
+SOURCE_GROUP("Source Files\\Qt\\Client\\Tasks" FILES ${CLIENT_TASKS_SRCS})
+SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_ROOT_SRCS})
 #---------------------------------------------------------------
 set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/mainMenu.ui

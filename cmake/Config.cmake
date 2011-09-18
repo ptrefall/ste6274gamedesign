@@ -36,17 +36,17 @@ endif()
 
 macro (CMP_ASSIMP_INSTALL_RULES destination)
 	if (MSVC)
-		message(STATUS "Generating Install Rule for AssImp Debug DLL Library ${ASSIMP_LIB_PATH}/Debug/assimp.dll -> ${destination}/Debug")  
-		INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.dll 
+		message(STATUS "Generating Install Rule for AssImp Debug DLL Library ${ASSIMP_BIN_DEBUG_X86}/Assimp32d.dll -> ${destination}/Debug")  
+		INSTALL(FILES ${ASSIMP_BIN_DEBUG_X86}/Assimp32d.dll 
 			DESTINATION "${destination}/Debug")
-		INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.pdb 
-			DESTINATION "${destination}/Debug")
-		message(STATUS "Generating Install Rule for AssImp Release DLL Library ${ASSIMP_LIB_PATH}/Release/assimp.dll -> ${destination}/Release")
-		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+		#INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.pdb 
+		#	DESTINATION "${destination}/Debug")
+		message(STATUS "Generating Install Rule for AssImp Release DLL Library ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll -> ${destination}/Release")
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
 			DESTINATION "${destination}/Release")
-		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
 			DESTINATION "${destination}/MinSizeRel")
-		INSTALL(FILES ${ASSIMP_LIB_PATH}/MinSizeRel/assimp.dll 
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
 			DESTINATION "${destination}/RelWithDebInfo")
 	endif()
 endmacro()
