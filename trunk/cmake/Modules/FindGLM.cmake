@@ -18,8 +18,9 @@
 
 FIND_PATH(GLM_DIR glm/glm.hpp
       D:/Development/3rdParty/GLM
+	  C:/Paal/Development/3rdParties/glm-0.9.2.4
     )
 
 FIND_PATH(GLM_INCLUDE_PATH glm/glm.hpp
-      D:/Development/3rdParty/GLM
+      C:/Paal/Development/3rdParties/glm-0.9.2.4
     )

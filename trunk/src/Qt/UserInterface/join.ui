@@ -61,7 +61,7 @@
         <item>
          <widget class="QLineEdit" name="linePort">
           <property name="inputMask">
-           <string>38555; </string>
+           <string>1234; </string>
           </property>
           <property name="maxLength">
            <number>5</number>

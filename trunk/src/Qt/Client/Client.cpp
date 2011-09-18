@@ -57,24 +57,24 @@ void Client::tcpConnectionSucceeded()
 
 void Client::sendConnectRequest()
 {
-	gp_connect_query request;
+	gp_connect_request request;
 	request.connect_flag = GP_CONNECT_FLAG_CONNECT;
 
 	QByteArray block;
 	Packet::beginWrite(GP_REQUEST_TYPE_CONNECT, ++request_id, false);
-	Packet::write<gp_connect_query>(request);
+	Packet::write<gp_connect_request>(request);
 	Packet::endWrite(block);
 	socket->write( block );
 }
 
 void Client::sendDisconnectRequest()
 {
-	gp_connect_query request;
+	gp_connect_request request;
 	request.connect_flag = GP_CONNECT_FLAG_DISCONNECT;
 
 	QByteArray block;
 	Packet::beginWrite(GP_REQUEST_TYPE_CONNECT, ++request_id, false);
-	Packet::write<gp_connect_query>(request);
+	Packet::write<gp_connect_request>(request);
 	Packet::endWrite(block);
 	socket->write( block );
 }
@@ -99,7 +99,7 @@ void Client::serverRequest()
 		qDebug() << "Type: Connect request";
 		qDebug() << "- is answer, not request: " << Packet::getHeader().flags.answer;	
 		qDebug() << "- the answer for connection request is: " << answer.state;
-		if(answer.state == true)
+		if(answer.state == 1)
 			emit connectionSucceeded();
 		else
 			emit connectionFailed("Server did not grant you connection access!");
