@@ -20,12 +20,14 @@ set(GV_SRCS
 SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
 set(CLIENT_PFW_HDRS
-	${QT_CLIENT_SRC_ROOT}/PacketFactoryWorker.h
-	${QT_CLIENT_SRC_ROOT}/NegotiationPFW.h
+	${QT_CLIENT_SRC_ROOT}/PFW/PacketFactoryWorker.h
+	${QT_CLIENT_SRC_ROOT}/PFW/NegotiationPFW.h
 )
 set(CLIENT_TASKS_HDRS
-	${QT_CLIENT_SRC_ROOT}/TcpParseTask.h
-	${QT_CLIENT_SRC_ROOT}/SendPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.h
 )
 set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
@@ -45,12 +47,14 @@ SOURCE_GROUP("Header Files\\Qt\\Client\\Tasks" FILES ${CLIENT_TASKS_HDRS})
 SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_ROOT_HDRS})
 
 set(CLIENT_PFW_SRCS
-	${QT_CLIENT_SRC_ROOT}/PacketFactoryWorker.cpp
-	${QT_CLIENT_SRC_ROOT}/NegotiationPFW.cpp
+	${QT_CLIENT_SRC_ROOT}/PFW/PacketFactoryWorker.cpp
+	${QT_CLIENT_SRC_ROOT}/PFW/NegotiationPFW.cpp
 )
 set(CLIENT_TASKS_SRCS
-	${QT_CLIENT_SRC_ROOT}/TcpParseTask.cpp
-	${QT_CLIENT_SRC_ROOT}/SendPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.cpp
 )
 set(CLIENT_ROOT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
