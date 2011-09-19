@@ -40,15 +40,15 @@ void Connect::connectToServerAttempt()
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;
-	game.getClient().connectToServer(opt.ip_addr.c_str(), opt.port);
+	//game.getClient().connectToServer(opt.ip_addr.c_str(), opt.port);
 	tryingToConnect = true;
 	onUpdateProgress();
 }
 
 void Connect::onClose()
 {
-	if(state == E_CONNECTION_SUCCEEDED)
-		game.getClient().sendDisconnectRequest();
+	/*if(state == E_CONNECTION_SUCCEEDED)
+		game.getClient().sendDisconnectRequest();*/
 
 	state = E_CONNECTION_ABORTED;
 	tryingToConnect = false;
@@ -66,7 +66,7 @@ void Connect::onHandshakeSucceeded()
 {
 	state = E_HANDSHAKE_SUCCEEDED;
 
-	game.getClient().sendConnectRequest();
+	//game.getClient().sendConnectRequest();
 }
 
 void Connect::onHandshakeFailed(const QString &why)

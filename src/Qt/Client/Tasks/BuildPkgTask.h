@@ -24,7 +24,7 @@ signals:
 
 protected:
 	void buildAndQueue();
-	const quint32 &getClientID() const { rinfo.getClientId(); }
+	quint32 getClientID() const { return rinfo.getClientId(); }
 	void initRequestPkg(const quint8 &type);
 	void initReplyPkg(const quint8 &type);
 	bool isValid() const { return rinfo_ok & load_ok; }

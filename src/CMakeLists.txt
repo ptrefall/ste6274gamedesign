@@ -28,13 +28,18 @@ set(CLIENT_TASKS_HDRS
 	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.h
 )
 set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
 	${QT_CLIENT_SRC_ROOT}/ClientWorker.h
 	${QT_CLIENT_SRC_ROOT}/TcpSocket.h
+	${QT_CLIENT_SRC_ROOT}/TcpClient.h
 	${QT_CLIENT_SRC_ROOT}/DataPacket.h
 	${QT_CLIENT_SRC_ROOT}/RequestInfo.h
+	${QT_CLIENT_SRC_ROOT}/DebugUtils.h
 	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
 )
 set(CLIENT_HDRS
@@ -55,11 +60,16 @@ set(CLIENT_TASKS_SRCS
 	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.cpp
 )
 set(CLIENT_ROOT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
 	${QT_CLIENT_SRC_ROOT}/ClientWorker.cpp
 	${QT_CLIENT_SRC_ROOT}/TcpSocket.cpp
+	${QT_CLIENT_SRC_ROOT}/TcpClient.cpp
+	${QT_CLIENT_SRC_ROOT}/DebugUtils.cpp
 )
 set(CLIENT_SRCS
 	${CLIENT_PFW_SRCS}
@@ -94,8 +104,8 @@ set(UI_SRCS
 	${QT_UI_SRC_ROOT}/Connect.cpp
 	${QT_UI_SRC_ROOT}/ConnectionFailed.cpp
 )
-SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS})
-SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_UIC_HDRS} ${UI_SRCS})
+SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS} ${UI_UIC_HDRS})
+SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_SRCS})
 #---------------------------------------------------------------
 set(GAME_HDRS
 	${GAME_SRC_ROOT}/Game.h

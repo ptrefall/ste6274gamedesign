@@ -12,7 +12,7 @@ PacketFactoryWorker::PacketFactoryWorker(QObject *parent)
 
 void PacketFactoryWorker::buildServerErrorPkg(const RequestInfo &rinfo, const quint16 &error)
 {
-	BuildPkgTask *task = new BuildServerErrorPkgTask;
+	BuildServerErrorPkgTask *task = new BuildServerErrorPkgTask;
 	task->set(rinfo);
 	task->load(error);
 

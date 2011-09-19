@@ -1,38 +1,30 @@
 #pragma once
 
-#include <qobject.h>
-#include <QTcpSocket.h>
+#include "RequestInfo.h"
+#include "DataPacket.h"
 
-class QNetworkSession;
+#include <Protocol/gameprotocol.h>
 
-class Client : public QObject
+#include <QQueue>
+
+#include "TcpClient.h"
+
+class NegotiationPFW;
+class ClientWorker;
+
+class Client : public TcpClient
 {
 	Q_OBJECT
 public:
 	explicit Client(QObject *parent = 0);
 	virtual ~Client();
 
-signals:
-	void targetHostFound();
-	void handshakeSucceeded();
-	void handshakeFailed(const QString &why);
-	void connectionSucceeded();
-	void connectionFailed(const QString &why);
-
-public slots:
-	void connectToServer(const QString &address, quint16);
-	void sendTestPkgToServer();
-	void sendConnectRequest();
-	void sendDisconnectRequest();
+protected slots:
+	void distributeData(const DataPacket &pkg);
 
 private:
-	QTcpSocket *socket;
-	unsigned int request_id;
-	QString ip_address;
+	gp_header gp_send_header;
 
-private slots:
-	void tcpHostFound();
-	void tcpConnectionSucceeded();
-	void displayError(QAbstractSocket::SocketError socketError);
-	void serverRequest();
+	NegotiationPFW *negotiationPFW;
+	ClientWorker *clientWorker;
 };
