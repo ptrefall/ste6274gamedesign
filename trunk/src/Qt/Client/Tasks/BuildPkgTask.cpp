@@ -11,12 +11,12 @@ BuildPkgTask::BuildPkgTask()
 
 void BuildPkgTask::buildAndQueue()
 {
-	qDebug() << "BuildPkgTask::buildAndQueue()";
+	//qDebug() << "BuildPkgTask::buildAndQueue()";
 
-	echoBlock(block);
+	DebugUtils::echoBlock(block);
 
-	emit signDataPkgBuildt(DataPacket(getClientID(), block));
-	qDebug() << "BuildPkgTask::buildAndQueue() END";
+	emit signDataPkgBuilt(DataPacket(getClientID(), block));
+	//qDebug() << "BuildPkgTask::buildAndQueue() END";
 }
 
 gp_header BuildPkgTask::generateHeader(const quint8 &type, const bool &answer, const quint32 &request_id)

@@ -1,126 +1,54 @@
 #include "Client.h"
-#include "Packet.h"
-#include <Protocol/gameprotocol.h>
-#include <QtNetwork>
 
-Client::Client(QObject *parent)
-	: QObject(parent)
+#include "PFW/NegotiationPFW.h"
+#include "Tasks/SendPkgTask.h"
+#include "ClientWorker.h"
+
+#include <QDebug>
+#include <QThreadPool>
+
+
+Client::Client(QObject *parent) 
+	: TcpClient(parent)
 {
-	// Find host address
-	/*QList<QHostAddress> ip_address_list = QNetworkInterface::allAddresses();
-	for(int i = 0; i < ip_address_list.size(); i++)
-	{
-		if((ip_address_list.at(i) != QHostAddress::LocalHost) && ip_address_list.at(i).toIPv4Address())
-		{
-			ip_address = ip_address_list.at(i).toString();
-			break;
-		}
-	}*/
 
-	// If no external address were available use localhost
-	if(ip_address.isEmpty())
-		ip_address = QHostAddress(QHostAddress::LocalHost).toString();
+	int num_cores = QThread::idealThreadCount();
+	if(num_cores < 1)
+		num_cores = 2;
+	QThreadPool::globalInstance()->setMaxThreadCount( num_cores );
 
-	socket = new QTcpSocket(this);
-	connect(socket, SIGNAL(hostFound()), this, SLOT(tcpHostFound()));
-	connect(socket, SIGNAL(connected()), this, SLOT(tcpConnectionSucceeded()));
-	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
+	gp_send_header.size = sizeof(gp_header) - sizeof(gp_header_prefix);
 
-	connect(socket, SIGNAL(readyRead()), this, SLOT(serverRequest()));
+	clientWorker = new ClientWorker(*this);
 
+	negotiationPFW = new NegotiationPFW(*this);
 
+	// Connect packet factory to tcp client (this),
+	// so that packet tasks are distributed correctly
+	connect(negotiationPFW,	SIGNAL(signDataBuildt			(DataPacket)),
+			this,			SLOT(distributeData				(DataPacket)));
 
-	request_id = 0;
+	// Connect client worker to packet factory worker
+	connect(clientWorker,	SIGNAL(signBuildConnectRequest	(const RequestInfo &, const quint8 &)),
+			negotiationPFW, SLOT(buildConnectRequestPkg		(const RequestInfo &, const quint8 &)));
+
+	connect(clientWorker,	SIGNAL(signQueueError			(const RequestInfo &, const quint16 &)),
+			negotiationPFW, SLOT(buildServerErrorPkg		(const RequestInfo &, const quint16 &)));
+
+	connect(clientWorker,	SIGNAL(signBuildDSQRequest		(const RequestInfo &, const gp_default_server_query &)),
+			negotiationPFW, SLOT(buildDSQPkg				(const RequestInfo &, const gp_default_server_query &)));
+
+	connect(clientWorker,	SIGNAL(signBuildJoinRequest		(const RequestInfo 6, const quint8 &, const quint32 &)),
+			negotiationPFW, SLOT(buildJoinPkg				(const RequestInfo &, const quint8 &, const quint32 &)));
 }
 
 Client::~Client()
 {
-  socket->abort();
-  delete socket;
+	delete clientWorker;
+	delete negotiationPFW;
 }
 
-void Client::connectToServer(const QString &address, quint16 port )
+void Client::distributeData( const DataPacket& pkg )
 {
-  socket->abort();
-  socket->connectToHost(address, port);
-}
-
-void Client::tcpHostFound()
-{
-	emit targetHostFound();
-}
-
-void Client::tcpConnectionSucceeded()
-{
-	emit handshakeSucceeded();
-}
-
-void Client::sendConnectRequest()
-{
-	gp_connect_request request;
-	request.connect_flag = GP_CONNECT_FLAG_CONNECT;
-
-	QByteArray block;
-	Packet::beginWrite(GP_REQUEST_TYPE_CONNECT, ++request_id, false);
-	Packet::write<gp_connect_request>(request);
-	Packet::endWrite(block);
-	socket->write( block );
-}
-
-void Client::sendDisconnectRequest()
-{
-	gp_connect_request request;
-	request.connect_flag = GP_CONNECT_FLAG_DISCONNECT;
-
-	QByteArray block;
-	Packet::beginWrite(GP_REQUEST_TYPE_CONNECT, ++request_id, false);
-	Packet::write<gp_connect_request>(request);
-	Packet::endWrite(block);
-	socket->write( block );
-}
-
-void Client::sendTestPkgToServer()
-{
-	QByteArray block;
-	Packet::beginWrite(GP_REQUEST_TYPE_TEST, ++request_id, false);
-	Packet::endWrite(block);
-	socket->write( block );
-}
-
-void Client::serverRequest()
-{
-	qDebug() << "Client: Incoming server request!";
-	Packet::beginRead(socket);
-	switch(Packet::getHeader().type)
-	{
-	case GP_REQUEST_TYPE_CONNECT:
-		gp_connect_answer answer;
-		Packet::read<gp_connect_answer>(answer);
-		qDebug() << "Type: Connect request";
-		qDebug() << "- is answer, not request: " << Packet::getHeader().flags.answer;	
-		qDebug() << "- the answer for connection request is: " << answer.state;
-		if(answer.state == 1)
-			emit connectionSucceeded();
-		else
-			emit connectionFailed("Server did not grant you connection access!");
-		break;
-	};
-}
-
-void Client::displayError(QAbstractSocket::SocketError socketError)
-{
-    switch (socketError) {
-    case QAbstractSocket::RemoteHostClosedError:
-		emit handshakeFailed("Remote host closed");
-        break;
-    case QAbstractSocket::HostNotFoundError:
-		emit handshakeFailed("Host not found");
-        break;
-    case QAbstractSocket::ConnectionRefusedError:
-		emit handshakeFailed("Connection refused");
-        break;
-    default:
-		emit handshakeFailed("Unknown error");
-		break;
-    }
+	socket->send(pkg.getData());
 }

@@ -5,6 +5,6 @@
 class TcpSocket : public QTcpSocket
 {
 public:
-	TcpSocket() {}
+	TcpSocket(QObject *parent = 0) : QTcpSocket(parent) {}
     void send(const QByteArray &pkg);
 };
