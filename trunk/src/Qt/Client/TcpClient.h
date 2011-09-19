@@ -11,7 +11,8 @@ class TcpClient : public QObject
 public:
     explicit TcpClient(QObject *parent = 0);
 
-	virtual void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
+public slots:
+	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
 
 protected:
 	TcpSocket *socket;

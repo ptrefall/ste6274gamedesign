@@ -40,7 +40,7 @@ void Connect::connectToServerAttempt()
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;
-	//game.getClient().connectToServer(opt.ip_addr.c_str(), opt.port);
+	game.getClient().connectToHost(QHostAddress(opt.ip_addr.c_str()), opt.port);
 	tryingToConnect = true;
 	onUpdateProgress();
 }
