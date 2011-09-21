@@ -40,3 +40,15 @@ void NegotiationPFW::buildJoinPkg(const RequestInfo &rinfo, const quint8 &state,
 	connectTask(task);
 	launch(task);
 }
+
+void NegotiationPFW::parseConnectAnswer(const RequestInfo &rinfo, const gp_connect_answer &answer)
+{
+}
+
+void NegotiationPFW::parseDSQAnswer(const RequestInfo &rinfo, const gp_default_server_query_answer &answer)
+{
+}
+
+void NegotiationPFW::parseJoinAnswer(const RequestInfo &rinfo, const gp_join_answer &answer)
+{
+}

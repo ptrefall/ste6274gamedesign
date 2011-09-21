@@ -13,18 +13,21 @@ ClientWorker::ClientWorker(Client &client, QObject *parent)
 {
 }
 
-void ClientWorker::sendConnectRequest( RequestInfo rinfo, const quint8 &state)
+void ClientWorker::sendConnectRequest(const RequestInfo &rinfo, const quint8 &state)
 {
 	emit signBuildConnectRequest(rinfo, state);
 }
-void ClientWorker::sendDSQRequest( RequestInfo rinfo, const quint8 &state)
+void ClientWorker::sendDSQRequest(const RequestInfo &rinfo, const quint8 &state)
 {
 }
-void ClientWorker::sendJoinRequest( RequestInfo rinfo, const quint8 &state)
+void ClientWorker::sendJoinRequest(const RequestInfo &rinfo, const quint8 &state)
 {
 }
 
-void ClientWorker::handleConnectAnswer( RequestInfo rinfo, const gp_connect_request &query) {
+void ClientWorker::handleConnectAnswer(const RequestInfo &rinfo, const gp_connect_answer &answer)
+{
+	emit signParseConnectAnswer(rinfo, answer);
+}
 
   // Helper vars
   /*ClientConnection *cc = _server->getClientConnection( rinfo.getCId() );
@@ -54,10 +57,10 @@ void ClientWorker::handleConnectAnswer( RequestInfo rinfo, const gp_connect_requ
 
   default:
     emit signQueueError( rinfo, GP_ERROR_CONNECT_UNKNOWN );
-  }*/
-}
+  }
+}*/
 
-void ClientWorker::handleDSQAnswer(RequestInfo rinfo, const gp_default_server_query &query) {
+void ClientWorker::handleDSQAnswer(const RequestInfo &rinfo, const gp_default_server_query_answer &answer) {
 
   // Helper vars
   /*ClientConnection *cc = _server->getClientConnection( rinfo.getCId() );
@@ -71,7 +74,7 @@ void ClientWorker::handleDSQAnswer(RequestInfo rinfo, const gp_default_server_qu
   emit signBuildDSQAnswer( rinfo, query );*/
 }
 
-void ClientWorker::handleJoinAnswer(RequestInfo rinfo, const gp_join_request &request) {
+void ClientWorker::handleJoinAnswer(const RequestInfo &rinfo, const gp_join_answer &answer) {
 
   // Helper vars
   /*GameInstance *gi = _server->getGameInstance();
