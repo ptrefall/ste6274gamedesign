@@ -35,7 +35,7 @@ void BuildPkgTask::initReplyPkg(const quint8 &type)
 	clearDataBlock();
 	loadDefaultHeaderOptions(type);
 
-	header.flags.answer = true;
+	header.flags.answer = 1;
 
 	addToBlock<gp_header>(header);
 }
@@ -45,7 +45,7 @@ void BuildPkgTask::initRequestPkg(const quint8 &type)
 	clearDataBlock();
 	loadDefaultHeaderOptions(type);
 
-	header.flags.answer = false;
+	header.flags.answer = 0;
 
 	addToBlock<gp_header>(header);
 }

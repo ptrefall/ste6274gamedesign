@@ -13,6 +13,17 @@ ClientWorker::ClientWorker(Client &client, QObject *parent)
 {
 }
 
+void ClientWorker::sendConnectRequest( RequestInfo rinfo, const quint8 &state)
+{
+	emit signBuildConnectRequest(rinfo, state);
+}
+void ClientWorker::sendDSQRequest( RequestInfo rinfo, const quint8 &state)
+{
+}
+void ClientWorker::sendJoinRequest( RequestInfo rinfo, const quint8 &state)
+{
+}
+
 void ClientWorker::handleConnectAnswer( RequestInfo rinfo, const gp_connect_request &query) {
 
   // Helper vars

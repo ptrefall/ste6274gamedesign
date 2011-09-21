@@ -3,6 +3,7 @@
 #include <QtGui/QDialog.h>
 #include <ui_connect.h>
 #include <QTime>
+#include <QHostAddress>
 
 class Game;
 
@@ -20,6 +21,9 @@ public:
     virtual ~Connect();
 
 	void connectToServerAttempt();
+
+signals:
+	void signConnectToHost(const QHostAddress &address, const quint16 &port);
 
 private slots:
 	void onClose();
