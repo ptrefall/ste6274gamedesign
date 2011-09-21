@@ -32,15 +32,18 @@ void Connect::connectToServerAttempt()
 	if(opt.port < 1000)
 		return;
 
+	connect(this, SIGNAL(signConnectToHost(const QHostAddress &, const quint16 &)), &game.getClient(), SLOT(connectToHost(const QHostAddress &, const quint16 &)));
+
 	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
 	connect(&game.getClient(), SIGNAL(handshakeSucceeded()), SLOT(onHandshakeSucceeded()));
 	connect(&game.getClient(), SIGNAL(handshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
-	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
-	connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
+	//connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
+	//connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;
-	game.getClient().connectToHost(QHostAddress(opt.ip_addr.c_str()), opt.port);
+	//game.getClient().connectToHost(QHostAddress(opt.ip_addr.c_str()), opt.port);
+	emit signConnectToHost(QHostAddress(opt.ip_addr.c_str()), opt.port);
 	tryingToConnect = true;
 	onUpdateProgress();
 }

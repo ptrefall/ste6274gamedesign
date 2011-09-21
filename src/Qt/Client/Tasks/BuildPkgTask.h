@@ -54,7 +54,7 @@ void BuildPkgTask::addToBlock(const T &t)
   out.device()->seek(block.size());
 
   // Write data to block via stream
-  out.writeRawData((char*)(&t), sizeof(T));
+  out.writeRawData((const char*)(&t), sizeof(T));
 }
 
 template <typename T>

@@ -25,6 +25,7 @@ set(CLIENT_PFW_HDRS
 )
 set(CLIENT_TASKS_HDRS
 	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/ServerParseTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.h
@@ -57,6 +58,7 @@ set(CLIENT_PFW_SRCS
 )
 set(CLIENT_TASKS_SRCS
 	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/ServerParseTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.cpp

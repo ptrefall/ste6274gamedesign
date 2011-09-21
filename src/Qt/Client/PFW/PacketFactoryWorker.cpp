@@ -22,8 +22,8 @@ void PacketFactoryWorker::buildServerErrorPkg(const RequestInfo &rinfo, const qu
 
 void PacketFactoryWorker::connectTask(BuildPkgTask *task)
 {
-	connect(task, SIGNAL(signDataPkgBuilt(DataPacket)),
-			this, SLOT(relaySendData(DataPacket)));
+	connect(task, SIGNAL(signDataPkgBuilt(const DataPacket &)),
+			this, SLOT(relaySendData(const DataPacket &)));
 }
 
 void PacketFactoryWorker::launch(BuildPkgTask *task)

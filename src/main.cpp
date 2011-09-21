@@ -9,6 +9,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
+#include <Protocol/gameprotocol.h>
+#include "Qt/Client/DataPacket.h"
+#include "Qt/Client/RequestInfo.h"
+
 class GraphicsView : public QGraphicsView
 {
 public:
@@ -27,6 +31,16 @@ protected:
 
 int main(int argc, char **argv)
 {
+	// Register game protocol types as meta types
+	qRegisterMetaType<gp_connect_request>( "gp_connect_request" );
+	qRegisterMetaType<gp_default_server_query>( "gp_default_server_query" );
+	qRegisterMetaType<gp_join_request>( "gp_join_request" );
+	qRegisterMetaType<gp_client_verification_answer>("gp_client_verification_answer");
+	qRegisterMetaType<DataPacket>( "DataPacket" );
+
+	// Register local non-QObject types as meta types
+	qRegisterMetaType<RequestInfo> ("RequestInfo");
+
     QApplication app(argc, argv);
 
 	Game game;

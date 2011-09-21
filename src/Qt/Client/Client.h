@@ -11,6 +11,7 @@
 
 class NegotiationPFW;
 class ClientWorker;
+class ServerParseTask;
 
 class Client : public TcpClient
 {
@@ -20,11 +21,20 @@ public:
 	virtual ~Client();
 
 protected slots:
+	virtual void readReady();
+
+protected slots:
 	void distributeData(const DataPacket &pkg);
+
+protected:
+	virtual void onHandshakeSuccessful();
 
 private:
 	gp_header gp_send_header;
 
 	NegotiationPFW *negotiationPFW;
 	ClientWorker *clientWorker;
+	ServerParseTask *serverParseTask;
+
+	gp_uint32 request_id;
 };

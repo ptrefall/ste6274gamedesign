@@ -12,11 +12,11 @@ void BuildConnectRequestPkgTask::run()
 		return;
 
 	// Init the pkg
-	initReplyPkg(GP_REQUEST_TYPE_CONNECT);
+	initRequestPkg(GP_REQUEST_TYPE_CONNECT);
 
 	// Compile body
 	gp_connect_request body;
-	body.connect_flag = GP_CONNECT_FLAG_CONNECT;
+	body.connect_flag = state;
 	//body.state = state;
 
 	// Add body to send package
