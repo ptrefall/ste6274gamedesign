@@ -10,6 +10,7 @@ set(PKG_HDRS
 	./buildconnectanswerpkgtask.h
 	./builddsqpkgtask.h
 	./buildjoinanswerpkgtask.h
+	./buildmapqueryanswerpkgtask.h
 	./buildpkgtask.h
 	./datapacket.h
 )
@@ -17,7 +18,7 @@ set(PKG_HDRS
 set(CLIENT_HDRS
 	./clientconnection.h
 	./clientparsetask.h
-	./clientverificationtask.h
+	#./clientverificationtask.h
 	./connection.h
 	./connectrhtask.h
 )
@@ -47,7 +48,12 @@ set(GAME_HDRS
 	./gameinstance.h
 	./gamepfw.h
 	./teaminfo.h
-	./mapinfo.h
+	#./mapinfo.h
+)
+
+set(MAP_HDRS
+	./mapinstance.h
+	./mapobject.h
 )
 
 SOURCE_GROUP("Header Files\\Package" FILES ${PKG_HDRS})
@@ -55,6 +61,7 @@ SOURCE_GROUP("Header Files\\Client" FILES ${CLIENT_HDRS})
 SOURCE_GROUP("Header Files\\Player" FILES ${PLAYER_HDRS})
 SOURCE_GROUP("Header Files\\Server" FILES ${SERVER_HDRS})
 SOURCE_GROUP("Header Files\\Game" FILES ${GAME_HDRS})
+SOURCE_GROUP("Header Files\\Map" FILES ${MAP_HDRS})
 
 set(MOC_HDRS
 	./debugutils.h
@@ -64,6 +71,7 @@ set(MOC_HDRS
 	${PLAYER_HDRS}
 	${SERVER_HDRS}
 	${GAME_HDRS}
+	${MAP_HDRS}
 )
 
 ##---------------------------------------------------------------------
@@ -73,6 +81,7 @@ set(PKG_SRCS
 	./buildconnectanswerpkgtask.cpp
 	./builddsqpkgtask.cpp
 	./buildjoinanswerpkgtask.cpp
+	./buildmapqueryanswerpkgtask.cpp
 	./buildpkgtask.cpp
 	./datapacket.cpp
 )
@@ -80,7 +89,7 @@ set(PKG_SRCS
 set(CLIENT_SRCS
 	./clientconnection.cpp
 	./clientparsetask.cpp
-	./clientverificationtask.cpp
+	#./clientverificationtask.cpp
 	./connection.cpp
 	./connectrhtask.cpp
 )
@@ -110,7 +119,12 @@ set(GAME_SRCS
 	./gameinstance.cpp
 	./gamepfw.cpp
 	./teaminfo.cpp
-	./mapinfo.cpp
+	#./mapinfo.cpp
+)
+
+set(MAP_SRCS
+	./mapinstance.cpp
+	./mapobject.cpp
 )
 
 SOURCE_GROUP("Source Files\\Package" FILES ${PKG_SRCS})
@@ -118,6 +132,7 @@ SOURCE_GROUP("Source Files\\Client" FILES ${CLIENT_SRCS})
 SOURCE_GROUP("Source Files\\Player" FILES ${PLAYER_SRCS})
 SOURCE_GROUP("Source Files\\Server" FILES ${SERVER_SRCS})
 SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})
+SOURCE_GROUP("Source Files\\Map" FILES ${MAP_SRCS})
 
 set(SRCS
 	./main.cpp
@@ -128,6 +143,7 @@ set(SRCS
 	${PLAYER_SRCS}
 	${SERVER_SRCS}
 	${GAME_SRCS}
+	${MAP_SRCS}
 )
 
 include(${GameDesignClient_SOURCE_DIR}/cmake/Config.cmake)
