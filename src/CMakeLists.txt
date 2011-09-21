@@ -32,6 +32,10 @@ set(CLIENT_TASKS_HDRS
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.h
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseAnswerTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseConnectAnswerTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseDsqAnswerTask.h
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseJoinAnswerTask.h
 )
 set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
@@ -39,6 +43,7 @@ set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/TcpSocket.h
 	${QT_CLIENT_SRC_ROOT}/TcpClient.h
 	${QT_CLIENT_SRC_ROOT}/DataPacket.h
+	${QT_CLIENT_SRC_ROOT}/ParsedData.h
 	${QT_CLIENT_SRC_ROOT}/RequestInfo.h
 	${QT_CLIENT_SRC_ROOT}/DebugUtils.h
 	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
@@ -65,6 +70,10 @@ set(CLIENT_TASKS_SRCS
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.cpp
 	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseAnswerTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseConnectAnswerTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseDsqAnswerTask.cpp
+	${QT_CLIENT_SRC_ROOT}/Tasks/ParseJoinAnswerTask.cpp
 )
 set(CLIENT_ROOT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
