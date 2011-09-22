@@ -3,6 +3,7 @@
 #include "../Tasks/BuildConnectRequestPkgTask.h"
 #include "../Tasks/BuildDsqPkgTask.h"
 #include "../Tasks/BuildJoinRequestPkgTask.h"
+#include "../Tasks/ParseConnectAnswerTask.h"
 
 #include <QThreadPool>
 
@@ -43,6 +44,7 @@ void NegotiationPFW::buildJoinPkg(const RequestInfo &rinfo, const quint8 &state,
 
 void NegotiationPFW::parseConnectAnswer(const RequestInfo &rinfo, const gp_connect_answer &answer)
 {
+	ParseConnectAnswerTask *task = new ParseConnectAnswerTask(client, rinfo, answer);
 }
 
 void NegotiationPFW::parseDSQAnswer(const RequestInfo &rinfo, const gp_default_server_query_answer &answer)

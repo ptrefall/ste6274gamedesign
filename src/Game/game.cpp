@@ -54,6 +54,7 @@ void Game::initializeGame()
 
 void Game::advanceFrame(const F32 &delta)
 {
+	T_Vector<ParsedData*>::Type data = client->getParsedAnswerData_ThreadSafe();
 	entityMgr->update(delta);
 	renderSystem->compile();
 	renderSystem->render();

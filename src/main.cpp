@@ -12,6 +12,7 @@
 #include <Protocol/gameprotocol.h>
 #include "Qt/Client/DataPacket.h"
 #include "Qt/Client/RequestInfo.h"
+#include "Qt/Client/ParsedData.h"
 
 class GraphicsView : public QGraphicsView
 {
@@ -40,6 +41,7 @@ int main(int argc, char **argv)
 
 	// Register local non-QObject types as meta types
 	qRegisterMetaType<RequestInfo> ("RequestInfo");
+	qRegisterMetaType<ParsedData> ("ParsedData");
 
     QApplication app(argc, argv);
 

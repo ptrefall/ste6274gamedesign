@@ -5,7 +5,7 @@
 class ParseJoinAnswerTask : public ParseAnswerTask
 {
 public:
-	ParseJoinAnswerTask(const RequestInfo &rinfo, const gp_join_answer &answer);
+	ParseJoinAnswerTask(Client &client, const RequestInfo &rinfo, const gp_join_answer &answer);
     void run();
 
 private:

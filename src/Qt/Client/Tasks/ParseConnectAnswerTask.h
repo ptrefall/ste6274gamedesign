@@ -5,7 +5,7 @@
 class ParseConnectAnswerTask : public ParseAnswerTask
 {
 public:
-	ParseConnectAnswerTask(const RequestInfo &rinfo, const gp_connect_answer &answer);
+	ParseConnectAnswerTask(Client &client, const RequestInfo &rinfo, const gp_connect_answer &answer);
     void run();
 
 private:

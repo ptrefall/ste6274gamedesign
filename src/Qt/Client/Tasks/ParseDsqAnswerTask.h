@@ -5,7 +5,7 @@
 class ParseDsqAnswerTask : public ParseAnswerTask
 {
 public:
-	ParseDsqAnswerTask(const RequestInfo &rinfo, const gp_default_server_query_answer &answer);
+	ParseDsqAnswerTask(Client &client, const RequestInfo &rinfo, const gp_default_server_query_answer &answer);
     void run();
 
 private:
