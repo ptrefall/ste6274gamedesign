@@ -2,12 +2,16 @@
 
 #include "RequestInfo.h"
 #include "DataPacket.h"
+#include "ParsedData.h"
 
 #include <Protocol/gameprotocol.h>
 
 #include <QQueue>
+#include <QMutex>
 
 #include "TcpClient.h"
+
+#include <types_config.h>
 
 class NegotiationPFW;
 class ClientWorker;
@@ -19,6 +23,16 @@ class Client : public TcpClient
 public:
 	explicit Client(QObject *parent = 0);
 	virtual ~Client();
+
+	void queueAnswer(ParsedData *data);
+
+	T_Vector<ParsedData*>::Type getParsedAnswerData_ThreadSafe();
+
+	
+public slots:
+	void connectAnswerDataInvoked(ParsedData *);
+	void dsqAnswerDataInvoked(ParsedData *);
+	void joinAnswerDataInvoked(ParsedData *);
 
 protected slots:
 	virtual void readReady();
@@ -36,5 +50,9 @@ private:
 	ClientWorker *clientWorker;
 	ServerParseTask *serverParseTask;
 
+	T_Vector<ParsedData*>::Type parsed_answer_data;
+
 	gp_uint32 request_id;
+
+	QMutex data_mutex;
 };

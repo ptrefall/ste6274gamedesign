@@ -5,8 +5,13 @@
 #include "Tasks/ServerParseTask.h"
 #include "ClientWorker.h"
 
+#include <Game/ParsedNetData/ParsedConnectData.h>
+#include <Game/ParsedNetData/ParsedDsqData.h>
+#include <Game/ParsedNetData/ParsedJoinData.h>
+
 #include <QDebug>
 #include <QThreadPool>
+#include <QMutexLocker>
 
 
 Client::Client(QObject *parent) 
@@ -88,4 +93,38 @@ void Client::distributeData( const DataPacket& pkg )
 void Client::readReady()
 {
 	QThreadPool::globalInstance()->start(serverParseTask);
+}
+
+void Client::queueAnswer(ParsedData *data)
+{
+	QMutexLocker scoped_lock(&data_mutex);
+	parsed_answer_data.push_back(data);
+}
+
+T_Vector<ParsedData*>::Type Client::getParsedAnswerData_ThreadSafe()
+{
+	QMutexLocker scoped_lock(&data_mutex);
+	T_Vector<ParsedData*>::Type temp = parsed_answer_data;
+	parsed_answer_data.clear();
+	scoped_lock.unlock();
+
+	for(unsigned int i = 0; i < temp.size(); i++)
+		emit temp[i]->emitSignal();
+
+	return temp;
+}
+
+void Client::connectAnswerDataInvoked(ParsedData *data)
+{
+	ParsedConnectData *connectData = static_cast<ParsedConnectData *>(data);
+	if(connectData->getConnectAccepted())
+		emit connectionSucceeded();
+	else
+		emit connectionFailed("Connection rejected!");
+}
+void Client::dsqAnswerDataInvoked(ParsedData *data)
+{
+}
+void Client::joinAnswerDataInvoked(ParsedData *data)
+{
 }

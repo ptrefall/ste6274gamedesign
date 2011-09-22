@@ -8,6 +8,7 @@ set(GAME_SRC_ROOT ${SRC_ROOT}/Game)
 set(GAME_SYSTEMS_SRC_ROOT ${GAME_SRC_ROOT}/Systems)
 set(GAME_COMPONENTS_SRC_ROOT ${GAME_SRC_ROOT}/Components)
 set(GAME_GRAPHICS_SRC_ROOT ${GAME_SRC_ROOT}/Graphics)
+set(GAME_PND_SRC_ROOT ${GAME_SRC_ROOT}/ParsedNetData)
 #---------------------------------------------------------------
 set(GV_HDRS
 	${QT_GV_SRC_ROOT}/OpenGL2GraphicsScene.h
@@ -181,6 +182,13 @@ set(GAME_GRAPHICS_SRCS
 )
 SOURCE_GROUP("Source Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_SRCS})
 #---------------------------------------------------------------
+set(GAME_PARSEDNETDATA_HDRS
+	${GAME_PND_SRC_ROOT}/ParsedConnectData.h
+	${GAME_PND_SRC_ROOT}/ParsedDsqData.h
+	${GAME_PND_SRC_ROOT}/ParsedJoinData.h
+)
+SOURCE_GROUP("Header Files\\Game\\ParsedNetData" FILES ${GAME_PARSEDNETDATA_HDRS})
+#---------------------------------------------------------------
 set(HDRS
 )
 
@@ -220,6 +228,7 @@ add_executable(GameDesignClient
 	${GAME_SYSTEMS_HDRS} ${GAME_SYSTEMS_SRCS} 
 	${GAME_COMPONENTS_HDRS} ${GAME_COMPONENTS_SRCS}
 	${GAME_GRAPHICS_HDRS} ${GAME_GRAPHICS_SRCS}
+	${GAME_PARSEDNETDATA_HDRS}
 	${HDRS} ${SRCS}
 )
 set_target_properties(GameDesignClient PROPERTIES DEBUG_POSTFIX _d)

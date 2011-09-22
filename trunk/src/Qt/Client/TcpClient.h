@@ -15,6 +15,8 @@ signals:
 	void targetHostFound();
 	void handshakeSucceeded();
 	void handshakeFailed(const QString &);
+	void connectionSucceeded();
+	void connectionFailed(const QString &);
 
 public slots:
 	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);

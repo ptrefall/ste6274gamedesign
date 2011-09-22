@@ -37,8 +37,8 @@ void Connect::connectToServerAttempt()
 	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
 	connect(&game.getClient(), SIGNAL(handshakeSucceeded()), SLOT(onHandshakeSucceeded()));
 	connect(&game.getClient(), SIGNAL(handshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
-	//connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
-	//connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
+	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
+	connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;

@@ -1,14 +1,15 @@
 #include "ParseAnswerTask.h"
 
 #include "../DebugUtils.h"
+#include "../Client.h"
 
 
-ParseAnswerTask::ParseAnswerTask(const RequestInfo &rinfo)
-	: rinfo(rinfo)
+ParseAnswerTask::ParseAnswerTask(Client  &client, const RequestInfo &rinfo)
+	: client(client), rinfo(rinfo)
 {
 }
 
-void ParseAnswerTask::queue()
+void ParseAnswerTask::queue(ParsedData *data)
 {
-	
+	client.queueAnswer(data);
 }

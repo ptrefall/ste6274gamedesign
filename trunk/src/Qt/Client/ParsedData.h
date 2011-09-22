@@ -1,17 +1,19 @@
 #pragma once
 
-#include <QByteArray>
+#include <types_config.h>
+#include <QObject>
 
-class DataPacket 
+class ParsedData : public QObject
 {
+	Q_OBJECT
 public:
-	DataPacket() : cid(0) {}
-	DataPacket(quint32 cid, const QByteArray &data) : cid(cid), data(data) {}
+	ParsedData() {}
+	virtual ~ParsedData() {}
 
-	quint32 getClientID() const { return cid; }
-	const QByteArray &getData() const { return data; }
+	virtual T_HashedString getType() { return T_HashedString("NOT_AVAILABLE"); };
 
-private:
-	quint32 cid;
-	QByteArray data;
+	void emitSignal() { emit signParsedDataInvoked(this); }
+
+signals:
+	void signParsedDataInvoked(ParsedData *);
 };

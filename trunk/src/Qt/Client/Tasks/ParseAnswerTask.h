@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../RequestInfo.h"
-#include "../DataPacket.h"
+#include "../ParsedData.h"
 
 #include <Protocol/gameprotocol.h>
 
@@ -9,15 +9,16 @@
 #include <QObject>
 #include <QDataStream>
 
+class Client;
+
 class ParseAnswerTask : public QObject, public QRunnable
 {
   Q_OBJECT
 public:
-	explicit ParseAnswerTask(const RequestInfo &rinfo);
+	explicit ParseAnswerTask(Client &client, const RequestInfo &rinfo);
 
 protected:
-	void queue();
-
-private:
+	void queue(ParsedData *data);
+	Client  &client;
 	RequestInfo rinfo;
 };
