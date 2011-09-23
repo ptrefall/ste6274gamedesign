@@ -8,7 +8,6 @@ set(GAME_SRC_ROOT ${SRC_ROOT}/Game)
 set(GAME_SYSTEMS_SRC_ROOT ${GAME_SRC_ROOT}/Systems)
 set(GAME_COMPONENTS_SRC_ROOT ${GAME_SRC_ROOT}/Components)
 set(GAME_GRAPHICS_SRC_ROOT ${GAME_SRC_ROOT}/Graphics)
-set(GAME_PND_SRC_ROOT ${GAME_SRC_ROOT}/ParsedNetData)
 #---------------------------------------------------------------
 set(GV_HDRS
 	${QT_GV_SRC_ROOT}/OpenGL2GraphicsScene.h
@@ -20,76 +19,27 @@ set(GV_SRCS
 )
 SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
-set(CLIENT_PFW_HDRS
-	${QT_CLIENT_SRC_ROOT}/PFW/PacketFactoryWorker.h
-	${QT_CLIENT_SRC_ROOT}/PFW/NegotiationPFW.h
-)
-set(CLIENT_TASKS_HDRS
-	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/ServerParseTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseAnswerTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseConnectAnswerTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseDsqAnswerTask.h
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseJoinAnswerTask.h
-)
 set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
-	${QT_CLIENT_SRC_ROOT}/ClientWorker.h
-	${QT_CLIENT_SRC_ROOT}/TcpSocket.h
-	${QT_CLIENT_SRC_ROOT}/TcpClient.h
-	${QT_CLIENT_SRC_ROOT}/DataPacket.h
-	${QT_CLIENT_SRC_ROOT}/ParsedData.h
-	${QT_CLIENT_SRC_ROOT}/RequestInfo.h
-	${QT_CLIENT_SRC_ROOT}/DebugUtils.h
+	${QT_CLIENT_SRC_ROOT}/Packet.h
+	${QT_CLIENT_SRC_ROOT}/SocketParseTask.h
+	${QT_CLIENT_SRC_ROOT}/SocketPackTask.h
 	${GameDesignClient_SOURCE_DIR}/depends/Protocol/gameprotocol.h
 )
 set(CLIENT_HDRS
 	${CLIENT_ROOT_HDRS}
-	${CLIENT_PFW_HDRS}
-	${CLIENT_TASKS_HDRS}
 )
-SOURCE_GROUP("Header Files\\Qt\\Client\\PFW" FILES ${CLIENT_PFW_HDRS})
-SOURCE_GROUP("Header Files\\Qt\\Client\\Tasks" FILES ${CLIENT_TASKS_HDRS})
 SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_ROOT_HDRS})
 
-set(CLIENT_PFW_SRCS
-	${QT_CLIENT_SRC_ROOT}/PFW/PacketFactoryWorker.cpp
-	${QT_CLIENT_SRC_ROOT}/PFW/NegotiationPFW.cpp
-)
-set(CLIENT_TASKS_SRCS
-	${QT_CLIENT_SRC_ROOT}/Tasks/TcpParseTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/ServerParseTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/SendPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildServerErrorPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildConnectRequestPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildDsqPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/BuildJoinRequestPkgTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseAnswerTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseConnectAnswerTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseDsqAnswerTask.cpp
-	${QT_CLIENT_SRC_ROOT}/Tasks/ParseJoinAnswerTask.cpp
-)
 set(CLIENT_ROOT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
-	${QT_CLIENT_SRC_ROOT}/ClientWorker.cpp
-	${QT_CLIENT_SRC_ROOT}/TcpSocket.cpp
-	${QT_CLIENT_SRC_ROOT}/TcpClient.cpp
-	${QT_CLIENT_SRC_ROOT}/DebugUtils.cpp
+	${QT_CLIENT_SRC_ROOT}/Packet.cpp
+	${QT_CLIENT_SRC_ROOT}/SocketParseTask.cpp
+	${QT_CLIENT_SRC_ROOT}/SocketPackTask.cpp
 )
 set(CLIENT_SRCS
-	${CLIENT_PFW_SRCS}
-	${CLIENT_TASKS_SRCS}
 	${CLIENT_ROOT_SRCS}
 )
-SOURCE_GROUP("Source Files\\Qt\\Client\\PFW" FILES ${CLIENT_PFW_SRCS})
-SOURCE_GROUP("Source Files\\Qt\\Client\\Tasks" FILES ${CLIENT_TASKS_SRCS})
 SOURCE_GROUP("Source Files\\Qt\\Client" FILES ${CLIENT_ROOT_SRCS})
 #---------------------------------------------------------------
 set(UI_UIC_HDRS
@@ -182,13 +132,6 @@ set(GAME_GRAPHICS_SRCS
 )
 SOURCE_GROUP("Source Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_SRCS})
 #---------------------------------------------------------------
-set(GAME_PARSEDNETDATA_HDRS
-	${GAME_PND_SRC_ROOT}/ParsedConnectData.h
-	${GAME_PND_SRC_ROOT}/ParsedDsqData.h
-	${GAME_PND_SRC_ROOT}/ParsedJoinData.h
-)
-SOURCE_GROUP("Header Files\\Game\\ParsedNetData" FILES ${GAME_PARSEDNETDATA_HDRS})
-#---------------------------------------------------------------
 set(HDRS
 )
 
@@ -228,7 +171,6 @@ add_executable(GameDesignClient
 	${GAME_SYSTEMS_HDRS} ${GAME_SYSTEMS_SRCS} 
 	${GAME_COMPONENTS_HDRS} ${GAME_COMPONENTS_SRCS}
 	${GAME_GRAPHICS_HDRS} ${GAME_GRAPHICS_SRCS}
-	${GAME_PARSEDNETDATA_HDRS}
 	${HDRS} ${SRCS}
 )
 set_target_properties(GameDesignClient PROPERTIES DEBUG_POSTFIX _d)
