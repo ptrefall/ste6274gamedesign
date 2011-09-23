@@ -10,9 +10,9 @@
 #include <QGraphicsItem>
 
 #include <Protocol/gameprotocol.h>
-#include "Qt/Client/DataPacket.h"
+/*#include "Qt/Client/DataPacket.h"
 #include "Qt/Client/RequestInfo.h"
-#include "Qt/Client/ParsedData.h"
+#include "Qt/Client/ParsedData.h"*/
 
 class GraphicsView : public QGraphicsView
 {
@@ -37,11 +37,11 @@ int main(int argc, char **argv)
 	qRegisterMetaType<gp_default_server_query>( "gp_default_server_query" );
 	qRegisterMetaType<gp_join_request>( "gp_join_request" );
 	qRegisterMetaType<gp_client_verification_answer>("gp_client_verification_answer");
-	qRegisterMetaType<DataPacket>( "DataPacket" );
+	//qRegisterMetaType<DataPacket>( "DataPacket" );
 
 	// Register local non-QObject types as meta types
-	qRegisterMetaType<RequestInfo> ("RequestInfo");
-	qRegisterMetaType<ParsedData> ("ParsedData");
+	//qRegisterMetaType<RequestInfo> ("RequestInfo");
+	//qRegisterMetaType<ParsedData> ("ParsedData");
 
     QApplication app(argc, argv);
 

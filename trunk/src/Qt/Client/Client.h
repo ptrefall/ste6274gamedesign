@@ -1,58 +1,44 @@
 #pragma once
 
-#include "RequestInfo.h"
-#include "DataPacket.h"
-#include "ParsedData.h"
-
-#include <Protocol/gameprotocol.h>
-
-#include <QQueue>
-#include <QMutex>
-
-#include "TcpClient.h"
-
 #include <types_config.h>
 
-class NegotiationPFW;
-class ClientWorker;
-class ServerParseTask;
+#include <QObject>
+#include <QTcpSocket>
+#include <QHostAddress>
 
-class Client : public TcpClient
+class SocketParseTask;
+class Packet;
+
+class Client : public QObject
 {
 	Q_OBJECT
 public:
 	explicit Client(QObject *parent = 0);
 	virtual ~Client();
 
-	void queueAnswer(ParsedData *data);
+	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
 
-	T_Vector<ParsedData*>::Type getParsedAnswerData_ThreadSafe();
+	void queueServerPacket(Packet *packet);
 
-	
-public slots:
-	void connectAnswerDataInvoked(ParsedData *);
-	void dsqAnswerDataInvoked(ParsedData *);
-	void joinAnswerDataInvoked(ParsedData *);
+signals:
+	void signHostFound();
+	void signHandshakeSucceeded();
+	void signHandshakeFailed(const QString &);
+	void signConnectSucceeded();
+	void signConnectFailed(const QString &);
 
 protected slots:
+	void hostFound();
+	void connectionSucceeded();
+	void displayError(QAbstractSocket::SocketError);
 	virtual void readReady();
 
-protected slots:
-	void distributeData(const DataPacket &pkg);
-
-protected:
-	virtual void onHandshakeSuccessful();
-
 private:
-	gp_header gp_send_header;
+	QTcpSocket *socket;
 
-	NegotiationPFW *negotiationPFW;
-	ClientWorker *clientWorker;
-	ServerParseTask *serverParseTask;
+	gp_header packet_header;
 
-	T_Vector<ParsedData*>::Type parsed_answer_data;
+	SocketParseTask *socketParseTask;
 
-	gp_uint32 request_id;
-
-	QMutex data_mutex;
+	T_Vector<Packet*>::Type serverPackets;
 };
