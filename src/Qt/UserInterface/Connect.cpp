@@ -34,11 +34,11 @@ void Connect::connectToServerAttempt()
 
 	connect(this, SIGNAL(signConnectToHost(const QHostAddress &, const quint16 &)), &game.getClient(), SLOT(connectToHost(const QHostAddress &, const quint16 &)));
 
-	connect(&game.getClient(), SIGNAL(targetHostFound()), SLOT(onHostFound()));
-	connect(&game.getClient(), SIGNAL(handshakeSucceeded()), SLOT(onHandshakeSucceeded()));
-	connect(&game.getClient(), SIGNAL(handshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
-	connect(&game.getClient(), SIGNAL(connectionSucceeded()), SLOT(onConnectionSucceeded()));
-	connect(&game.getClient(), SIGNAL(connectionFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
+	connect(&game.getClient(), SIGNAL(signHostFound()), SLOT(onHostFound()));
+	connect(&game.getClient(), SIGNAL(signHandshakeSucceeded()), SLOT(onHandshakeSucceeded()));
+	connect(&game.getClient(), SIGNAL(signHandshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
+	connect(&game.getClient(), SIGNAL(signConnectSucceeded()), SLOT(onConnectionSucceeded()));
+	connect(&game.getClient(), SIGNAL(signConnectFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;

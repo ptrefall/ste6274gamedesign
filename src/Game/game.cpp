@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "GameOptions.h"
 #include <Qt/Client/Client.h>
+#include <Qt/Client/Packet.h>
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
 #include "Systems\MeshSystem.h"
@@ -54,7 +55,8 @@ void Game::initializeGame()
 
 void Game::advanceFrame(const F32 &delta)
 {
-	T_Vector<ParsedData*>::Type data = client->getParsedAnswerData_ThreadSafe();
+	client->update(delta);
+	T_Vector<Packet*>::Type packets = client->getParsedGamePackets();
 	entityMgr->update(delta);
 	renderSystem->compile();
 	renderSystem->render();
