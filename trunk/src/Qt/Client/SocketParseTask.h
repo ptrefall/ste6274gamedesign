@@ -3,16 +3,14 @@
 #include "Client.h"
 #include <Protocol/gameprotocol.h>
 
-#include <QObject>
 #include <QRunnable>
 #include <QTcpSocket>
 
-class SocketParseTask : public QObject, public QRunnable
+class SocketParseTask : public QRunnable
 {
-	Q_OBJECT
 public:
-	explicit SocketParseTask(Client &client, QTcpSocket &socket, QObject *parent = 0);
-	virtual ~SocketParseTask();
+	explicit SocketParseTask(Client &client, QTcpSocket &socket);
+	virtual ~SocketParseTask() {}
 
 protected:
 	void run();
