@@ -4,6 +4,7 @@
 SocketParseTask::SocketParseTask(Client &client, QTcpSocket &socket)
 	: client(client), socket(socket)
 {
+	setAutoDelete(false);
 }
 
 void SocketParseTask::run()

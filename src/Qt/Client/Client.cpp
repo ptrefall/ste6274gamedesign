@@ -64,7 +64,7 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 
 void Client::readReady()
 {
-	QThreadPool::globalInstance()->start(socketParseTask);
+	QThreadPool::globalInstance()->tryStart(socketParseTask);
 }
 
 void Client::queueParsedPacket(Packet *packet)
