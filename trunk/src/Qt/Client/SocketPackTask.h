@@ -11,7 +11,7 @@ template<typename PacketType>
 class SocketPackTask : public QRunnable
 {
 public:
-	explicit SocketPackTask(Client &client, QTcpSocket &socket) : client(client), socket(socket), is_loaded(false) {}
+	explicit SocketPackTask(Client &client, QTcpSocket &socket) : client(client), socket(socket), is_loaded(false) { setAutoDelete(false); }
 	virtual ~SocketPackTask(){}
 
 	void load(const gp_uint8 &type, const bool &answer, const PacketType &packet_data)
