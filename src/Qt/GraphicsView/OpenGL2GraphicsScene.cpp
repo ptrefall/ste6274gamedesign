@@ -37,7 +37,8 @@ OpenGL2GraphicsScene::OpenGL2GraphicsScene(Game &game)
     addWidget(controls);*/
 	Ui::MainMenu *menu = new Ui::MainMenu(this, game);
 	//menu->move(this->sceneRect().center().toPoint());
-	addWidget(menu);
+	QGraphicsProxyWidget *proxyMenu = addWidget(menu);
+	proxyMenu->setPos(this->width()/2, this->height()/2);
 	
 
 	QPointF pos(this->sceneRect().center().x()/2 - menu->geometry().width()/4, this->sceneRect().center().y()/2 - menu->geometry().width());

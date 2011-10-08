@@ -1,37 +1,57 @@
 #include "SocketParseTask.h"
 #include "Packet.h"
+#include "ClientThread.h"
+#include "Client.h"
 
-SocketParseTask::SocketParseTask(Client &client, QTcpSocket &socket)
-	: client(client), socket(socket)
+SocketParseTask::SocketParseTask(ClientThread &client)
+	: client(client), is_parsing(false), header_is_read(false), dsqRead(false)
 {
-	setAutoDelete(false);
 }
 
 void SocketParseTask::run()
 {
-	QDataStream in(&socket);
+	if(is_parsing)
+		return;
+
+	is_parsing = true;
+
+	QDataStream in(&client.getSocket());
 	in.setVersion(QDataStream::Qt_4_7);
 
-	if(socket.bytesAvailable() < (int)sizeof(gp_header))
+	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
+	if(socket_bytes_available < (int)sizeof(gp_header))
 		return;
 
-	gp_header header;
-	in.readRawData((char*)(&header), sizeof(gp_header));
-
-	gp_header_prefix prefix;
-	if(header.prefix.id != prefix.id)
-		return;
+	if(header_is_read == false)
+	{
+		header_is_read = true;
+		gp_header new_header;
+		in.readRawData((char*)(&new_header), sizeof(gp_header));
+		if(new_header.prefix.id != prefix.id)
+		{
+			if(header.prefix.id != prefix.id)
+				return;
+		}
+		else
+		{
+			header = new_header;
+		}
+	}
 
 	if(header.flags.answer) 
 		parseAnswer(prefix, header, in);
 	else
 		parseRequest(prefix, header, in);
+
+	header_is_read = false;
+	is_parsing = false;
 }
 
 void SocketParseTask::parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
 {
 	gp_uint32 body_size = getRequestBodySize(header.type);
-	if(socket.bytesAvailable() < body_size)
+	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
+	if(socket_bytes_available < body_size)
 		return;
 
 	switch(header.type)
@@ -61,13 +81,18 @@ void SocketParseTask::parseRequest(gp_header_prefix &prefix, gp_header &header, 
 void SocketParseTask::parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
 {
 	gp_uint32 body_size = getAnswerBodySize(header.type);
-	if(socket.bytesAvailable() < body_size)
-		return;
+	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
+	/*if(socket_bytes_available < body_size)
+		return;*/
 
 	switch(header.type)
 	{
 	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:
 		{
+			if(dsqRead)
+				return;
+			dsqRead = true;
+
 			gp_default_server_query_answer answer;
 			in.readRawData((char*)(&answer), sizeof(gp_default_server_query_answer));
 			client.queueParsedPacket(new Packet(answer));

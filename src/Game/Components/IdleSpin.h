@@ -6,16 +6,16 @@
 
 namespace Components
 {
-	class IdleSpin : public Factotum::Component
+	class IdleSpin : public Totem::Component
 	{
 	public:
 		COMPONENT_0(IdleSpin);
-		IdleSpin(Factotum::Entity &owner, const T_String &name);
+		IdleSpin(Totem::Entity &owner, const T_String &name);
 		virtual ~IdleSpin();
 
 		virtual void update(const F32 &deltaTime);
 
 	private:
-		Factotum::Property<glm::gtc::quaternion::quat> qRotation;
+		Totem::Property<glm::gtc::quaternion::quat> qRotation;
 	};
 }

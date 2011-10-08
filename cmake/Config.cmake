@@ -37,16 +37,16 @@ endif()
 macro (CMP_ASSIMP_INSTALL_RULES destination)
 	if (MSVC)
 		message(STATUS "Generating Install Rule for AssImp Debug DLL Library ${ASSIMP_BIN_DEBUG_X86}/Assimp32d.dll -> ${destination}/Debug")  
-		INSTALL(FILES ${ASSIMP_BIN_DEBUG_X86}/Assimp32d.dll 
+		INSTALL(FILES ${ASSIMP_BIN_DEBUG_X86}/assimp.dll 
 			DESTINATION "${destination}/Debug")
 		#INSTALL(FILES ${ASSIMP_LIB_PATH}/Debug/assimp.pdb 
 		#	DESTINATION "${destination}/Debug")
 		message(STATUS "Generating Install Rule for AssImp Release DLL Library ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll -> ${destination}/Release")
-		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/assimp.dll 
 			DESTINATION "${destination}/Release")
-		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/assimp.dll 
 			DESTINATION "${destination}/MinSizeRel")
-		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/Assimp32.dll 
+		INSTALL(FILES ${ASSIMP_BIN_RELEASE_X86}/assimp.dll 
 			DESTINATION "${destination}/RelWithDebInfo")
 	endif()
 endmacro()

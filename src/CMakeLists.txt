@@ -21,6 +21,7 @@ SOURCE_GROUP("Source Files\\Qt\\GraphicsView" FILES ${GV_SRCS})
 #---------------------------------------------------------------
 set(CLIENT_ROOT_HDRS
 	${QT_CLIENT_SRC_ROOT}/Client.h
+	${QT_CLIENT_SRC_ROOT}/ClientThread.h
 	${QT_CLIENT_SRC_ROOT}/Packet.h
 	${QT_CLIENT_SRC_ROOT}/SocketParseTask.h
 	${QT_CLIENT_SRC_ROOT}/SocketPackTask.h
@@ -33,6 +34,7 @@ SOURCE_GROUP("Header Files\\Qt\\Client" FILES ${CLIENT_ROOT_HDRS})
 
 set(CLIENT_ROOT_SRCS
 	${QT_CLIENT_SRC_ROOT}/Client.cpp
+	${QT_CLIENT_SRC_ROOT}/ClientThread.cpp
 	${QT_CLIENT_SRC_ROOT}/Packet.cpp
 	${QT_CLIENT_SRC_ROOT}/SocketParseTask.cpp
 	${QT_CLIENT_SRC_ROOT}/SocketPackTask.cpp
@@ -49,6 +51,7 @@ set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/exit.ui
 	${QT_UI_SRC_ROOT}/connect.ui
 	${QT_UI_SRC_ROOT}/connectionFailed.ui
+	${QT_UI_SRC_ROOT}/lobby.ui
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
@@ -57,6 +60,7 @@ set(UI_HDRS
 	${QT_UI_SRC_ROOT}/Exit.h
 	${QT_UI_SRC_ROOT}/Connect.h
 	${QT_UI_SRC_ROOT}/ConnectionFailed.h
+	${QT_UI_SRC_ROOT}/Lobby.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
@@ -65,6 +69,7 @@ set(UI_SRCS
 	${QT_UI_SRC_ROOT}/Exit.cpp
 	${QT_UI_SRC_ROOT}/Connect.cpp
 	${QT_UI_SRC_ROOT}/ConnectionFailed.cpp
+	${QT_UI_SRC_ROOT}/Lobby.cpp
 )
 SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS} ${UI_UIC_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_SRCS})
@@ -180,7 +185,7 @@ target_link_libraries(GameDesignClient
   ${OPENGL_LIBRARIES}
   debug ${GLEW_LIBRARY_DEBUG_X86} optimized ${GLEW_LIBRARY_RELEASE_X86}
   ${QT_LIBRARIES}
-  FactotumEDK
+  TotemEDK
   debug ${ASSIMP_LIBRARY_DEBUG_X86} optimized ${ASSIMP_LIBRARY_RELEASE_X86}
 )
 #---------------------------------------------------------------

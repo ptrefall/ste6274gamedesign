@@ -11,6 +11,7 @@ namespace Ui
 class Join;
 class Options;
 class Exit;
+class Lobby;
 
 class MainMenu : public QDialog, public Ui::MainMenuDialog
 {
@@ -18,6 +19,8 @@ Q_OBJECT
 public:
     MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent = 0, Qt::WFlags flags = 0);
     virtual ~MainMenu();
+
+	Lobby &getLobby() { return *lobby; }
 
 private slots:
 	void onJoinClicked();
@@ -28,6 +31,7 @@ private:
 	Join *join;
 	Options *options;
 	Exit *exit;
+	Lobby *lobby;
 
 };
 }

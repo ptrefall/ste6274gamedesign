@@ -6,7 +6,7 @@
 #include <iostream>
 
 using namespace Components;
-using namespace Factotum;
+using namespace Totem;
 
 IdleSpin::IdleSpin(Entity &owner, const T_String &name)
 : Component(owner, name)

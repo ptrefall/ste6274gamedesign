@@ -40,14 +40,14 @@ void EntityManager::update(const F32 &delta)
 		entities[i]->updateComponents(delta);
 }
 
-Factotum::Entity &EntityManager::create(Factotum::ComponentFactory &factory)
+Totem::Entity &EntityManager::create(Totem::ComponentFactory &factory)
 {
-	Factotum::Entity *entity = new Factotum::Entity(factory);
+	Totem::Entity *entity = new Totem::Entity(factory);
 	entities.push_back(entity);
 	return *entity;
 }
 
-void EntityManager::erase(Factotum::Entity *entity)
+void EntityManager::erase(Totem::Entity *entity)
 {
 	pendingDelete.push_back(entity);
 }

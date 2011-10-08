@@ -6,7 +6,7 @@
 #include <iostream>
 
 using namespace Components;
-using namespace Factotum;
+using namespace Totem;
 
 TriangleGeometry::TriangleGeometry(Entity &owner, const T_String &name)
 : Component(owner, name)

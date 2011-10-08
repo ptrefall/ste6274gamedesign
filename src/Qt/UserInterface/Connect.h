@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Protocol/gameprotocol.h>
 #include <QtGui/QDialog.h>
 #include <ui_connect.h>
 #include <QTime>
@@ -32,6 +33,7 @@ private slots:
 	void onHandshakeFailed(const QString &why);
 	void onConnectionSucceeded();
 	void onConnectionFailed(const QString &why);
+	void onMoveToLobby(const gp_default_server_query_answer &);
 	void onUpdateProgress();
 
 private:

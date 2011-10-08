@@ -5,21 +5,21 @@
 
 namespace Components
 {
-	class TriangleGeometry : public Factotum::Component
+	class TriangleGeometry : public Totem::Component
 	{
 	public:
 		COMPONENT_0(TriangleGeometry);
-		TriangleGeometry(Factotum::Entity &owner, const T_String &name);
+		TriangleGeometry(Totem::Entity &owner, const T_String &name);
 		virtual ~TriangleGeometry();
 
 	private:
 		void initialize();
 
-		Factotum::PropertyList<unsigned int> indices;
-		Factotum::PropertyList<glm::vec3> vertices;
-		Factotum::PropertyList<glm::vec3> colors;
+		Totem::PropertyList<unsigned int> indices;
+		Totem::PropertyList<glm::vec3> vertices;
+		Totem::PropertyList<glm::vec3> colors;
 
-		Factotum::Property<F32> size;
+		Totem::Property<F32> size;
 
 		
 	};

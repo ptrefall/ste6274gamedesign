@@ -7,9 +7,9 @@ class GameOptions;
 class Client;
 class EntityManager;
 namespace Systems { class RenderSystem; class MeshSystem; }
-namespace Factotum { class Entity; class ComponentFactory; }
+namespace Totem { class Entity; class ComponentFactory; }
 
-class Game : public Factotum::EventHandler
+class Game : public Totem::EventHandler
 {
 public:
 	Game();
@@ -27,6 +27,6 @@ private:
 	EntityManager *entityMgr;
 	Systems::RenderSystem *renderSystem;
 	Systems::MeshSystem *meshSystem;
-	Factotum::ComponentFactory *componentFactory;
-	Factotum::Entity *dummy;
+	Totem::ComponentFactory *componentFactory;
+	Totem::Entity *dummy;
 };

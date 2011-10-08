@@ -6,21 +6,25 @@ set(HDRS
 )
 
 set(PKG_HDRS
-	./buildclienterrorpkgtask.h
-	./buildconnectanswerpkgtask.h
-	./builddsqpkgtask.h
-	./buildjoinanswerpkgtask.h
-	./buildmapqueryanswerpkgtask.h
-	./buildpkgtask.h
+	#./buildclienterrorpkgtask.h
+	#./buildconnectanswerpkgtask.h
+	#./builddsqpkgtask.h
+	#./buildjoinanswerpkgtask.h
+	#./buildmapqueryanswerpkgtask.h
+	#./buildpkgtask.h
 	./datapacket.h
 )
 
 set(CLIENT_HDRS
 	./clientconnection.h
+	./clienterrorpw.h
 	./clientparsetask.h
 	#./clientverificationtask.h
+	./connectanswerpw.h
 	./connection.h
 	./connectrhtask.h
+	./dsquerypw.h
+	./joinanswerpw.h
 )
 
 set(PLAYER_HDRS
@@ -36,17 +40,22 @@ set(SERVER_HDRS
 	./tcpparsetask.h
 	./tcpserver.h
 	./tcpsocket.h
-	./negotiationpfw.h
-	./packetfactoryworker.h
+	./negotiationpf.h
+	./packetfactory.h
+	./packetworker.h
 	./requesthandlertask.h
 	./requestinfo.h
-	./sendpkgtask.h
+	./sendpctworker.h
+	#./sendpkgtask.h
 )
 
 set(GAME_HDRS
 	./gameinfo.h
 	./gameinstance.h
-	./gamepfw.h
+	./gamepf.h
+	#./gamepfw.h
+	./gamestatepw.h
+	./gameupdatepw.h
 	./teaminfo.h
 	#./mapinfo.h
 )
@@ -54,6 +63,7 @@ set(GAME_HDRS
 set(MAP_HDRS
 	./mapinstance.h
 	./mapobject.h
+	./mapqueryanswerpw.h
 )
 
 SOURCE_GROUP("Header Files\\Package" FILES ${PKG_HDRS})
@@ -77,21 +87,25 @@ set(MOC_HDRS
 ##---------------------------------------------------------------------
 
 set(PKG_SRCS
-	./buildclienterrorpkgtask.cpp
-	./buildconnectanswerpkgtask.cpp
-	./builddsqpkgtask.cpp
-	./buildjoinanswerpkgtask.cpp
-	./buildmapqueryanswerpkgtask.cpp
-	./buildpkgtask.cpp
+	#./buildclienterrorpkgtask.cpp
+	#./buildconnectanswerpkgtask.cpp
+	#./builddsqpkgtask.cpp
+	#./buildjoinanswerpkgtask.cpp
+	#./buildmapqueryanswerpkgtask.cpp
+	#./buildpkgtask.cpp
 	./datapacket.cpp
 )
 
 set(CLIENT_SRCS
 	./clientconnection.cpp
+	./clienterrorpw.cpp
 	./clientparsetask.cpp
 	#./clientverificationtask.cpp
+	./connectanswerpw.cpp
 	./connection.cpp
 	./connectrhtask.cpp
+	./dsquerypw.cpp
+	./joinanswerpw.cpp
 )
 
 set(PLAYER_SRCS
@@ -107,17 +121,22 @@ set(SERVER_SRCS
 	./tcpparsetask.cpp
 	./tcpserver.cpp
 	./tcpsocket.cpp
-	./negotiationpfw.cpp
-	./packetfactoryworker.cpp
+	./negotiationpf.cpp
+	./packetfactory.cpp
+	./packetworker.cpp
 	./requesthandlertask.cpp
 	./requestinfo.cpp
-	./sendpkgtask.cpp
+	./sendpctworker.cpp
+	#./sendpkgtask.cpp
 )
 
 set(GAME_SRCS
 	./gameinfo.cpp
 	./gameinstance.cpp
-	./gamepfw.cpp
+	./gamepf.cpp
+	#./gamepfw.cpp
+	./gamestatepw.cpp
+	./gameupdatepw.cpp
 	./teaminfo.cpp
 	#./mapinfo.cpp
 )
@@ -125,6 +144,7 @@ set(GAME_SRCS
 set(MAP_SRCS
 	./mapinstance.cpp
 	./mapobject.cpp
+	./mapqueryanswerpw.cpp
 )
 
 SOURCE_GROUP("Source Files\\Package" FILES ${PKG_SRCS})
