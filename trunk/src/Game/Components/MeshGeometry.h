@@ -8,11 +8,11 @@ namespace Systems { class MeshSystem; }
 
 namespace Components
 {
-	class MeshGeometry : public Factotum::Component
+	class MeshGeometry : public Totem::Component
 	{
 	public:
 		COMPONENT_1(MeshGeometry, Systems::MeshSystem)
-		MeshGeometry(Factotum::Entity &owner, const T_String &name, Systems::MeshSystem &meshSystem);
+		MeshGeometry(Totem::Entity &owner, const T_String &name, Systems::MeshSystem &meshSystem);
 		virtual ~MeshGeometry();
 
 		void injectData(const aiMesh &mesh_data);
@@ -20,12 +20,12 @@ namespace Components
 	private:
 		Systems::MeshSystem &meshSystem;
 
-		Factotum::PropertyList<unsigned int> indices;
-		Factotum::PropertyList<glm::vec3> vertices;
-		Factotum::PropertyList<glm::vec3> normals;
-		Factotum::PropertyList<glm::vec3> tangents;
-		Factotum::PropertyList<glm::vec3> colors;
-		Factotum::PropertyList<glm::vec2> texCoords;
+		Totem::PropertyList<unsigned int> indices;
+		Totem::PropertyList<glm::vec3> vertices;
+		Totem::PropertyList<glm::vec3> normals;
+		Totem::PropertyList<glm::vec3> tangents;
+		Totem::PropertyList<glm::vec3> colors;
+		Totem::PropertyList<glm::vec2> texCoords;
 
 		//Events
 		T_HashedString loadMeshEventId;

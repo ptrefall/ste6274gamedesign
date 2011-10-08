@@ -19,6 +19,8 @@ public:
     Join(MainMenu *menu, Game &game, QWidget *parent = 0, Qt::WFlags flags = 0);
     virtual ~Join();
 
+	MainMenu &getMainMenu() { return *menu; }
+
 private slots:
 	void onClose();
 	void onConnect();

@@ -35,7 +35,7 @@ void Game::initializeCore()
 	renderSystem = new Systems::RenderSystem();
 	meshSystem = new Systems::MeshSystem();
 
-	componentFactory = new Factotum::ComponentFactory();
+	componentFactory = new Totem::ComponentFactory();
 	Components::Renderable::RegisterToFactory(*componentFactory);
 	Components::TriangleGeometry::RegisterToFactory(*componentFactory);
 	Components::MeshGeometry::RegisterToFactory(*componentFactory);

@@ -3,7 +3,7 @@
 #include <Game/Graphics/Utils.h>
 
 using namespace Systems;
-using namespace Factotum;
+using namespace Totem;
 
 RenderSystem::RenderSystem()
 {

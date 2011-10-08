@@ -2,8 +2,10 @@
 #include "Join.h"
 #include "Options.h"
 #include "Exit.h"
+#include "Lobby.h"
 
 #include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
 
 using namespace Ui;
 
@@ -17,14 +19,21 @@ MainMenu::MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent, Qt::WFlag
 	this->setPalette(palette);
 
 	join = new Join(this, game);
-	scene->addWidget(join);
+	QGraphicsProxyWidget *proxyJoin = scene->addWidget(join);
 	join->hide();
+	
 	options = new Options(this, game);
-	scene->addWidget(options);
+	QGraphicsProxyWidget *proxyOptions = scene->addWidget(options);
 	options->hide();
+	
 	exit = new Exit(this, game);
-	scene->addWidget(exit);
+	QGraphicsProxyWidget *proxyExit = scene->addWidget(exit);
 	exit->hide();
+
+	lobby = new Lobby(this, game);
+	QGraphicsProxyWidget *proxyLobby = scene->addWidget(lobby);
+	lobby->hide();
+	proxyLobby->setPos(10,10);
 
 	connect(joinButton, SIGNAL(clicked()), SLOT(onJoinClicked()));
 	connect(optionsButton, SIGNAL(clicked()), SLOT(onOptionsClicked()));

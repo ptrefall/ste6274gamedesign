@@ -7,7 +7,7 @@
 #include <Game/Graphics/Shader.h>
 
 using namespace Components;
-using namespace Factotum;
+using namespace Totem;
 
 Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSystem &renderSystem)
 : Component(owner, name), renderSystem(renderSystem), mvp(0x0)

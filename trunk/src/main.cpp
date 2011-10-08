@@ -8,6 +8,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <QHostAddress>
 
 #include <Protocol/gameprotocol.h>
 /*#include "Qt/Client/DataPacket.h"
@@ -37,7 +38,7 @@ int main(int argc, char **argv)
 	qRegisterMetaType<gp_default_server_query>( "gp_default_server_query" );
 	qRegisterMetaType<gp_join_request>( "gp_join_request" );
 	qRegisterMetaType<gp_client_verification_answer>("gp_client_verification_answer");
-	//qRegisterMetaType<DataPacket>( "DataPacket" );
+	qRegisterMetaType<QHostAddress>( "QHostAddress" );
 
 	// Register local non-QObject types as meta types
 	//qRegisterMetaType<RequestInfo> ("RequestInfo");

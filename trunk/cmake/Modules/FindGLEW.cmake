@@ -18,18 +18,22 @@
 
 FIND_PATH(GLEW_DIR include/GL/glew.h
       C:/Paal/Development/3rdParties/GLEW/glew-1.5.7/
+	  D:/Development/3rdParty/GLEW/
     )
 
 FIND_PATH(GLEW_INCLUDE_PATH GL/glew.h
       C:/Paal/Development/3rdParties/GLEW/glew-1.5.7/include
+	  D:/Development/3rdParty/GLEW/include
     )
 	
 FIND_LIBRARY(GLEW_LIBRARY_DEBUG_X86
   NAMES glew32s
   PATHS C:/Paal/Development/3rdParties/GLEW/glew-1.5.7/lib
+		D:/Development/3rdParty/GLEW/lib/x86
     )
 	
 FIND_LIBRARY(GLEW_LIBRARY_RELEASE_X86
   NAMES glew32s
   PATHS C:/Paal/Development/3rdParties/GLEW/glew-1.5.7/lib
+		D:/Development/3rdParty/GLEW/lib/x86
     )

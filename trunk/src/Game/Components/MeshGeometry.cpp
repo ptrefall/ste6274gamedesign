@@ -2,7 +2,7 @@
 #include <Game/Systems/MeshSystem.h>
 
 using namespace Components;
-using namespace Factotum;
+using namespace Totem;
 
 MeshGeometry::MeshGeometry(Entity &owner, const T_String &name, Systems::MeshSystem &meshSystem)
 : Component(owner, name), meshSystem(meshSystem), loadMeshEventId("LOAD_MESH")

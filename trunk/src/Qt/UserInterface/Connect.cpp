@@ -1,9 +1,13 @@
 #include "Connect.h"
 #include "Join.h"
 #include "ConnectionFailed.h"
+#include "Lobby.h"
+#include "MainMenu.h"
 #include <Game/game.h>
 #include <Game/GameOptions.h>
 #include <Qt/Client/Client.h>
+#include <Qt/Client/ClientThread.h>
+#include <Qt/Client/SocketParseTask.h>
 #include <QTimer.h>
 
 using namespace Ui;
@@ -34,11 +38,12 @@ void Connect::connectToServerAttempt()
 
 	connect(this, SIGNAL(signConnectToHost(const QHostAddress &, const quint16 &)), &game.getClient(), SLOT(connectToHost(const QHostAddress &, const quint16 &)));
 
-	connect(&game.getClient(), SIGNAL(signHostFound()), SLOT(onHostFound()));
-	connect(&game.getClient(), SIGNAL(signHandshakeSucceeded()), SLOT(onHandshakeSucceeded()));
-	connect(&game.getClient(), SIGNAL(signHandshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
-	connect(&game.getClient(), SIGNAL(signConnectSucceeded()), SLOT(onConnectionSucceeded()));
-	connect(&game.getClient(), SIGNAL(signConnectFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
+	connect(&game.getClient().getClientThread(), SIGNAL(signHostFound()), SLOT(onHostFound()));
+	connect(&game.getClient().getClientThread(), SIGNAL(signHandshakeSucceeded()), SLOT(onHandshakeSucceeded()));
+	connect(&game.getClient().getClientThread(), SIGNAL(signHandshakeFailed(const QString &)), SLOT(onHandshakeFailed(const QString &)));
+	connect(&game.getClient().getClientThread(), SIGNAL(signConnectSucceeded()), SLOT(onConnectionSucceeded()));
+	connect(&game.getClient().getClientThread(), SIGNAL(signConnectFailed(const QString &)), SLOT(onConnectionFailed(const QString &)));
+	connect(&game.getClient().getClientThread(), SIGNAL(signMoveToLobby(const gp_default_server_query_answer &)), SLOT(onMoveToLobby(const gp_default_server_query_answer &)));
 
 	timer.start();
 	state = E_INITIATE_CONNECTION;
@@ -102,6 +107,18 @@ void Connect::onConnectionFailed(const QString &why)
 	connectionFailed->labelConnectionFailed->setText(why);
 	this->hide();
 	connectionFailed->show();
+}
+
+void Connect::onMoveToLobby(const gp_default_server_query_answer &answer)
+{
+	state = E_FINISHED;
+
+	tryingToConnect = false;
+	progressBarConnection->setValue(100);
+
+	this->hide();
+	join->getMainMenu().getLobby().setData(answer);
+	join->getMainMenu().getLobby().show();
 }
 
 void Connect::onUpdateProgress()
