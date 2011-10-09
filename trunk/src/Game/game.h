@@ -2,6 +2,7 @@
 
 #include <types_config.h>
 #include <TemplateEventHandler.h>
+#include <Protocol/gameprotocol.h>
 
 class GameOptions;
 class Client;
@@ -22,6 +23,9 @@ public:
 	Client &getClient() { return *client; }
 
 private:
+	void parseNetGamePackets();
+	void handleNetGameUpdate(const gp_game_update &update);
+
 	GameOptions *options;
 	Client *client;
 	EntityManager *entityMgr;

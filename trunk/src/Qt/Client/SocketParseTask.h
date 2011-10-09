@@ -14,11 +14,11 @@ public:
 	explicit SocketParseTask(ClientThread &client);
 	virtual ~SocketParseTask() {}
 
-	void run();
+	void run(QTcpSocket &socket);
 
 protected:
-	bool parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
-	bool parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
+	bool parseRequest(QTcpSocket &socket, gp_header_prefix &prefix, gp_header &header, QDataStream &in);
+	bool parseAnswer(QTcpSocket &socket, gp_header_prefix &prefix, gp_header &header, QDataStream &in);
 	quint64 getRequestBodySize(const gp_uint8 &type);
 	quint64 getAnswerBodySize(const gp_uint8 &type);
 
@@ -26,7 +26,6 @@ private:
 	ClientThread &client;
 	volatile bool is_parsing;
 	volatile bool header_is_read;
-	bool dsqRead;
 	gp_header header;
 	gp_header_prefix prefix;
 };

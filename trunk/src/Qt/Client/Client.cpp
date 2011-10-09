@@ -26,6 +26,11 @@ void Client::connectToHost(const QHostAddress& address, const quint16 &port)
 	emit signConnectToHost(address, port);
 }
 
+void Client::loginToGame()
+{
+	emit signLoginToGame();
+}
+
 void Client::update(float dt)
 {
 	thread->update();

@@ -12,6 +12,7 @@ public:
 	T_String player_name;
 	T_String player_race;
 	T_String player_class;
+	int player_team_id;
 
 	//Client
 	T_String ip_addr;

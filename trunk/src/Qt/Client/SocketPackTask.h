@@ -16,7 +16,7 @@ public:
 	}
 	virtual ~SocketPackTask(){}
 
-	void run()
+	void run(bool game_packet)
 	{
 		QByteArray block;
 		QDataStream out(&block, QIODevice::WriteOnly);
@@ -37,7 +37,7 @@ public:
 		else
 			packRequest(header, out);
 
-		thread.queuePackedPacket(block);
+		thread.queuePackedPacket(block, game_packet);
 	}
 
 protected:
@@ -65,6 +65,14 @@ protected:
 			{
 				addToBlock(packet_data, out);
 			}break;
+		case GP_REQUEST_TYPE_CLIENT_VERIFICATION:
+			{
+				addToBlock(packet_data, out);
+			}break;
+		case GP_REQUEST_TYPE_GAME:
+			{
+				addToBlock(packet_data, out);
+			}break;
 		default: return;
 		};
 	}
@@ -81,6 +89,14 @@ protected:
 				addToBlock(packet_data, out);
 			}break;
 		case GP_REQUEST_TYPE_JOIN:
+			{
+				addToBlock(packet_data, out);
+			}break;
+		case GP_REQUEST_TYPE_CLIENT_VERIFICATION:
+			{
+				addToBlock(packet_data, out);
+			}break;
+		case GP_REQUEST_TYPE_GAME:
 			{
 				addToBlock(packet_data, out);
 			}break;
