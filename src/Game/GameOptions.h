@@ -10,6 +10,8 @@ public:
 
 	//Player
 	T_String player_name;
+	T_String player_race;
+	T_String player_class;
 
 	//Client
 	T_String ip_addr;
