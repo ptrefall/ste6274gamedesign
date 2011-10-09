@@ -2,6 +2,7 @@
 #include "Join.h"
 #include "Options.h"
 #include "Exit.h"
+#include "Login.h"
 #include "Lobby.h"
 
 #include <QGraphicsScene>
@@ -34,6 +35,11 @@ MainMenu::MainMenu(QGraphicsScene *scene, Game &game, QWidget *parent, Qt::WFlag
 	QGraphicsProxyWidget *proxyLobby = scene->addWidget(lobby);
 	lobby->hide();
 	proxyLobby->setPos(10,10);
+
+	login = new Login(game);
+	QGraphicsProxyWidget *proxyLogin = scene->addWidget(login);
+	login->hide();
+	proxyLogin->setPos(10,10);
 
 	connect(joinButton, SIGNAL(clicked()), SLOT(onJoinClicked()));
 	connect(optionsButton, SIGNAL(clicked()), SLOT(onOptionsClicked()));

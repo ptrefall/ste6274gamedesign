@@ -1,6 +1,7 @@
 #pragma once
 
 #include <types_config.h>
+#include <glm/glm.hpp>
 
 namespace Totem { class Entity; class ComponentFactory; }
 
@@ -11,6 +12,8 @@ public:
 	~EntityManager();
 
 	void update(const F32 &delta);
+
+	bool updateFromNet(const unsigned int &id, const glm::mat3 &transform);
 
 	Totem::Entity &create(Totem::ComponentFactory &factory);
 	void erase(Totem::Entity *Entity);

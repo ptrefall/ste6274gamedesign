@@ -15,6 +15,21 @@ EntityManager::~EntityManager()
 		delete entities[i];
 }
 
+bool EntityManager::updateFromNet(const unsigned int &id, const glm::mat3 &transform)
+{
+	for(unsigned int i = 0; i < entities.size(); i++)
+	{
+		if(entities[i]->hasProperty("Id") && entities[i]->getProperty<unsigned int>("Id").get() == id)
+		{
+			Totem::Entity *entity = entities[i];
+			glm::vec3 position = glm::vec3(transform[0][2], transform[1][2], -1000.0f); //for now, this only contains position information
+			entity->getProperty<glm::vec3>("Position") = position;
+			return true;
+		}
+	}
+	return false;
+}
+
 void EntityManager::update(const F32 &delta)
 {
 	if(!pendingDelete.empty())

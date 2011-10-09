@@ -1,6 +1,7 @@
 #include "Lobby.h"
 #include "MainMenu.h"
 #include "Connect.h"
+#include "Login.h"
 #include <Game/Game.h>
 #include <Game/GameOptions.h>
 #include <QStandardItemModel.h>
@@ -20,7 +21,7 @@ Lobby::Lobby(MainMenu *menu, Game &game, QWidget *parent, Qt::WFlags flags)
 	connect(cancelButton, SIGNAL(clicked()), SLOT(onClose()));
 	connect(enterGameButton, SIGNAL(clicked()), SLOT(onEnterGame()));
 	connect(chatButton, SIGNAL(clicked()), SLOT(onChatPost()));
-	enterGameButton->setEnabled(false);
+	//enterGameButton->setEnabled(false);
 }
 Lobby::~Lobby()
 {
@@ -47,7 +48,7 @@ void Lobby::setData(const gp_default_server_query_answer &data)
 			model->setItem(i, 0, item);
 		}
 	}
-
+	menu->getLogin().setData(data);
 }
 
 void Lobby::onClose()
@@ -58,6 +59,8 @@ void Lobby::onClose()
 
 void Lobby::onEnterGame()
 {
+	this->hide();
+	menu->getLogin().show();
 }
 
 void Lobby::onChatPost()

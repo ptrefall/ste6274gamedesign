@@ -12,6 +12,9 @@
 #include "Components\MeshGeometry.h"
 #include "Components\IdleSpin.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 Game::Game()
 	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
 {
@@ -44,20 +47,74 @@ void Game::initializeCore()
 
 void Game::initializeGame()
 {
-	dummy = &entityMgr->create(*componentFactory);
+	/*dummy = &entityMgr->create(*componentFactory);
 	dummy->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 	//dummy->addComponent("TriangleGeometry");
 	dummy->addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
 	dummy->addComponent("IdleSpin");
 	dummy->sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
-	dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);
+	dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);*/
 }
 
 void Game::advanceFrame(const F32 &delta)
 {
+	parseNetGamePackets();
 	client->update(delta);
-	T_Vector<Packet*>::Type packets = client->getParsedGamePackets();
 	entityMgr->update(delta);
 	renderSystem->compile();
 	renderSystem->render();
+}
+
+void Game::parseNetGamePackets()
+{
+	T_Vector<Packet*>::Type packets = client->getParsedGamePackets();
+	for(unsigned int i = 0; i < packets.size(); i++)
+	{
+		Packet *packet = packets[i];
+		if(packet->isGamePacket() == false)
+			continue; //This shouldn't happen!
+
+		if(packet->isGameUpd())
+			handleNetGameUpdate(packet->getGameUpd());
+		/*else if(packet->isGameReq())
+			handleNetGameRequest(packet->getGameReq());*/
+	}
+}
+
+void Game::handleNetGameUpdate(const gp_game_update &update)
+{
+	for(gp_uint32 i = 0; i < update.count; i++)
+	{
+		const gp_game_object &go = update.list[i];
+		const unsigned int &id = go.id;
+		const unsigned char &entity_type = go.obj_type;
+		T_String type(go.type);
+		glm::mat3 transform(go.matrix.getM11(), go.matrix.getM12(), go.matrix.getM13(),
+							go.matrix.getM21(), go.matrix.getM22(), go.matrix.getM23(),
+							go.matrix.getM31(), go.matrix.getM32(), go.matrix.getM33());
+		
+		bool entity_exist = entityMgr->updateFromNet(id, transform);
+
+		//If entity doesn't already exist, then add it
+		if(entity_exist == false)
+		{
+			Totem::Entity &entity = entityMgr->create(*componentFactory);
+			entity.addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
+			entity.addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
+			
+			entity.addProperty<unsigned int>("Id", 0);
+			entity.addProperty<unsigned char>("Type", 0x0);
+
+			entity.getProperty<unsigned int>("Id") = id;
+			entity.getProperty<unsigned char>("Type") = entity_type;
+			
+			glm::vec3 position = glm::vec3(transform[0][2], transform[1][2], -1000.0f); //for now, this only contains position information
+			entity.getProperty<glm::vec3>("Position") = position;
+
+			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
+				entity.sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
+			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
+				entity.sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
+		}
+	}
 }

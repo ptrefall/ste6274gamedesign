@@ -24,7 +24,8 @@ public:
 
 	ClientThread &getClientThread() { return *thread; }
 
-	const bool &isIdValid() const { return is_client_id_valid; }
+	const bool isIdValid() const { return is_client_id_valid; }
+	const bool isValidationCodeValid() const { return is_validation_code_valid; }
 	const unsigned long &getId() const { return client_id; }
 	const unsigned long &getValidationCode() const { return validation_code; }
 
@@ -33,9 +34,11 @@ public:
 
 signals:
 	void signConnectToHost(const QHostAddress&, const quint16 &);
+	void signLoginToGame();
 
 public slots:
 	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
+	void loginToGame();
 
 private:
 	bool is_client_id_valid;

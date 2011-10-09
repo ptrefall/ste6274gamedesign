@@ -52,6 +52,7 @@ set(UI_UIC_HDRS
 	${QT_UI_SRC_ROOT}/connect.ui
 	${QT_UI_SRC_ROOT}/connectionFailed.ui
 	${QT_UI_SRC_ROOT}/lobby.ui
+	${QT_UI_SRC_ROOT}/login.ui
 )
 set(UI_HDRS
 	${QT_UI_SRC_ROOT}/MainMenu.h
@@ -61,6 +62,7 @@ set(UI_HDRS
 	${QT_UI_SRC_ROOT}/Connect.h
 	${QT_UI_SRC_ROOT}/ConnectionFailed.h
 	${QT_UI_SRC_ROOT}/Lobby.h
+	${QT_UI_SRC_ROOT}/Login.h
 )
 set(UI_SRCS
 	${QT_UI_SRC_ROOT}/MainMenu.cpp
@@ -70,6 +72,7 @@ set(UI_SRCS
 	${QT_UI_SRC_ROOT}/Connect.cpp
 	${QT_UI_SRC_ROOT}/ConnectionFailed.cpp
 	${QT_UI_SRC_ROOT}/Lobby.cpp
+	${QT_UI_SRC_ROOT}/Login.cpp
 )
 SOURCE_GROUP("Header Files\\Qt\\UserInterface" FILES ${UI_HDRS} ${UI_UIC_HDRS})
 SOURCE_GROUP("Source Files\\Qt\\UserInterface" FILES ${UI_SRCS})
