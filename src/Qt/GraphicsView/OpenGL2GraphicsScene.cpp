@@ -127,6 +127,20 @@ void OpenGL2GraphicsScene::setBackgroundColor()
     }
 }
 
+void OpenGL2GraphicsScene::keyPressEvent(QKeyEvent *event)
+{
+	QGraphicsScene::keyPressEvent(event);
+    if (event->isAccepted())
+        return;
+}
+
+void OpenGL2GraphicsScene::keyReleaseEvent(QKeyEvent *event)
+{
+	QGraphicsScene::keyReleaseEvent(event);
+    if (event->isAccepted())
+        return;
+}
+
 void OpenGL2GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
