@@ -17,10 +17,10 @@ public:
 	void run();
 
 protected:
-	void parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
-	void parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
-	gp_uint32 getRequestBodySize(const gp_uint8 &type);
-	gp_uint32 getAnswerBodySize(const gp_uint8 &type);
+	bool parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
+	bool parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in);
+	quint64 getRequestBodySize(const gp_uint8 &type);
+	quint64 getAnswerBodySize(const gp_uint8 &type);
 
 private:
 	ClientThread &client;

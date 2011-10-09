@@ -31,7 +31,8 @@ void Lobby::setData(const gp_default_server_query_answer &data)
 	if(data.request_flags.map_info)
 	{
 		mapTitleLabel->setText(data.map_info.name);
-		mapinfoLabel->setText(data.map_info.author);
+		QString info = QString("Author: %0\nVersion: %1\nURL: %2").arg(data.map_info.author).arg(data.map_info.version).arg(data.map_info.url);
+		mapinfoLabel->setText(info);
 	}
 	if(data.request_flags.player_list)
 	{

@@ -12,15 +12,18 @@ void SocketParseTask::run()
 {
 	if(is_parsing)
 		return;
-
-	is_parsing = true;
+	else
+		is_parsing = true;
 
 	QDataStream in(&client.getSocket());
 	in.setVersion(QDataStream::Qt_4_7);
 
-	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
-	if(socket_bytes_available < (int)sizeof(gp_header))
+	quint64 socket_bytes_available = client.getSocket().bytesAvailable();
+	if(socket_bytes_available < (quint64)sizeof(gp_header))
+	{
+		is_parsing = false;
 		return;
+	}
 
 	if(header_is_read == false)
 	{
@@ -30,7 +33,11 @@ void SocketParseTask::run()
 		if(new_header.prefix.id != prefix.id)
 		{
 			if(header.prefix.id != prefix.id)
+			{
+				//This should really never happen...
+				is_parsing = false;
 				return;
+			}
 		}
 		else
 		{
@@ -38,21 +45,26 @@ void SocketParseTask::run()
 		}
 	}
 
+	bool success = false;
 	if(header.flags.answer) 
-		parseAnswer(prefix, header, in);
+		success = parseAnswer(prefix, header, in);
 	else
-		parseRequest(prefix, header, in);
+		success = parseRequest(prefix, header, in);
+
+	is_parsing = false;
+
+	if(success == false)
+		return;
 
 	header_is_read = false;
-	is_parsing = false;
 }
 
-void SocketParseTask::parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
+bool SocketParseTask::parseRequest(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
 {
-	gp_uint32 body_size = getRequestBodySize(header.type);
-	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
+	quint64 body_size = getRequestBodySize(header.type);
+	quint64 socket_bytes_available = client.getSocket().bytesAvailable();
 	if(socket_bytes_available < body_size)
-		return;
+		return false;
 
 	switch(header.type)
 	{
@@ -74,23 +86,25 @@ void SocketParseTask::parseRequest(gp_header_prefix &prefix, gp_header &header, 
 			in.readRawData((char*)(&request), sizeof(gp_join_request));
 			client.queueParsedPacket(new Packet(request));
 		}break;
-	default: return;
+	default: return false;
 	};
+	
+	return true;
 }
 
-void SocketParseTask::parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
+bool SocketParseTask::parseAnswer(gp_header_prefix &prefix, gp_header &header, QDataStream &in)
 {
-	gp_uint32 body_size = getAnswerBodySize(header.type);
-	gp_uint32 socket_bytes_available = client.getSocket().bytesAvailable();
-	/*if(socket_bytes_available < body_size)
-		return;*/
+	quint64 body_size = getAnswerBodySize(header.type);
+	quint64 socket_bytes_available = client.getSocket().bytesAvailable();
+	if(socket_bytes_available < body_size)
+		return false;
 
 	switch(header.type)
 	{
 	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:
 		{
 			if(dsqRead)
-				return;
+				return false;
 			dsqRead = true;
 
 			gp_default_server_query_answer answer;
@@ -109,28 +123,30 @@ void SocketParseTask::parseAnswer(gp_header_prefix &prefix, gp_header &header, Q
 			in.readRawData((char*)(&answer), sizeof(gp_join_answer));
 			client.queueParsedPacket(new Packet(answer));
 		}break;
-	default: return;
+	default: return false;
 	};
+
+	return true;
 }
 
-gp_uint32 SocketParseTask::getRequestBodySize(const gp_uint8 &type)
+quint64 SocketParseTask::getRequestBodySize(const gp_uint8 &type)
 {
 	switch(type) 
 	{
-	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:	return (gp_uint32)sizeof(gp_default_server_query);
-	case GP_REQUEST_TYPE_CONNECT:				return (gp_uint32)sizeof(gp_connect_request);
-	case GP_REQUEST_TYPE_JOIN:					return (gp_uint32)sizeof(gp_join_request);
-	default:									return (gp_uint32)0;
+	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:	return (quint64)sizeof(gp_default_server_query);
+	case GP_REQUEST_TYPE_CONNECT:				return (quint64)sizeof(gp_connect_request);
+	case GP_REQUEST_TYPE_JOIN:					return (quint64)sizeof(gp_join_request);
+	default:									return (quint64)0;
 	};
 }
 
-gp_uint32 SocketParseTask::getAnswerBodySize(const gp_uint8 &type)
+quint64 SocketParseTask::getAnswerBodySize(const gp_uint8 &type)
 {
 	switch(type) 
 	{
-	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:	return (gp_uint32)sizeof(gp_default_server_query_answer);
-	case GP_REQUEST_TYPE_CONNECT:				return (gp_uint32)sizeof(gp_connect_answer);
-	case GP_REQUEST_TYPE_JOIN:					return (gp_uint32)sizeof(gp_join_answer);
-	default:									return (gp_uint32)0;
+	case GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY:	return (quint64)sizeof(gp_default_server_query_answer);
+	case GP_REQUEST_TYPE_CONNECT:				return (quint64)sizeof(gp_connect_answer);
+	case GP_REQUEST_TYPE_JOIN:					return (quint64)sizeof(gp_join_answer);
+	default:									return (quint64)0;
 	};
 }

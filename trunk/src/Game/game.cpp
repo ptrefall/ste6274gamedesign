@@ -30,7 +30,7 @@ Game::~Game()
 void Game::initializeCore()
 {
 	options = new GameOptions();
-	client = new Client();
+	client = new Client(*this);
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
 	meshSystem = new Systems::MeshSystem();
