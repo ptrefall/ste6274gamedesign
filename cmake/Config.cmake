@@ -51,6 +51,21 @@ macro (CMP_ASSIMP_INSTALL_RULES destination)
 	endif()
 endmacro()
 
+macro (CMP_DEVIL_INSTALL_RULES destination)
+	if (MSVC)
+		message(STATUS "Generating Install Rule for DevIL Debug DLL Library ${DEVIL_DIR}/DevIL.dll -> ${destination}/Debug")  
+		INSTALL(FILES ${DEVIL_DIR}/DevIL.dll ${DEVIL_DIR}/ILU.dll ${DEVIL_DIR}/ILUT.dll
+			DESTINATION "${destination}/Debug")
+		message(STATUS "Generating Install Rule for AssImp Release DLL Library ${DEVIL_DIR}/DevIL.dll -> ${destination}/Release")
+		INSTALL(FILES ${DEVIL_DIR}/DevIL.dll ${DEVIL_DIR}/ILU.dll ${DEVIL_DIR}/ILUT.dll
+			DESTINATION "${destination}/Release")
+		INSTALL(FILES ${DEVIL_DIR}/DevIL.dll ${DEVIL_DIR}/ILU.dll ${DEVIL_DIR}/ILUT.dll
+			DESTINATION "${destination}/MinSizeRel")
+		INSTALL(FILES ${DEVIL_DIR}/DevIL.dll ${DEVIL_DIR}/ILU.dll ${DEVIL_DIR}/ILUT.dll
+			DESTINATION "${destination}/RelWithDebInfo")
+	endif()
+endmacro()
+
 macro (CMP_QT_LIBRARIES_INSTALL_RULES QTLIBLIST destination)
    # message(STATUS "CMP_COPY_QT4_RUNTIME_LIBRARIES")
     if (MSVC)

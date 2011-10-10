@@ -35,9 +35,3 @@
 	if ((glError = glGetError()) != GL_NO_ERROR) {						\
 		std::cerr << "OpenGL error code at line" << __LINE__ << ": " << glError << std::endl;		\
 	}}}
-
-#define ATTRIB_VERTEX	 0
-#define ATTRIB_NORMAL	 1
-#define ATTRIB_TANGENT	 2
-#define ATTRIB_COLOR	 3
-#define ATTRIB_TEXCOORD	 4

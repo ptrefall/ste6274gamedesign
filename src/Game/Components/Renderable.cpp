@@ -11,7 +11,7 @@ using namespace Components;
 using namespace Totem;
 
 Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSystem &renderSystem)
-: Component(owner, name), renderSystem(renderSystem), mvp(0x0)
+: Component(owner, name), renderSystem(renderSystem), mvp(0x0), bindBindablesEventId("BIND_BINDABLES")
 {
 	renderSystem.addRenderable(this);
 
@@ -43,11 +43,6 @@ Renderable::~Renderable()
 void Renderable::compile()
 {
 	program = renderSystem.getShaderSystem().create(GL_VERTEX_SHADER, "../../resources/Shaders/minimal.vs", GL_FRAGMENT_SHADER, "../../resources/Shaders/minimal.fs");
-	GL( glBindAttribLocation(program->id, ATTRIB_VERTEX, "Vertex"); );
-	GL( glBindAttribLocation(program->id, ATTRIB_NORMAL, "Normal"); );
-	GL( glBindAttribLocation(program->id, ATTRIB_TANGENT, "Tangent"); );
-	GL( glBindAttribLocation(program->id, ATTRIB_COLOR, "Color"); );
-	GL( glBindAttribLocation(program->id, ATTRIB_TEXCOORD, "TexCoord"); );
 	program->link();
 
 	//GL( glGenVertexArrays(1, &vao); );
@@ -126,6 +121,7 @@ void Renderable::render()
 
 	program->bind();
 	mvp->bind();
+	owner.sendEvent1<U32>(bindBindablesEventId, program->id);
 	glBegin(GL_TRIANGLES);
 	for(U32 i = 0; i < indices.size(); i++)
 	{
@@ -146,13 +142,13 @@ void Renderable::render()
 		{
 			const glm::vec3 &color = colors[index].get();
 			glColor4f(color.r, color.g, color.b, 1.0f);
-		}
+		}*/
 
 		if(!texCoords.empty())
 		{
 			const glm::vec2 &texCoord = texCoords[index].get();
 			glTexCoord2f(texCoord.s, texCoord.t);
-		}*/
+		}
 
 		const glm::vec3 &vertex = vertices[index].get();
 		glVertex3f(vertex.x, vertex.y, vertex.z);

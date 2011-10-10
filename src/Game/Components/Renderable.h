@@ -53,5 +53,7 @@ namespace Components
 
 		Graphics::Uniform *mvp;
 		glm::mat4 mvpMat;
+
+		T_HashedString bindBindablesEventId;
 	};
 }
