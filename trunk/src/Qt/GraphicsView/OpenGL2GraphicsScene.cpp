@@ -21,7 +21,7 @@ QDialog *OpenGL2GraphicsScene::createDialog(const QString &windowTitle) const
 }
 
 OpenGL2GraphicsScene::OpenGL2GraphicsScene(Game &game)
-    : game(game), m_backgroundColor(0, 170, 255), first_time(true)
+    : game(game), m_backgroundColor(0, 170, 255), first_time(true), keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED")
 {
     /*QWidget *controls = createDialog(tr("Controls"));
 
@@ -132,6 +132,8 @@ void OpenGL2GraphicsScene::keyPressEvent(QKeyEvent *event)
 	QGraphicsScene::keyPressEvent(event);
     if (event->isAccepted())
         return;
+
+	game.sendEvent2<int, unsigned int>(keyPressedEventId, event->key(), (unsigned int)event->modifiers());
 }
 
 void OpenGL2GraphicsScene::keyReleaseEvent(QKeyEvent *event)
@@ -139,6 +141,8 @@ void OpenGL2GraphicsScene::keyReleaseEvent(QKeyEvent *event)
 	QGraphicsScene::keyReleaseEvent(event);
     if (event->isAccepted())
         return;
+
+	game.sendEvent2<int, unsigned int>(keyReleasedEventId, event->key(), (unsigned int)event->modifiers());
 }
 
 void OpenGL2GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

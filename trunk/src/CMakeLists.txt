@@ -81,6 +81,7 @@ set(GAME_HDRS
 	${GAME_SRC_ROOT}/Game.h
 	${GAME_SRC_ROOT}/GameOptions.h
 	${GAME_SRC_ROOT}/EntityManager.h
+	${GAME_SRC_ROOT}/Camera.h
 )
 SOURCE_GROUP("Header Files\\Game" FILES ${GAME_HDRS})
 
@@ -88,6 +89,7 @@ set(GAME_SRCS
 	${GAME_SRC_ROOT}/Game.cpp
 	${GAME_SRC_ROOT}/GameOptions.cpp
 	${GAME_SRC_ROOT}/EntityManager.cpp
+	${GAME_SRC_ROOT}/Camera.cpp
 )
 SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})
 #---------------------------------------------------------------

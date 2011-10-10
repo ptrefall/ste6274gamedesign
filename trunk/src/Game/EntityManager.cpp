@@ -22,7 +22,7 @@ bool EntityManager::updateFromNet(const unsigned int &id, const glm::mat3 &trans
 		if(entities[i]->hasProperty("Id") && entities[i]->getProperty<unsigned int>("Id").get() == id)
 		{
 			Totem::Entity *entity = entities[i];
-			glm::vec3 position = glm::vec3(transform[0][2], transform[1][2], -1000.0f); //for now, this only contains position information
+			glm::vec3 position = glm::vec3(transform[2][0]*50.0f, transform[2][1]*50.0f, 0.0f); //for now, this only contains position information
 			entity->getProperty<glm::vec3>("Position") = position;
 			return true;
 		}
@@ -57,7 +57,7 @@ void EntityManager::update(const F32 &delta)
 
 Totem::Entity &EntityManager::create(Totem::ComponentFactory &factory)
 {
-	Totem::Entity *entity = new Totem::Entity(factory);
+	Totem::Entity *entity = new Totem::Entity(factory, &serializer);
 	entities.push_back(entity);
 	return *entity;
 }

@@ -362,3 +362,35 @@ void ClientThread::handleGameUpdate(const gp_game_update &answer)
 {
 	
 }
+
+void ClientThread::onMoveEvent(const T_String &x, const T_String &y)
+{
+	T_String cmd("move");
+
+	gp_game_request request;
+	gp_game_request_param &param0 = request.params[0];
+	gp_game_request_param &param1 = request.params[1];
+
+	request.param_count = 2;
+
+	if(cmd.size() < 16)
+	{
+		memcpy(request.cmd, cmd.c_str(), cmd.size());
+		request.cmd[cmd.size()] = '\0';
+	}
+
+	if(x.size() < 16)
+	{
+		memcpy(param0.param, x.c_str(), x.size());
+		param0.param[x.size()] = '\0';
+	}
+
+	if(y.size() < 16)
+	{
+		memcpy(param1.param, y.c_str(), y.size());
+		param1.param[y.size()] = '\0';
+	}
+
+	SocketPackTask<gp_game_request> task = SocketPackTask<gp_game_request>(*this, GP_REQUEST_TYPE_GAME, false, request, request_count);
+	task.run(true);
+}

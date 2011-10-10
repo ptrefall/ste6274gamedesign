@@ -2,6 +2,7 @@
 
 #include <types_config.h>
 #include <glm/glm.hpp>
+#include <PropertySerializer.h>
 
 namespace Totem { class Entity; class ComponentFactory; }
 
@@ -22,4 +23,5 @@ public:
 protected:
 	T_Vector<Totem::Entity*>::Type entities;
 	T_Vector<Totem::Entity*>::Type pendingDelete;
+	Totem::PropertySerializer serializer;
 };

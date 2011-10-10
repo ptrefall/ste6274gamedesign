@@ -11,13 +11,19 @@
 #include "Components\TriangleGeometry.h"
 #include "Components\MeshGeometry.h"
 #include "Components\IdleSpin.h"
+#include "Components\Player.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR)
+	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), 
+	componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR), player(NULL_PTR),
+	keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED"), loadMeshEventId("LOAD_MESH"), moveEventId("MOVE")
 {
+	this->registerToEvent2<int, unsigned int>(keyPressedEventId).connect(this, &Game::onKeyPressed);
+	this->registerToEvent2<int, unsigned int>(keyReleasedEventId).connect(this, &Game::onKeyReleased);
+	this->registerToEvent2<T_String, T_String>(moveEventId).connect(this, &Game::onMove);
 }
 
 Game::~Game()
@@ -43,6 +49,7 @@ void Game::initializeCore()
 	Components::TriangleGeometry::RegisterToFactory(*componentFactory);
 	Components::MeshGeometry::RegisterToFactory(*componentFactory);
 	Components::IdleSpin::RegisterToFactory(*componentFactory);
+	Components::Player::RegisterToFactory(*componentFactory);
 }
 
 void Game::initializeGame()
@@ -101,20 +108,46 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 			Totem::Entity &entity = entityMgr->create(*componentFactory);
 			entity.addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 			entity.addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
+
+			//If this entity is tied to our client id on the server, add the Player component to it.
+			if(id == client->getId())
+				entity.addComponent<Game>("Player", *this);
 			
 			entity.addProperty<unsigned int>("Id", 0);
 			entity.addProperty<unsigned char>("Type", 0x0);
 
 			entity.getProperty<unsigned int>("Id") = id;
 			entity.getProperty<unsigned char>("Type") = entity_type;
-			
-			glm::vec3 position = glm::vec3(transform[0][2], transform[1][2], -1000.0f); //for now, this only contains position information
+
+			glm::vec3 position = glm::vec3(transform[2][0]*50.0f, transform[2][1]*50.0f, 0.0f); //for now, this only contains position information
 			entity.getProperty<glm::vec3>("Position") = position;
 
 			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
-				entity.sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
+			{
+				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
+			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
-				entity.sendEvent2<T_String,T_String>(T_HashedString("LOAD_MESH"), "../../resources/Mesh/Ferox/", "Ferox.3DS");
+			{
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(20.0f);
+				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Station/", "space_station_0.3DS");
+			}
 		}
 	}
+}
+
+void Game::onKeyPressed(const int &key, const unsigned int &modifiers)
+{
+	if(player)
+		player->onKeyPressed(key, modifiers);
+}
+
+void Game::onKeyReleased(const int &key, const unsigned int &modifiers)
+{
+	if(player)
+		player->onKeyReleased(key, modifiers);
+}
+
+void Game::onMove(const T_String &x, const T_String &y)
+{
+	client->onMoveEvent(x,y);
 }

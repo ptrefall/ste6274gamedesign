@@ -37,6 +37,7 @@ public:
 	Client &getClient() { return client; }
 
 	void update();
+	void onMoveEvent(const T_String &x, const T_String &y);
 
 signals:
 	void signHostFound();
