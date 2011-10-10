@@ -1,23 +1,11 @@
-#version 330 core
-
-#define VERTEX	 0
-#define NORMAL	 1
-#define TANGENT	 2
-#define COLOR	 3
-#define TEXCOORD 4
-
-layout(location = VERTEX) in vec3 Vertex;
-layout(location = COLOR) in vec3 Color;
+#version 120
 
 uniform mat4 mvp;
 
-out block
-{
-	smooth vec3 Color;
-} Out;
+varying vec2 vTexCoord;
 
 void main()
 {
-	gl_Position = mvp * vec4(Vertex, 1.0);
-	Out.Color = vec3(Color.r, Color.g, Color.b);
+	gl_Position = mvp * gl_Vertex;
+	vTexCoord = gl_MultiTexCoord0.st;
 }

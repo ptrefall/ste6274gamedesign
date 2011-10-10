@@ -8,7 +8,7 @@ class GameOptions;
 class Client;
 class EntityManager;
 namespace Components { class Player; }
-namespace Systems { class RenderSystem; class MeshSystem; }
+namespace Systems { class RenderSystem; class MeshSystem; class MaterialSystem; }
 namespace Totem { class Entity; class ComponentFactory; }
 
 class Game : public Totem::EventHandler
@@ -37,12 +37,14 @@ private:
 	EntityManager *entityMgr;
 	Systems::RenderSystem *renderSystem;
 	Systems::MeshSystem *meshSystem;
+	Systems::MaterialSystem *materialSystem;
 	Totem::ComponentFactory *componentFactory;
 	Totem::Entity *dummy;
 
 	T_HashedString keyPressedEventId;
 	T_HashedString keyReleasedEventId;
 	T_HashedString loadMeshEventId;
+	T_HashedString loadMaterialEventId;
 	T_HashedString moveEventId;
 
 	Components::Player *player;

@@ -5,6 +5,7 @@
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
 #include "Systems\MeshSystem.h"
+#include "Systems\MaterialSystem.h"
 #include <Entity.h>
 #include <ComponentFactory.h>
 #include "Components\Renderable.h"
@@ -12,14 +13,16 @@
 #include "Components\MeshGeometry.h"
 #include "Components\IdleSpin.h"
 #include "Components\Player.h"
+#include "Components\Material.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), 
+	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), materialSystem(NULL_PTR),
 	componentFactory(NULL_PTR), dummy(NULL_PTR), options(NULL_PTR), player(NULL_PTR),
-	keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED"), loadMeshEventId("LOAD_MESH"), moveEventId("MOVE")
+	keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED"), 
+	loadMeshEventId("LOAD_MESH"), loadMaterialEventId("LOAD_MATERIAL"), moveEventId("MOVE")
 {
 	this->registerToEvent2<int, unsigned int>(keyPressedEventId).connect(this, &Game::onKeyPressed);
 	this->registerToEvent2<int, unsigned int>(keyReleasedEventId).connect(this, &Game::onKeyReleased);
@@ -33,6 +36,7 @@ Game::~Game()
 	if(entityMgr) delete entityMgr;
 	if(renderSystem) delete renderSystem;
 	if(meshSystem) delete meshSystem;
+	if(materialSystem) delete materialSystem;
 	if(componentFactory) delete componentFactory;
 }
 
@@ -43,6 +47,7 @@ void Game::initializeCore()
 	entityMgr = new EntityManager();
 	renderSystem = new Systems::RenderSystem();
 	meshSystem = new Systems::MeshSystem();
+	materialSystem = new Systems::MaterialSystem();
 
 	componentFactory = new Totem::ComponentFactory();
 	Components::Renderable::RegisterToFactory(*componentFactory);
@@ -50,6 +55,7 @@ void Game::initializeCore()
 	Components::MeshGeometry::RegisterToFactory(*componentFactory);
 	Components::IdleSpin::RegisterToFactory(*componentFactory);
 	Components::Player::RegisterToFactory(*componentFactory);
+	Components::Material::RegisterToFactory(*componentFactory);
 }
 
 void Game::initializeGame()
@@ -108,6 +114,7 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 			Totem::Entity &entity = entityMgr->create(*componentFactory);
 			entity.addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 			entity.addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
+			entity.addComponent<Systems::MaterialSystem>("Material", *materialSystem);
 
 			//If this entity is tied to our client id on the server, add the Player component to it.
 			if(id == client->getId())
@@ -124,15 +131,19 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 
 			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
 			{
-				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.5f);
-				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
 				Totem::Property<glm::gtc::quaternion::quat> pitch = entity.getProperty<glm::gtc::quaternion::quat>("StepPitchRotation");
 				pitch = glm::gtc::quaternion::rotate(pitch.get(), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.5f);
+				
+				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
+				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "FEROX", ".tga", false,false,true,false,false);
 			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
 			{
 				entity.getProperty<glm::vec3>("Scale") = glm::vec3(30.0f);
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Station/", "space_station_0.3DS");
+				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "STAT", ".jpg", false,false,true,false,false);
 			}
 		}
 	}

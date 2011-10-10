@@ -1,20 +1,12 @@
-#version 330 core
+#version 120
 
-#define VERTEX	 0
-#define NORMAL	 1
-#define TANGENT	 2
-#define COLOR	 3
-#define TEXCOORD 4
-#define FRAG_COLOR 0
+uniform sampler2D tex_di;
 
-in block
-{
-	smooth vec3 Color;
-} In;
-
-layout(location = FRAG_COLOR, index = 0) out vec4 out_color;
+varying vec2 vTexCoord;
 
 void main()
 {
-	out_color = vec4(1.0,0.0,0.0, 1.0);
+	vec4 di = texture2D(tex_di, vTexCoord);
+	gl_FragColor = vec4(di.rgb, 1.0);
+	//out_color = vec4(1.0,0.0,0.0, 1.0);
 }

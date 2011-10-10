@@ -96,12 +96,14 @@ SOURCE_GROUP("Source Files\\Game" FILES ${GAME_SRCS})
 set(GAME_SYSTEMS_HDRS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.h
 	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.h
+	${GAME_SYSTEMS_SRC_ROOT}/MaterialSystem.h
 )
 SOURCE_GROUP("Header Files\\Game\\Systems" FILES ${GAME_SYSTEMS_HDRS})
 
 set(GAME_SYSTEMS_SRCS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.cpp
 	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.cpp
+	${GAME_SYSTEMS_SRC_ROOT}/MaterialSystem.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Systems" FILES ${GAME_SYSTEMS_SRCS})
 #---------------------------------------------------------------
@@ -112,6 +114,7 @@ set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.h
 	${GAME_COMPONENTS_SRC_ROOT}/Player.h
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.h
+	${GAME_COMPONENTS_SRC_ROOT}/Material.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
@@ -122,6 +125,7 @@ set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Player.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/Material.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
 #---------------------------------------------------------------
@@ -159,7 +163,9 @@ find_package(Qt4 4.7.3 REQUIRED QtCore QtGui QtOpenGL QtNetwork)
 CMP_QT_LIBRARIES_INSTALL_RULES("QtCore;QtGui;QtOpenGL;QtNetwork" ${GameDesignClient_BINARY_DIR}/src)
 find_package(GLM REQUIRED)
 find_package(AssImp REQUIRED)
+find_package(DevIL REQUIRED)
 CMP_ASSIMP_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
+CMP_DEVIL_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 set(WINDOW_EXT_LIBS ${OPENGL_gl_LIBRARY})
 set(WINDOW_EXT_LIBS ${WINDOW_EXT_LIBS} winmm gdi32)
 #---------------------------------------------------------------
@@ -168,6 +174,7 @@ include_directories(${GLEW_INCLUDE_PATH})
 include(${QT_USE_FILE})
 include_directories(${GLM_DIR})
 include_directories(${ASSIMP_INCLUDE_PATH})
+include_directories(${DEVIL_INCLUDE_PATH})
 include_directories(${GameDesignClient_BINARY_DIR}/src)
 #---------------------------------------------------------------
 QT4_WRAP_CPP(MOCS ${GV_HDRS} ${CLIENT_HDRS} ${UI_HDRS})
@@ -196,6 +203,7 @@ target_link_libraries(GameDesignClient
   ${QT_LIBRARIES}
   TotemEDK
   debug ${ASSIMP_LIBRARY_DEBUG_X86} optimized ${ASSIMP_LIBRARY_RELEASE_X86}
+  ${DEVIL_LIBRARY} ${DEVIL_ILU_LIBRARY} ${DEVIL_ILUT_LIBRARY}
 )
 #---------------------------------------------------------------
 #INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
