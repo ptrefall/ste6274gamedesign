@@ -125,6 +125,8 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
 			{
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
+				Totem::Property<glm::gtc::quaternion::quat> qRotation = entity.getProperty<glm::gtc::quaternion::quat>("Rotation");
+				qRotation = glm::gtc::quaternion::rotate(qRotation.get(), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
 			{
