@@ -34,6 +34,9 @@ namespace Components
 		Totem::PropertyList<glm::vec2> texCoords;
 
 		Totem::Property<glm::mat4> modelMatrix;
+		Totem::Property<glm::gtc::quaternion::quat> qStepPitchRotation;
+		Totem::Property<glm::gtc::quaternion::quat> qStepYawRotation;
+		Totem::Property<glm::gtc::quaternion::quat> qStepRollRotation;
 		Totem::Property<glm::gtc::quaternion::quat> qRotation;
 		Totem::Property<glm::vec3> position;
 		Totem::Property<glm::vec3> scale;

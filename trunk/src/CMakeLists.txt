@@ -111,6 +111,7 @@ set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/MeshGeometry.h
 	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.h
 	${GAME_COMPONENTS_SRC_ROOT}/Player.h
+	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
@@ -120,6 +121,7 @@ set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/MeshGeometry.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/IdleSpin.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Player.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
 #---------------------------------------------------------------
