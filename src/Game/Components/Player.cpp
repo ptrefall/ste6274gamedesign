@@ -118,7 +118,7 @@ void Player::update(const F32 &deltaTime)
 
 	/*if(roll_angle != 0.0f)
 	{
-		glm::vec3 forward = (qStepYawRotation.get() * qStepPitchRotation.get() * qStepRollRotation.get()) * glm::vec3(0.0f, 0.0f, -1.0f);
+		glm::vec3 forward = qStepYawRotation.get() * glm::vec3(0.0f, 0.0f, 1.0f);
 		qStepRollRotation = glm::gtc::quaternion::rotate(qStepRollRotation.get(), roll_angle, forward);
 	}*/
 

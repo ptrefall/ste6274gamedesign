@@ -124,13 +124,14 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 
 			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
 			{
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.5f);
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
-				Totem::Property<glm::gtc::quaternion::quat> qRotation = entity.getProperty<glm::gtc::quaternion::quat>("Rotation");
-				qRotation = glm::gtc::quaternion::rotate(qRotation.get(), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+				Totem::Property<glm::gtc::quaternion::quat> pitch = entity.getProperty<glm::gtc::quaternion::quat>("StepPitchRotation");
+				pitch = glm::gtc::quaternion::rotate(pitch.get(), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
 			{
-				entity.getProperty<glm::vec3>("Scale") = glm::vec3(20.0f);
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(30.0f);
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Station/", "space_station_0.3DS");
 			}
 		}

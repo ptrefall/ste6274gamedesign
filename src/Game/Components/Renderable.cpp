@@ -85,12 +85,19 @@ void Renderable::prepare()
 	qRotation *= (qStepYawRotation.get() * qStepPitchRotation.get() * qStepRollRotation.get());
 	if( qRotation.get() != glm::gtc::quaternion::quat() )
 	{
+		/*yaw = yaw * qStepYawRotation.get();
+		pitch = pitch * qStepPitchRotation.get();
+		roll = roll * qStepRollRotation.get();*/
+
 		glm::mat4 rotation = glm::gtc::quaternion::mat4_cast(qRotation.get());
 		qStepYawRotation = glm::gtc::quaternion::quat();
 		qStepPitchRotation = glm::gtc::quaternion::quat();
 		qStepRollRotation = glm::gtc::quaternion::quat();
 	
 		modelMatrix *= rotation;
+		/*modelMatrix *= glm::gtc::quaternion::mat4_cast(yaw);
+		modelMatrix *= glm::gtc::quaternion::mat4_cast(pitch);
+		modelMatrix *= glm::gtc::quaternion::mat4_cast(roll);*/
 	}
 
 	if(scale.get() != glm::vec3(1.0f))

@@ -41,6 +41,10 @@ namespace Components
 		Totem::Property<glm::vec3> position;
 		Totem::Property<glm::vec3> scale;
 
+		glm::gtc::quaternion::quat yaw;
+		glm::gtc::quaternion::quat pitch;
+		glm::gtc::quaternion::quat roll;
+
 		Totem::Property<bool> compiled;
 
 		U32 vao;
