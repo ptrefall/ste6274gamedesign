@@ -40,3 +40,8 @@ T_Vector<Packet*>::Type Client::getParsedGamePackets()
 {
 	return thread->getParsedGamePackets();
 }
+
+void Client::onMoveEvent(const T_String &x, const T_String &y)
+{
+	thread->onMoveEvent(x,y);
+}

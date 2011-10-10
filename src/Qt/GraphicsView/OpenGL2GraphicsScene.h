@@ -40,4 +40,7 @@ private:
 	Game &game;
 
     QGraphicsRectItem *m_lightItem;
+
+	T_HashedString keyPressedEventId;
+	T_HashedString keyReleasedEventId;
 };

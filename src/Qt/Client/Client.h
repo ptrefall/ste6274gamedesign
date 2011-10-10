@@ -32,6 +32,8 @@ public:
 	void setClientId(const unsigned long &id) { client_id = id; is_client_id_valid = true; }
 	void setValidationCode(const unsigned long &code) { validation_code = code; is_validation_code_valid = true; }
 
+	void onMoveEvent(const T_String &x, const T_String &y);
+
 signals:
 	void signConnectToHost(const QHostAddress&, const quint16 &);
 	void signLoginToGame();

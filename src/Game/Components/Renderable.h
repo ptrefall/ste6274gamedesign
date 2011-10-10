@@ -36,6 +36,7 @@ namespace Components
 		Totem::Property<glm::mat4> modelMatrix;
 		Totem::Property<glm::gtc::quaternion::quat> qRotation;
 		Totem::Property<glm::vec3> position;
+		Totem::Property<glm::vec3> scale;
 
 		Totem::Property<bool> compiled;
 

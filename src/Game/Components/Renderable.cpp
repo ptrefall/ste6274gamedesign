@@ -5,6 +5,7 @@
 #include <Game/Graphics/Attribute.h>
 #include <Game/Graphics/Uniform.h>
 #include <Game/Graphics/Shader.h>
+#include <Game/Camera.h>
 
 using namespace Components;
 using namespace Totem;
@@ -24,6 +25,7 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 	modelMatrix = owner.addProperty<glm::mat4>("ModelMatrix", glm::mat4(1.0f));
 	qRotation = owner.addProperty<glm::gtc::quaternion::quat>("Rotation", glm::gtc::quaternion::quat());
 	position = owner.addProperty<glm::vec3>("Position", glm::vec3(0.0f));
+	scale = owner.addProperty<glm::vec3>("Scale", glm::vec3(1.0f));
 
 	compiled = owner.addProperty<bool>("Compiled", false);
 }
@@ -75,18 +77,26 @@ void Renderable::prepare()
 
 	glm::mat4 rotation = glm::gtc::quaternion::mat4_cast(qRotation.get());
 
+	
+
 	// Then, we calculate the local transformation matrix
 	modelMatrix = glm::mat4(1.0f);
 	//modelMatrix *= scale;
 	modelMatrix *= translate;
 	modelMatrix *= rotation;
 
-	GLdouble p[16];
+	modelMatrix = glm::gtc::matrix_transform::scale(modelMatrix.get(), scale.get());
+
+	/*GLdouble p[16];
 	GLdouble v[16]; 
 	glGetDoublev(GL_PROJECTION_MATRIX, p);
 	glGetDoublev(GL_MODELVIEW_MATRIX, v);
 	glm::mat4 pMat = glm::mat4(p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12],p[13],p[14],p[15]);
-	glm::mat4 vMat = glm::mat4(v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14],v[15]);
+	glm::mat4 vMat = glm::mat4(v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14],v[15]);*/
+
+	Camera::prepare();
+	glm::mat4 pMat = Camera::getPerspective();
+	glm::mat4 vMat = Camera::getView();
 
 	mvpMat = pMat * vMat * modelMatrix.get();
 	mvp->setData(glm::value_ptr(mvpMat));

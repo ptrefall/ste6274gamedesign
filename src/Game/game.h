@@ -7,6 +7,7 @@
 class GameOptions;
 class Client;
 class EntityManager;
+namespace Components { class Player; }
 namespace Systems { class RenderSystem; class MeshSystem; }
 namespace Totem { class Entity; class ComponentFactory; }
 
@@ -22,9 +23,14 @@ public:
 	GameOptions &getOptions() { return *options; }
 	Client &getClient() { return *client; }
 
+	void setPlayer(Components::Player &player) { this->player = &player; }
+
 private:
 	void parseNetGamePackets();
 	void handleNetGameUpdate(const gp_game_update &update);
+	void onKeyPressed(const int &key, const unsigned int &modifiers);
+	void onKeyReleased(const int &key, const unsigned int &modifiers);
+	void onMove(const T_String &x, const T_String &y);
 
 	GameOptions *options;
 	Client *client;
@@ -33,4 +39,11 @@ private:
 	Systems::MeshSystem *meshSystem;
 	Totem::ComponentFactory *componentFactory;
 	Totem::Entity *dummy;
+
+	T_HashedString keyPressedEventId;
+	T_HashedString keyReleasedEventId;
+	T_HashedString loadMeshEventId;
+	T_HashedString moveEventId;
+
+	Components::Player *player;
 };
