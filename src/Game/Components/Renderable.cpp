@@ -11,7 +11,7 @@ using namespace Components;
 using namespace Totem;
 
 Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSystem &renderSystem)
-: Component(owner, name), renderSystem(renderSystem), mvp(0x0), 
+: Component(owner, name), renderSystem(renderSystem), mvp(0x0), mv(0x0), norm(0x0),
   bindBindablesEventId("BIND_BINDABLES"), customRendererId("CUSTOM_RENDERER")
 {
 	renderSystem.addRenderable(this);
@@ -40,6 +40,8 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 Renderable::~Renderable()
 {
 	if(mvp) delete mvp;
+	if(mv) delete mv;
+	if(norm) delete norm;
 
 	GL( glDeleteVertexArrays(1, &vao); );
 }
@@ -62,9 +64,21 @@ void Renderable::compile()
 
 	//GL( glBindVertexArray(0); );
 
+	glm::mat4 pMat = glm::mat4(1.0f);
+	proj = new Graphics::Uniform(GL_FLOAT_MAT4, "proj", glm::value_ptr(pMat));
+	proj->findLocation(program->id);
+
 	mvpMat = glm::mat4(1.0f);
 	mvp = new Graphics::Uniform(GL_FLOAT_MAT4, "mvp", glm::value_ptr(mvpMat));
 	mvp->findLocation(program->id);
+
+	glm::mat4 mvMat = glm::mat4(1.0f);
+	mv = new Graphics::Uniform(GL_FLOAT_MAT4, "mv", glm::value_ptr(mvMat));
+	mv->findLocation(program->id);
+
+	glm::mat3 nMat = glm::mat3(1.0f);
+	norm = new Graphics::Uniform(GL_FLOAT_MAT3, "norm", glm::value_ptr(nMat));
+	norm->findLocation(program->id);
 
 	compiled = true;
 }
@@ -114,17 +128,26 @@ void Renderable::prepare()
 	glm::mat4 pMat = Camera::getPerspective();
 	glm::mat4 vMat = Camera::getView();
 
-	mvpMat = pMat * vMat * modelMatrix.get();
+	proj->setData(glm::value_ptr(pMat));
+
+	glm::mat4 mvMat = vMat * modelMatrix.get();
+	mvpMat = pMat * mvMat;
 	mvp->setData(glm::value_ptr(mvpMat));
+
+	mv->setData(glm::value_ptr(mvMat));
+
+	glm::mat3 nMat = glm::transpose(glm::inverse(glm::mat3(mvMat)));
+	norm->setData(glm::value_ptr(nMat));
 }
 
 void Renderable::render()
 {
-	if(vertices.empty())
-		return;
-
+	glDisable(GL_BLEND);
 	program->bind();
+	proj->bind();
 	mvp->bind();
+	mv->bind();
+	norm->bind();
 	if(owner.hasEvent(bindBindablesEventId, 1))
 		owner.sendEvent1<U32>(bindBindablesEventId, program->id);
 
@@ -138,19 +161,19 @@ void Renderable::render()
 		for(U32 i = 0; i < indices.size(); i++)
 		{
 			unsigned int index = indices[i].get();
-			/*if(!normals.empty())
+			if(!normals.empty())
 			{
 				const glm::vec3 &normal = normals[index].get();
 				glNormal3f(normal.x, normal.y, normal.z);
 			}
 
-			if(!tangents.empty())
+			/*if(!tangents.empty())
 			{
 				const glm::vec3 &tangent = tangents[index].get();
-				glVertexAttrib3f(ATTRIB_TANGENT, tangent.x, tangent.y, tangent.z);
-			}
+				glColor3f(tangent.x, tangent.y, tangent.z);
+			}*/
 
-			if(!colors.empty())
+			/*if(!colors.empty())
 			{
 				const glm::vec3 &color = colors[index].get();
 				glColor4f(color.r, color.g, color.b, 1.0f);

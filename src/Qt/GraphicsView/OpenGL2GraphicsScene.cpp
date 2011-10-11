@@ -89,6 +89,11 @@ void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 		first_time = false;
 	}
 
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	/*glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);*/
+
     glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -96,7 +101,7 @@ void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 	glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluPerspective(70, (float)width() / (float)height(), 1, 100000);
+    gluPerspective(70, (float)width() / (float)height(), 20, 20000);
 
 	glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

@@ -101,28 +101,28 @@ void MaterialSystem::loadMaterial(Components::SkyboxGeometry *material, const T_
 	MaterialData *data = new MaterialData(id);
 	//Z+
 	{
-		T_String abs_filename = location + filename + T_String("_Z+") + extension;
+		T_String abs_filename = location + filename + T_String("_Z-") + extension;
 		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
 		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
 	//X-
 	{
-		T_String abs_filename = location + filename + T_String("_X-") + extension;
+		T_String abs_filename = location + filename + T_String("_X+") + extension;
 		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
 		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
 	//Z-
 	{
-		T_String abs_filename = location + filename + T_String("_Z-") + extension;
+		T_String abs_filename = location + filename + T_String("_Z+") + extension;
 		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
 		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
 	//X+
 	{
-		T_String abs_filename = location + filename + T_String("_X+") + extension;
+		T_String abs_filename = location + filename + T_String("_X-") + extension;
 		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
 		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));

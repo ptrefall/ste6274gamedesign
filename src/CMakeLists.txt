@@ -97,6 +97,7 @@ set(GAME_SYSTEMS_HDRS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.h
 	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.h
 	${GAME_SYSTEMS_SRC_ROOT}/MaterialSystem.h
+	${GAME_SYSTEMS_SRC_ROOT}/ParticleSystem.h
 )
 SOURCE_GROUP("Header Files\\Game\\Systems" FILES ${GAME_SYSTEMS_HDRS})
 
@@ -104,6 +105,7 @@ set(GAME_SYSTEMS_SRCS
 	${GAME_SYSTEMS_SRC_ROOT}/RenderSystem.cpp
 	${GAME_SYSTEMS_SRC_ROOT}/MeshSystem.cpp
 	${GAME_SYSTEMS_SRC_ROOT}/MaterialSystem.cpp
+	${GAME_SYSTEMS_SRC_ROOT}/ParticleSystem.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Systems" FILES ${GAME_SYSTEMS_SRCS})
 #---------------------------------------------------------------
@@ -116,6 +118,7 @@ set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/Player.h
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.h
 	${GAME_COMPONENTS_SRC_ROOT}/Material.h
+	${GAME_COMPONENTS_SRC_ROOT}/ParticleEmitter.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
@@ -128,6 +131,7 @@ set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/Player.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Material.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/ParticleEmitter.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
 #---------------------------------------------------------------
@@ -166,6 +170,7 @@ CMP_QT_LIBRARIES_INSTALL_RULES("QtCore;QtGui;QtOpenGL;QtNetwork" ${GameDesignCli
 find_package(GLM REQUIRED)
 find_package(AssImp REQUIRED)
 find_package(DevIL REQUIRED)
+find_package(SPARK REQUIRED)
 CMP_ASSIMP_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 CMP_DEVIL_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 set(WINDOW_EXT_LIBS ${OPENGL_gl_LIBRARY})
@@ -177,6 +182,7 @@ include(${QT_USE_FILE})
 include_directories(${GLM_DIR})
 include_directories(${ASSIMP_INCLUDE_PATH})
 include_directories(${DEVIL_INCLUDE_PATH})
+include_directories(${SPARK_INCLUDE_PATH})
 include_directories(${GameDesignClient_BINARY_DIR}/src)
 #---------------------------------------------------------------
 QT4_WRAP_CPP(MOCS ${GV_HDRS} ${CLIENT_HDRS} ${UI_HDRS})
@@ -206,6 +212,8 @@ target_link_libraries(GameDesignClient
   TotemEDK
   debug ${ASSIMP_LIBRARY_DEBUG_X86} optimized ${ASSIMP_LIBRARY_RELEASE_X86}
   ${DEVIL_LIBRARY} ${DEVIL_ILU_LIBRARY} ${DEVIL_ILUT_LIBRARY}
+  debug ${SPARK_LIBRARY_DEBUG} optimized ${SPARK_LIBRARY_RELEASE}
+  debug ${SPARK_GL_LIBRARY_DEBUG} optimized ${SPARK_GL_LIBRARY_RELEASE}
 )
 #---------------------------------------------------------------
 #INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
