@@ -54,11 +54,6 @@ T_Void SkyboxGeometry::customRenderFunc(const U32 &program_id)
 	GL( glEnable(GL_TEXTURE_2D); );
 	U32 tex_index = 0;
 
-	data->uniforms[tex_index]->findLocation(program_id);
-	data->uniforms[tex_index]->bind();
-	GL( glActiveTexture(GL_TEXTURE0 + data->textures[tex_index]->slot); );
-	GL( glBindTexture(GL_TEXTURE_2D, data->textures[tex_index]->gl_id); );
-
 	//Draw two triangles (one face) of cube, then switch texture
 	
 	for(U32 i = 0; i < indices.size(); i += 6)
@@ -70,6 +65,11 @@ T_Void SkyboxGeometry::customRenderFunc(const U32 &program_id)
 		unsigned int index3 = indices[i+3].get();
 		unsigned int index4 = indices[i+4].get();
 		unsigned int index5 = indices[i+5].get();
+
+		data->uniforms[tex_index]->findLocation(program_id);
+		data->uniforms[tex_index]->bind();
+		GL( glActiveTexture(GL_TEXTURE0 + data->textures[tex_index]->slot); );
+		GL( glBindTexture(GL_TEXTURE_2D, data->textures[tex_index]->gl_id); );
 
 		glBegin(GL_TRIANGLES);
 
@@ -92,6 +92,8 @@ T_Void SkyboxGeometry::customRenderFunc(const U32 &program_id)
 		glVertex3f(vertices[index5].get().x, vertices[index5].get().y, vertices[index5].get().z);
 
 		GL( glEnd(); );
+
+		tex_index++;
 	}
 	
 	return (T_Void)NULL_PTR;

@@ -1,11 +1,13 @@
 #include "Game.h"
 #include "GameOptions.h"
+#include <SPK.h>
 #include <Qt/Client/Client.h>
 #include <Qt/Client/Packet.h>
 #include "EntityManager.h"
 #include "Systems\RenderSystem.h"
 #include "Systems\MeshSystem.h"
 #include "Systems\MaterialSystem.h"
+#include "Systems\ParticleSystem.h"
 #include <Entity.h>
 #include <ComponentFactory.h>
 #include "Components\Renderable.h"
@@ -15,12 +17,14 @@
 #include "Components\IdleSpin.h"
 #include "Components\Player.h"
 #include "Components\Material.h"
+#include "Components\ParticleEmitter.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), renderSystem(NULL_PTR), meshSystem(NULL_PTR), materialSystem(NULL_PTR),
+	: client(NULL_PTR), entityMgr(NULL_PTR), 
+	renderSystem(NULL_PTR), meshSystem(NULL_PTR), materialSystem(NULL_PTR), particleSystem(NULL_PTR),
 	componentFactory(NULL_PTR), skybox(NULL_PTR), options(NULL_PTR), player(NULL_PTR),
 	keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED"), 
 	loadMeshEventId("LOAD_MESH"), loadMaterialEventId("LOAD_MATERIAL"), moveEventId("MOVE")
@@ -38,6 +42,7 @@ Game::~Game()
 	if(renderSystem) delete renderSystem;
 	if(meshSystem) delete meshSystem;
 	if(materialSystem) delete materialSystem;
+	if(particleSystem) delete particleSystem;
 	if(componentFactory) delete componentFactory;
 }
 
@@ -49,6 +54,7 @@ void Game::initializeCore()
 	renderSystem = new Systems::RenderSystem();
 	meshSystem = new Systems::MeshSystem();
 	materialSystem = new Systems::MaterialSystem();
+	//particleSystem = new Systems::ParticleSystem();
 
 	componentFactory = new Totem::ComponentFactory();
 	Components::Renderable::RegisterToFactory(*componentFactory);
@@ -58,10 +64,13 @@ void Game::initializeCore()
 	Components::Player::RegisterToFactory(*componentFactory);
 	Components::Material::RegisterToFactory(*componentFactory);
 	Components::SkyboxGeometry::RegisterToFactory(*componentFactory);
+	Components::ParticleEmitter::RegisterToFactory(*componentFactory);
 }
 
 void Game::initializeGame()
 {
+	particleSystem = new Systems::ParticleSystem();
+
 	skybox = &entityMgr->create(*componentFactory);
 	skybox->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 	//dummy->addComponent("TriangleGeometry");
@@ -70,7 +79,17 @@ void Game::initializeGame()
 	//dummy->addComponent("IdleSpin");
 	//dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);
 	skybox->sendEvent3<T_String,T_String,T_String>(loadMaterialEventId, "../../resources/Skybox/", "Nebulea", ".png");
-	
+	skybox->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/skybox.vs";
+	skybox->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/skybox.fs";
+
+	test_particle = &entityMgr->create(*componentFactory);
+	test_particle->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
+	test_particle->addComponent<Systems::MaterialSystem>("Material", *materialSystem);
+	test_particle->addComponent<Systems::ParticleSystem>("ParticleEmitter", *particleSystem);
+	test_particle->sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Particles/", "FLARE", ".png", false,false,true,false,false);
+	test_particle->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -10.0f);
+	test_particle->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/particle.vs";
+	test_particle->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/particle.fs";
 }
 
 void Game::advanceFrame(const F32 &delta)
@@ -130,24 +149,30 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 			entity.getProperty<unsigned int>("Id") = id;
 			entity.getProperty<unsigned char>("Type") = entity_type;
 
-			glm::vec3 position = glm::vec3(transform[2][0]*50.0f, transform[2][1]*50.0f, 0.0f); //for now, this only contains position information
-			entity.getProperty<glm::vec3>("Position") = position;
-
 			if(entity_type == GP_GAME_OBJECT_TYPE_PLAYER)
 			{
-				Totem::Property<glm::gtc::quaternion::quat> pitch = entity.getProperty<glm::gtc::quaternion::quat>("StepPitchRotation");
-				pitch = glm::gtc::quaternion::rotate(pitch.get(), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+				glm::vec3 position = glm::vec3(transform[2][0], transform[2][1], 0.0f); //for now, this only contains position information
+				entity.getProperty<glm::vec3>("Position") = position;
 
-				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.5f);
+				Totem::Property<glm::gtc::quaternion::quat> pitch = entity.getProperty<glm::gtc::quaternion::quat>("StepPitchRotation");
+				pitch = glm::gtc::quaternion::rotate(pitch.get(), 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.02f);
 				
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
-				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "FEROX", ".tga", false,false,true,false,false);
+				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "FEROX", ".tga", true,false,true,true,true);
 			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
 			{
-				entity.getProperty<glm::vec3>("Scale") = glm::vec3(30.0f);
+				glm::vec3 position = glm::vec3(transform[2][0], transform[2][1], 0.0f); //for now, this only contains position information
+				entity.getProperty<glm::vec3>("Position") = position;
+
+				Totem::Property<glm::gtc::quaternion::quat> pitch = entity.getProperty<glm::gtc::quaternion::quat>("StepPitchRotation");
+				pitch = glm::gtc::quaternion::rotate(pitch.get(), 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+				entity.getProperty<glm::vec3>("Scale") = glm::vec3(0.6f);
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Station/", "space_station_0.3DS");
-				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "STAT", ".jpg", false,false,true,false,false);
+				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "STAT", ".jpg", true,false,true,true,true);
 			}
 		}
 	}

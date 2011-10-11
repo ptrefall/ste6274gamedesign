@@ -8,7 +8,7 @@ class GameOptions;
 class Client;
 class EntityManager;
 namespace Components { class Player; }
-namespace Systems { class RenderSystem; class MeshSystem; class MaterialSystem; }
+namespace Systems { class RenderSystem; class MeshSystem; class MaterialSystem; class ParticleSystem; }
 namespace Totem { class Entity; class ComponentFactory; }
 
 class Game : public Totem::TemplateEventHandler
@@ -38,8 +38,10 @@ private:
 	Systems::RenderSystem *renderSystem;
 	Systems::MeshSystem *meshSystem;
 	Systems::MaterialSystem *materialSystem;
+	Systems::ParticleSystem *particleSystem;
 	Totem::ComponentFactory *componentFactory;
 	Totem::Entity *skybox;
+	Totem::Entity *test_particle;
 
 	T_HashedString keyPressedEventId;
 	T_HashedString keyReleasedEventId;

@@ -21,7 +21,7 @@ Player::Player(Entity &owner, const T_String &name, Game &game)
 
 	x_dir = owner.addProperty<D32>("XDir", 0.0);
 	y_dir = owner.addProperty<D32>("YDir", 0.0);
-	velocity = owner.addProperty<D32>("Velocity", 20.0);
+	velocity = owner.addProperty<D32>("Velocity", 30.0);
 	qRotation = owner.addProperty<glm::gtc::quaternion::quat>("Rotation", glm::gtc::quaternion::quat());
 	qStepPitchRotation = owner.addProperty<glm::gtc::quaternion::quat>("StepPitchRotation", glm::gtc::quaternion::quat());
 	qStepYawRotation = owner.addProperty<glm::gtc::quaternion::quat>("StepYawRotation", glm::gtc::quaternion::quat());
@@ -29,7 +29,7 @@ Player::Player(Entity &owner, const T_String &name, Game &game)
 	position = owner.addProperty<glm::vec3>("Position", glm::vec3(0.0f));
 	position.valueChanged().connect(this, &Player::onPositionChanged);
 
-	camera_distance = owner.addProperty<glm::vec3>("CameraDistance", glm::vec3(0.0f, 0.0f, 5000.0f));
+	camera_distance = owner.addProperty<glm::vec3>("CameraDistance", glm::vec3(0.0f, 0.0f, 100.0f));
 	Camera::setPos(position.get()+camera_distance.get());
 
 	game.setPlayer(*this);
@@ -60,10 +60,10 @@ void Player::update(const F32 &deltaTime)
 		velocity_step -= 1.0;
 
 	if(key_map[Qt::Key_Left])
-		rolling_direction += 1;
+		rolling_direction -= 1;
 
 	if(key_map[Qt::Key_Right])
-		rolling_direction -= 1;
+		rolling_direction += 1;
 
 	if(rolling_direction != 0)
 	{
@@ -101,7 +101,7 @@ void Player::update(const F32 &deltaTime)
 	}
 
 	D32 xf = (D32)glm::sin(steer_angle_rad);
-	D32 yf = (D32)glm::cos(steer_angle_rad);
+	D32 yf = -(D32)glm::cos(steer_angle_rad);
 
 	velocity_step *= velocity.get() * (D32)deltaTime;
 

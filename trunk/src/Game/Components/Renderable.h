@@ -56,7 +56,10 @@ namespace Components
 		Graphics::VertexBufferObject *vbo;
 		Graphics::Shader *program;
 
+		Graphics::Uniform *proj;
 		Graphics::Uniform *mvp;
+		Graphics::Uniform *mv;
+		Graphics::Uniform *norm;
 		glm::mat4 mvpMat;
 
 		T_HashedString bindBindablesEventId;
