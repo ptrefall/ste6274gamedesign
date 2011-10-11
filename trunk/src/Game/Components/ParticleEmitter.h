@@ -2,8 +2,7 @@
 
 #include <Component.h>
 #include <Game/Graphics/Utils.h>
-#include <SPK.h>
-#include <SPK_GL.h>
+#include <Game/Graphics/EngineFlameParticleEngine.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
@@ -22,6 +21,8 @@ namespace Components
 
 		const glm::vec3 &getPos() const { return position.get(); }
 		const glm::vec3 &getColor() const { return color.get(); }
+		const T_HashedStringType &getParticleType() const { return particle_type.get(); }
+		const U32 &getParticleCount() const { return particle_count.get(); }
 
 		void setIndex(const S32 &index) { this->index = index; }
 		const S32 &getIndex() const { return index; }
@@ -32,6 +33,8 @@ namespace Components
 
 		Totem::Property<glm::vec3> position;
 		Totem::Property<glm::vec3> color;
+		Totem::Property<T_HashedStringType> particle_type;
+		Totem::Property<U32> particle_count;
 
 		//Delegates
 		T_HashedString customRendererId;

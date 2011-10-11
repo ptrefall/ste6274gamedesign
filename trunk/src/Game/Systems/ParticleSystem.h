@@ -1,7 +1,7 @@
 #pragma once
 
 #include <types_config.h>
-#include <SPK.h>
+#include <Game/Graphics/Particle.h>
 
 namespace Components {class ParticleEmitter; }
 
@@ -19,9 +19,7 @@ public:
 	void updateParticleEmitter(Components::ParticleEmitter *emitter, const F32 &deltaTime);
 	void renderParticleEmitter(Components::ParticleEmitter *emitter);
 private:
-	SPK::System* createParticleSystem(const SPK::Vector3D& pos,const SPK::Vector3D& color);
-	SPK::SPK_ID BaseSystemID;
 	T_Vector<Components::ParticleEmitter*>::Type emitters;
-	T_Vector<SPK::System*>::Type systems;
+	T_Vector<Graphics::QdParticleEngine*>::Type engines;
 };
 }

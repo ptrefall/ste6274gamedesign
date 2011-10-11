@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "GameOptions.h"
-#include <SPK.h>
 #include <Qt/Client/Client.h>
 #include <Qt/Client/Packet.h>
 #include "EntityManager.h"
@@ -90,6 +89,7 @@ void Game::initializeGame()
 	test_particle->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -10.0f);
 	test_particle->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/particle.vs";
 	test_particle->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/particle.fs";
+	test_particle->getProperty<glm::vec3>("Scale") = glm::vec3(100.0f);
 }
 
 void Game::advanceFrame(const F32 &delta)
