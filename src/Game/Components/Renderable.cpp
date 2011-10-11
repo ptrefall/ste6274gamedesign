@@ -22,6 +22,9 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 	colors = owner.addPropertyList<glm::vec3>("Colors");
 	texCoords = owner.addPropertyList<glm::vec2>("TexCoords");
 
+	vertexShaderPath = owner.addProperty<T_String>("VertexShader", "../../resources/Shaders/minimal.vs");
+	fragmentShaderPath = owner.addProperty<T_String>("FragmentShader", "../../resources/Shaders/minimal.fs");
+
 	modelMatrix = owner.addProperty<glm::mat4>("ModelMatrix", glm::mat4(1.0f));
 	qStepPitchRotation = owner.addProperty<glm::gtc::quaternion::quat>("StepPitchRotation", glm::gtc::quaternion::quat());
 	qStepYawRotation = owner.addProperty<glm::gtc::quaternion::quat>("StepYawRotation", glm::gtc::quaternion::quat());
@@ -42,7 +45,7 @@ Renderable::~Renderable()
 
 void Renderable::compile()
 {
-	program = renderSystem.getShaderSystem().create(GL_VERTEX_SHADER, "../../resources/Shaders/minimal.vs", GL_FRAGMENT_SHADER, "../../resources/Shaders/minimal.fs");
+	program = renderSystem.getShaderSystem().create(GL_VERTEX_SHADER, vertexShaderPath.get(), GL_FRAGMENT_SHADER, fragmentShaderPath.get());
 	program->link();
 
 	//GL( glGenVertexArrays(1, &vao); );

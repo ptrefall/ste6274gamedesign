@@ -2,7 +2,7 @@
 
 #include <types_config.h>
 
-namespace Components { class Material; }
+namespace Components { class Material; class SkyboxGeometry; }
 namespace Graphics { class Uniform; }
 
 namespace Systems
@@ -37,6 +37,7 @@ public:
 	~MaterialSystem();
 
 	void loadMaterial(Components::Material *material, const T_String &location, const T_String &filename, const T_String &extension, bool ao, bool bu, bool di, bool il, bool sp);
+	void loadMaterial(Components::SkyboxGeometry *material, const T_String &location, const T_String &filename, const T_String &extension);
 
 private:
 	TextureData *loadTexture(const T_String &filename, const unsigned int &slot);

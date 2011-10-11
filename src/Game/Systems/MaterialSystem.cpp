@@ -82,6 +82,64 @@ void MaterialSystem::loadMaterial(Components::Material *material, const T_String
 	materials.push_back(data);
 }
 
+void MaterialSystem::loadMaterial(Components::SkyboxGeometry *material, const T_String &location, const T_String &filename, const T_String &extension)
+{
+	T_HashedString id(filename);
+	//Check if this material is already loaded
+	for(unsigned int i = 0; i < materials.size(); i++)
+	{
+		if(materials[i]->id.getId() == id.getId())
+		{
+			MaterialData *data = materials[i];
+			material->injectData(data);
+			return;
+		}
+	}
+
+	//TODO: Complete impl for SkyboxGeometry!!!
+
+	//Else, let's load it!
+	MaterialData *data = new MaterialData(id);
+	if(ao)
+	{
+		T_String abs_filename = location + filename + T_String("_AO") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_ao", &tex->slot));
+	}
+	if(bu)
+	{
+		T_String abs_filename = location + filename + T_String("_BU") + extension;
+		TextureData *tex = loadTexture(abs_filename,1);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_bu", &tex->slot));
+	}
+	if(di)
+	{
+		T_String abs_filename = location + filename + T_String("_DI") + extension;
+		TextureData *tex = loadTexture(abs_filename,2);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_di", &tex->slot));
+	}
+	if(il)
+	{
+		T_String abs_filename = location + filename + T_String("_IL") + extension;
+		TextureData *tex = loadTexture(abs_filename,3);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_il", &tex->slot));
+	}
+	if(sp)
+	{
+		T_String abs_filename = location + filename + T_String("_SP") + extension;
+		TextureData *tex = loadTexture(abs_filename,4);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sp", &tex->slot));
+	}
+
+	material->injectData(data);
+	materials.push_back(data);
+}
+
 TextureData *MaterialSystem::loadTexture(const T_String &filename, const unsigned int &slot)
 {
 	ILuint img_id;

@@ -39,7 +39,7 @@ private:
 	Systems::MeshSystem *meshSystem;
 	Systems::MaterialSystem *materialSystem;
 	Totem::ComponentFactory *componentFactory;
-	Totem::Entity *dummy;
+	Totem::Entity *skybox;
 
 	T_HashedString keyPressedEventId;
 	T_HashedString keyReleasedEventId;
