@@ -1,5 +1,6 @@
 #include "MaterialSystem.h"
 #include <Game/Components/Material.h>
+#include <Game/Components/SkyboxGeometry.h>
 #include <Game/Graphics/Utils.h>
 #include <Game/Graphics/Uniform.h>
 #include <IL/il.h>
@@ -96,44 +97,49 @@ void MaterialSystem::loadMaterial(Components::SkyboxGeometry *material, const T_
 		}
 	}
 
-	//TODO: Complete impl for SkyboxGeometry!!!
-
 	//Else, let's load it!
 	MaterialData *data = new MaterialData(id);
-	if(ao)
+	//Z+
 	{
-		T_String abs_filename = location + filename + T_String("_AO") + extension;
+		T_String abs_filename = location + filename + T_String("_Z+") + extension;
 		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
-		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_ao", &tex->slot));
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
-	if(bu)
+	//X-
 	{
-		T_String abs_filename = location + filename + T_String("_BU") + extension;
-		TextureData *tex = loadTexture(abs_filename,1);
+		T_String abs_filename = location + filename + T_String("_X-") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
-		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_bu", &tex->slot));
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
-	if(di)
+	//Z-
 	{
-		T_String abs_filename = location + filename + T_String("_DI") + extension;
-		TextureData *tex = loadTexture(abs_filename,2);
+		T_String abs_filename = location + filename + T_String("_Z-") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
-		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_di", &tex->slot));
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
-	if(il)
+	//X+
 	{
-		T_String abs_filename = location + filename + T_String("_IL") + extension;
-		TextureData *tex = loadTexture(abs_filename,3);
+		T_String abs_filename = location + filename + T_String("_X+") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
-		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_il", &tex->slot));
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
-	if(sp)
+	//Y+
 	{
-		T_String abs_filename = location + filename + T_String("_SP") + extension;
-		TextureData *tex = loadTexture(abs_filename,4);
+		T_String abs_filename = location + filename + T_String("_Y+") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
 		data->textures.push_back(tex);
-		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sp", &tex->slot));
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
+	}
+	//Y-
+	{
+		T_String abs_filename = location + filename + T_String("_Y-") + extension;
+		TextureData *tex = loadTexture(abs_filename,0);
+		data->textures.push_back(tex);
+		data->uniforms.push_back(new Graphics::Uniform(GL_UNSIGNED_INT, "tex_sky", &tex->slot));
 	}
 
 	material->injectData(data);
@@ -191,7 +197,7 @@ TextureData *MaterialSystem::loadTexture(const T_String &filename, const unsigne
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glGenerateMipmap(GL_TEXTURE_2D);
+	//glGenerateMipmap(GL_TEXTURE_2D);
 
 	return new TextureData(gl_id, bpp, w, h, format, bits, slot);
 }

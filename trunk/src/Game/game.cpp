@@ -69,6 +69,7 @@ void Game::initializeGame()
 	skybox->addComponent<Systems::MaterialSystem>("SkyboxGeometry", *materialSystem);
 	//dummy->addComponent("IdleSpin");
 	//dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);
+	skybox->sendEvent3<T_String,T_String,T_String>(loadMaterialEventId, "../../resources/Skybox/", "Nebulea", ".png");
 	
 }
 

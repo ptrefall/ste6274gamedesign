@@ -11,7 +11,8 @@ using namespace Components;
 using namespace Totem;
 
 Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSystem &renderSystem)
-: Component(owner, name), renderSystem(renderSystem), mvp(0x0), bindBindablesEventId("BIND_BINDABLES")
+: Component(owner, name), renderSystem(renderSystem), mvp(0x0), 
+  bindBindablesEventId("BIND_BINDABLES"), customRendererId("CUSTOM_RENDERER")
 {
 	renderSystem.addRenderable(this);
 
@@ -124,39 +125,48 @@ void Renderable::render()
 
 	program->bind();
 	mvp->bind();
-	owner.sendEvent1<U32>(bindBindablesEventId, program->id);
-	glBegin(GL_TRIANGLES);
-	for(U32 i = 0; i < indices.size(); i++)
+	if(owner.hasEvent(bindBindablesEventId, 1))
+		owner.sendEvent1<U32>(bindBindablesEventId, program->id);
+
+	//Check if this entity has some component that installs a custom render function delegate
+	if(owner.hasFunction(customRendererId, 1))
+		owner.call1<const U32 &, T_Void>(customRendererId, program->id);
+	//Else we just render by general approach
+	else
 	{
-		unsigned int index = indices[i].get();
-		/*if(!normals.empty())
+		glBegin(GL_TRIANGLES);
+		for(U32 i = 0; i < indices.size(); i++)
 		{
-			const glm::vec3 &normal = normals[index].get();
-			glNormal3f(normal.x, normal.y, normal.z);
+			unsigned int index = indices[i].get();
+			/*if(!normals.empty())
+			{
+				const glm::vec3 &normal = normals[index].get();
+				glNormal3f(normal.x, normal.y, normal.z);
+			}
+
+			if(!tangents.empty())
+			{
+				const glm::vec3 &tangent = tangents[index].get();
+				glVertexAttrib3f(ATTRIB_TANGENT, tangent.x, tangent.y, tangent.z);
+			}
+
+			if(!colors.empty())
+			{
+				const glm::vec3 &color = colors[index].get();
+				glColor4f(color.r, color.g, color.b, 1.0f);
+			}*/
+
+			if(!texCoords.empty())
+			{
+				const glm::vec2 &texCoord = texCoords[index].get();
+				glTexCoord2f(texCoord.s, texCoord.t);
+			}
+
+			const glm::vec3 &vertex = vertices[index].get();
+			glVertex3f(vertex.x, vertex.y, vertex.z);
 		}
-
-		if(!tangents.empty())
-		{
-			const glm::vec3 &tangent = tangents[index].get();
-			glVertexAttrib3f(ATTRIB_TANGENT, tangent.x, tangent.y, tangent.z);
-		}
-
-		if(!colors.empty())
-		{
-			const glm::vec3 &color = colors[index].get();
-			glColor4f(color.r, color.g, color.b, 1.0f);
-		}*/
-
-		if(!texCoords.empty())
-		{
-			const glm::vec2 &texCoord = texCoords[index].get();
-			glTexCoord2f(texCoord.s, texCoord.t);
-		}
-
-		const glm::vec3 &vertex = vertices[index].get();
-		glVertex3f(vertex.x, vertex.y, vertex.z);
+		glEnd();
 	}
-	glEnd();
 	program->unbind();
 
 	/*program->bind();

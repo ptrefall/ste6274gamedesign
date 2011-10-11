@@ -11,7 +11,7 @@ namespace Components { class Player; }
 namespace Systems { class RenderSystem; class MeshSystem; class MaterialSystem; }
 namespace Totem { class Entity; class ComponentFactory; }
 
-class Game : public Totem::EventHandler
+class Game : public Totem::TemplateEventHandler
 {
 public:
 	Game();
