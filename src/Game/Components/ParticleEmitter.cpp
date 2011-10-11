@@ -14,6 +14,8 @@ ParticleEmitter::ParticleEmitter(Entity &owner, const T_String &name, Systems::P
 {
 	position = owner.addProperty<glm::vec3>("Position", glm::vec3(0.0f));
 	color = owner.addProperty<glm::vec3>("Color", glm::vec3(1.0f));
+	particle_type = owner.addProperty<T_HashedStringType>("ParticleType", T_HashedString("ENGINE_FLAME").getId());
+	particle_count = owner.addProperty<U32>("ParticleCount", 1000);
 
 	owner.registerFunction1<const U32 &, T_Void>(customRendererId).bind(this, &ParticleEmitter::customRenderFunc);
 
@@ -32,8 +34,13 @@ void ParticleEmitter::update(const F32 &deltaTime)
 
 T_Void ParticleEmitter::customRenderFunc(const U32 &program_id)
 {
-	glActiveTexture(GL_TEXTURE0);
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);       
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_2D, 7);
 	particleSystem.renderParticleEmitter(this);
+	glEnable(GL_DEPTH_TEST);       
+	glDisable(GL_BLEND);
 	return (T_Void)NULL_PTR;
 }

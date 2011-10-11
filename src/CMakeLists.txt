@@ -144,6 +144,9 @@ set(GAME_GRAPHICS_HDRS
 	${GAME_GRAPHICS_SRC_ROOT}/Shader.h
 	${GAME_GRAPHICS_SRC_ROOT}/ShaderSystem.h
 	${GAME_GRAPHICS_SRC_ROOT}/Utils.h
+	${GAME_GRAPHICS_SRC_ROOT}/Particle.h
+	${GAME_GRAPHICS_SRC_ROOT}/qd.h
+	${GAME_GRAPHICS_SRC_ROOT}/EngineFlameParticleEngine.h
 )
 SOURCE_GROUP("Header Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_HDRS})
 
@@ -153,6 +156,8 @@ set(GAME_GRAPHICS_SRCS
 	${GAME_GRAPHICS_SRC_ROOT}/UniformBufferObject.cpp
 	${GAME_GRAPHICS_SRC_ROOT}/Shader.cpp
 	${GAME_GRAPHICS_SRC_ROOT}/ShaderSystem.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/Particle.cpp
+	${GAME_GRAPHICS_SRC_ROOT}/EngineFlameParticleEngine.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Graphics" FILES ${GAME_GRAPHICS_SRCS})
 #---------------------------------------------------------------
@@ -170,7 +175,7 @@ CMP_QT_LIBRARIES_INSTALL_RULES("QtCore;QtGui;QtOpenGL;QtNetwork" ${GameDesignCli
 find_package(GLM REQUIRED)
 find_package(AssImp REQUIRED)
 find_package(DevIL REQUIRED)
-find_package(SPARK REQUIRED)
+#find_package(SPARK REQUIRED)
 CMP_ASSIMP_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 CMP_DEVIL_INSTALL_RULES(${GameDesignClient_BINARY_DIR}/src)
 set(WINDOW_EXT_LIBS ${OPENGL_gl_LIBRARY})
@@ -182,7 +187,7 @@ include(${QT_USE_FILE})
 include_directories(${GLM_DIR})
 include_directories(${ASSIMP_INCLUDE_PATH})
 include_directories(${DEVIL_INCLUDE_PATH})
-include_directories(${SPARK_INCLUDE_PATH})
+#include_directories(${SPARK_INCLUDE_PATH})
 include_directories(${GameDesignClient_BINARY_DIR}/src)
 #---------------------------------------------------------------
 QT4_WRAP_CPP(MOCS ${GV_HDRS} ${CLIENT_HDRS} ${UI_HDRS})
@@ -212,8 +217,8 @@ target_link_libraries(GameDesignClient
   TotemEDK
   debug ${ASSIMP_LIBRARY_DEBUG_X86} optimized ${ASSIMP_LIBRARY_RELEASE_X86}
   ${DEVIL_LIBRARY} ${DEVIL_ILU_LIBRARY} ${DEVIL_ILUT_LIBRARY}
-  debug ${SPARK_LIBRARY_DEBUG} optimized ${SPARK_LIBRARY_RELEASE}
-  debug ${SPARK_GL_LIBRARY_DEBUG} optimized ${SPARK_GL_LIBRARY_RELEASE}
+  #debug ${SPARK_LIBRARY_DEBUG} optimized ${SPARK_LIBRARY_RELEASE}
+  #debug ${SPARK_GL_LIBRARY_DEBUG} optimized ${SPARK_GL_LIBRARY_RELEASE}
 )
 #---------------------------------------------------------------
 #INSTALL(FILES ${UICS} DESTINATION "${QT_UI_SRC_ROOT}")
