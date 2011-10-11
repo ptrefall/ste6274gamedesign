@@ -23,7 +23,7 @@
 {																		\
 	GLenum glError;														\
 	if ((glError = glGetError()) != GL_NO_ERROR) {						\
-		std::cerr << "OpenGL error code at line" << __LINE__ << ": " << glError << std::endl;		\
+		std::cerr << "OpenGL error code in " << __FILE__ << " at line " << __LINE__ << ": " << glError << std::endl;		\
 	}																	\
 }
 
@@ -33,5 +33,5 @@
 	if(GL_DEBUG) {														\
 	GLenum glError;														\
 	if ((glError = glGetError()) != GL_NO_ERROR) {						\
-		std::cerr << "OpenGL error code at line" << __LINE__ << ": " << glError << std::endl;		\
+		std::cerr << "OpenGL error code in " << __FILE__ << " at line " << __LINE__ << ": " << glError << std::endl;		\
 	}}}

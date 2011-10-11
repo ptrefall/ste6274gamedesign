@@ -106,7 +106,11 @@ void OpenGL2GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 	const S32 delta = m_time.elapsed() - m_lastTime;
 	m_lastTime += delta;
 	//painter->beginNativePainting();
+	/*glPushMatrix();
+	glPushAttrib(GL_ALL_ATTRIB_BITS);*/
 	game.advanceFrame((F32)delta/1000.0f);
+	/*glPopAttrib();
+	glPopMatrix();*/
 	//painter->endNativePainting();
 	//////////////////////////////
 

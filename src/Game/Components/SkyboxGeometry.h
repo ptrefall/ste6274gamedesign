@@ -35,5 +35,9 @@ namespace Components
 
 		T_HashedString bindBindablesEventId;
 		void onBindBindablesEvent(const U32 &program_id);
+
+		//Delegates
+		T_HashedString customRendererId;
+		T_Void customRenderFunc(const U32 &program_id);
 	};
 }

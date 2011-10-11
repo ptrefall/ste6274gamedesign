@@ -33,6 +33,8 @@ namespace Components
 		Totem::PropertyList<glm::vec3> colors;
 		Totem::PropertyList<glm::vec2> texCoords;
 
+		T_HashedString customRendererId;
+
 		Totem::Property<T_String> vertexShaderPath;
 		Totem::Property<T_String> fragmentShaderPath;
 
