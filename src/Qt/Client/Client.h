@@ -38,11 +38,13 @@ signals:
 	void signConnectToHost(const QHostAddress&, const quint16 &);
 	void signDisconnectFromHost();
 	void signLoginToGame();
+	void signPartFromGame();
 
 public slots:
 	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
 	void disconnectFromHost();
 	void loginToGame();
+	void partFromGame();
 
 private:
 	bool is_client_id_valid;

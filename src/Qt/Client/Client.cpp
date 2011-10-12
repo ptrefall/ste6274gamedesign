@@ -36,6 +36,11 @@ void Client::loginToGame()
 	emit signLoginToGame();
 }
 
+void Client::partFromGame()
+{
+	emit signPartFromGame();
+}
+
 void Client::update(float dt)
 {
 	thread->update();

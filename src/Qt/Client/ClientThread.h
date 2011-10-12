@@ -55,6 +55,7 @@ private slots:
 	void displayError(QAbstractSocket::SocketError);
 	void readReady();
 	void loginToGame();
+	void partFromGame();
 	void game_hostFound();
 	void game_connectionSucceeded();
 	void game_readReady();
@@ -70,6 +71,7 @@ private:
 	void handleJoinAnswer(const gp_join_answer &answer);
 	void handleClientVerificationRequest(const bool /*request*/);
 	void handleGameUpdate(const gp_game_update &answer);
+	void handleErrorResponse(const gp_client_error_response &answer);
 	
 	QTcpSocket *socket;
 	QTcpSocket *game_socket;
