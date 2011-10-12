@@ -49,7 +49,7 @@ Player::~Player()
 void Player::update(const F32 &deltaTime)
 {
 	if(key_map[Qt::Key_Escape])
-		game.exitToMenu();
+		return;
 
 	//reset
 	x_dir = 0.0;
@@ -134,6 +134,9 @@ void Player::update(const F32 &deltaTime)
 void Player::onKeyPressed(const int &key, const unsigned int &modifiers)
 {
 	key_map[key] = true;
+
+	if(key == Qt::Key_Escape)
+		game.exitToMenu();
 }
 
 void Player::onKeyReleased(const int &key, const unsigned int &modifiers)

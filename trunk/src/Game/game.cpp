@@ -213,5 +213,5 @@ void Game::onMove(const T_String &x, const T_String &y)
 void Game::exitToMenu()
 {
 	in_menu = true;
-	client->disconnectFromHost();
+	client->partFromGame();
 }

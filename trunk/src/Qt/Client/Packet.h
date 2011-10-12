@@ -16,6 +16,7 @@ public:
 	Packet(const gp_join_answer &answer);
 	Packet(const gp_client_verification_answer &answer);
 	Packet(const gp_game_update &answer);
+	Packet(const gp_client_error_response &answer);
 
 	const gp_default_server_query	&getDsqReq()  const { return data.r0; }
 	const gp_connect_request		&getConReq()  const { return data.r1; }
@@ -28,6 +29,7 @@ public:
 	const gp_join_answer					&getJoinAns() const { return data.a2; }
 	const gp_client_verification_answer		&getVerAns() const { return data.a3; }
 	const gp_game_update					&getGameUpd() const { return data.a4; }
+	const gp_client_error_response			&getError() const { return data.a5; }
 
 	bool isDsqReq()  const { return is_dsq_req; }
 	bool isConReq()  const { return is_con_req; }
@@ -39,6 +41,7 @@ public:
 	bool isJoinAns() const { return is_join_ans; }
 	bool isVerAns() const { return is_ver_ans; }
 	bool isGameUpd() const { return is_game_upd; }
+	bool isError() const { return is_error; }
 
 	bool isGamePacket() const { return game_packet; }
 
@@ -54,9 +57,10 @@ private:
 		gp_join_answer					a2;
 		gp_client_verification_answer	a3;
 		gp_game_update					a4;
+		gp_client_error_response		a5;
 	} data;
 
 	bool is_dsq_req, is_con_req, is_join_req, is_ver_req, is_game_req,
-		 is_dsq_ans, is_con_ans, is_join_ans, is_ver_ans, is_game_upd;
+		 is_dsq_ans, is_con_ans, is_join_ans, is_ver_ans, is_game_upd, is_error;
 	bool game_packet;
 };

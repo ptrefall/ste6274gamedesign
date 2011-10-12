@@ -96,6 +96,12 @@ bool SocketParseTask::parseRequest(QTcpSocket &socket, gp_header_prefix &prefix,
 			in.readRawData((char*)(&request), sizeof(gp_game_request));
 			client.queueParsedPacket(new Packet(request), true);
 		}break;
+	case GP_REQUEST_TYPE_ERROR:
+		{
+			gp_client_error_response request;
+			in.readRawData((char*)(&request), sizeof(gp_client_error_response));
+			client.queueParsedPacket(new Packet(request), false);
+		}
 	default: return false;
 	};
 	
@@ -141,6 +147,12 @@ bool SocketParseTask::parseAnswer(QTcpSocket &socket, gp_header_prefix &prefix, 
 			in.readRawData((char*)(&answer), sizeof(gp_game_update));
 			client.queueParsedPacket(new Packet(answer), true);
 		}break;
+	case GP_REQUEST_TYPE_ERROR:
+		{
+			gp_client_error_response answer;
+			in.readRawData((char*)(&answer), sizeof(gp_client_error_response));
+			client.queueParsedPacket(new Packet(answer), false);
+		}
 	default: return false;
 	};
 

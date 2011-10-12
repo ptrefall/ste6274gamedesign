@@ -32,6 +32,7 @@ void ClientThread::run()
 	connect(&client, SIGNAL(signConnectToHost(const QHostAddress&, const quint16 &)), this, SLOT(connectToHost(const QHostAddress&, const quint16 &)));
 	connect(&client, SIGNAL(signDisconnectFromHost()), this, SLOT(disconnectFromHost()));
 	connect(&client, SIGNAL(signLoginToGame()), this, SLOT(loginToGame()));
+	connect(&client, SIGNAL(signPartFromGame()), this, SLOT(partFromGame()));
 	connect(socket, SIGNAL(hostFound()), this, SLOT(hostFound()));
 	connect(socket, SIGNAL(connected()), this, SLOT(connectionSucceeded()));
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(displayError(QAbstractSocket::SocketError)));
@@ -253,6 +254,8 @@ void ClientThread::handleParsedPacket(Packet *packet)
 		handleDsqAnswer(packet->getDsqAns());
 	else if(packet->isJoinAns())
 		handleJoinAnswer(packet->getJoinAns());
+	else if(packet->isError())
+		handleErrorResponse(packet->getError());
 }
 
 void ClientThread::handleParsedGamePacket(Packet *packet)
@@ -279,7 +282,6 @@ void ClientThread::handleConnectAnswer(const gp_connect_answer &answer)
 	else if(answer.state == GP_CONNECT_FLAG_DISCONNECT)
 	{
 		emit signConnectFailed("Disconnected from server");
-		game_socket->disconnect();
 		socket->disconnect();
 	}
 }
@@ -323,6 +325,12 @@ void ClientThread::handleJoinAnswer(const gp_join_answer &answer)
 
 			connect_to_game_host = true;
 		}
+	}
+	else if(answer.state == GP_JOIN_FLAG_PART)
+	{
+		emit signConnectFailed("Parted game!");
+		game_socket->disconnect();
+		disconnectFromHost();
 	}
 }
 
@@ -370,6 +378,37 @@ void ClientThread::loginToGame()
 	task.run(false);
 }
 
+void ClientThread::partFromGame()
+{
+	GameOptions &opt = game.getOptions();
+
+	gp_join_request request;
+	request.client_id = client.getId();
+	if(opt.player_name.size() < 64)
+	{
+		memcpy(request.player_name, opt.player_name.c_str(), opt.player_name.size());
+		request.player_name[opt.player_name.size()] = '\0';
+	}
+	if(opt.player_race.size() < 32)
+	{
+		memcpy(request.race, opt.player_race.c_str(), opt.player_race.size());
+		request.race[opt.player_race.size()] = '\0';
+	}
+	if(opt.player_class.size() < 32)
+	{
+		memcpy(request.class_, opt.player_class.c_str(), opt.player_class.size());
+		request.class_[opt.player_class.size()] = '\0';
+	}
+
+	request.flags.join_flag = GP_JOIN_FLAG_PART;
+	request.flags.client_type = GP_JOIN_CLIENT_TYPE_PLAYER;
+
+	request.team_id = opt.player_team_id;
+
+	SocketPackTask<gp_join_request> task = SocketPackTask<gp_join_request>(*this, GP_REQUEST_TYPE_JOIN, false, request, request_count);
+	task.run(false);
+}
+
 void ClientThread::handleGameUpdate(const gp_game_update &answer)
 {
 	
@@ -405,4 +444,119 @@ void ClientThread::onMoveEvent(const T_String &x, const T_String &y)
 
 	SocketPackTask<gp_game_request> task = SocketPackTask<gp_game_request>(*this, GP_REQUEST_TYPE_GAME, false, request, request_count);
 	task.run(true);
+}
+
+void ClientThread::handleErrorResponse(const gp_client_error_response &answer)
+{
+	switch(answer.error)
+	{
+	case GP_ERROR_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_QUERY_INVALID_HEADER:
+		{
+			std::cout << "GP_ERROR_QUERY_INVALID_HEADER" << std::endl;
+		}break;
+	case GP_ERROR_QUERY_INVALID_TYPE:
+		{
+			std::cout << "GP_ERROR_QUERY_INVALID_TYPE" << std::endl;
+		}break;
+	case GP_ERROR_QUERY_INVALID_RECIEVER_TYPE:
+		{
+			std::cout << "GP_ERROR_QUERY_INVALID_RECIEVER_TYPE" << std::endl;
+		}break;
+	case GP_ERROR_CONNECT_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_CONNECT_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_CONNECT_CONNECTED:
+		{
+			std::cout << "GP_ERROR_CONNECT_CONNECTED" << std::endl;
+		}break;
+	case GP_ERROR_CONNECT_DISCONNECTED:
+		{
+			std::cout << "GP_ERROR_CONNECT_DISCONNECTED" << std::endl;
+		}break;
+	case GP_ERROR_DSQ_NOT_CONNECTED:
+		{
+			std::cout << "GP_ERROR_DSQ_NOT_CONNECTED" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_JOIN_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_SERVER_FULL:
+		{
+			std::cout << "GP_ERROR_JOIN_SERVER_FULL" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_TEAM_FULL:
+		{
+			std::cout << "GP_ERROR_JOIN_TEAM_FULL" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_TEAM_ID_INVALID:
+		{
+			std::cout << "GP_ERROR_JOIN_TEAM_ID_INVALID" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_CLASS_INVALID:
+		{
+			std::cout << "GP_ERROR_JOIN_CLASS_INVALID" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_RACE_INVALID:
+		{
+			std::cout << "GP_ERROR_JOIN_RACE_INVALID" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_IN_PROGRESS:
+		{
+			std::cout << "GP_ERROR_JOIN_IN_PROGRESS" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_NOT_IN_PROGRESS:
+		{
+			std::cout << "GP_ERROR_JOIN_NOT_IN_PROGRESS" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_JOINED:
+		{
+			std::cout << "GP_ERROR_JOIN_JOINED" << std::endl;
+		}break;
+	case GP_ERROR_JOIN_NOT_JOINED:
+		{
+			std::cout << "GP_ERROR_JOIN_NOT_JOINED" << std::endl;
+		}break;
+	case GP_ERROR_CVERIFICATION_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_CVERIFICATION_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_CVERIFICATION_INVALID_ID:
+		{
+			std::cout << "GP_ERROR_CVERIFICATION_INVALID_ID" << std::endl;
+		}break;
+	case GP_ERROR_CVERIFICATION_INVALID_CODE:
+		{
+			std::cout << "GP_ERROR_CVERIFICATION_INVALID_CODE" << std::endl;
+		}break;
+	case GP_ERROR_GAME_REQUEST_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_GAME_REQUEST_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_GAME_REQUEST_INVALID_CMD:
+		{
+			std::cout << "GP_ERROR_GAME_REQUEST_INVALID_CMD" << std::endl;
+		}break;
+	case GP_ERROR_GAME_REQUEST_INVALID_PARAM:
+		{
+			std::cout << "GP_ERROR_GAME_REQUEST_INVALID_PARAM" << std::endl;
+		}break;
+	case GP_ERROR_MAP_UNKNOWN:
+		{
+			std::cout << "GP_ERROR_MAP_UNKNOWN" << std::endl;
+		}break;
+	case GP_ERROR_MAP_INVALID_ID:
+		{
+			std::cout << "GP_ERROR_MAP_INVALID_ID" << std::endl;
+		}break;
+	default:
+		{
+			std::cout << "GP_UNHANDLED_ERROR" << std::endl;
+		}break;
+	};
 }
