@@ -49,6 +49,7 @@ signals:
 
 private slots:
 	void connectToHost(const QHostAddress& address, const quint16 &port);
+	void disconnectFromHost();
 	void hostFound();
 	void connectionSucceeded();
 	void displayError(QAbstractSocket::SocketError);
