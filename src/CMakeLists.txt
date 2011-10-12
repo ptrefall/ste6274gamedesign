@@ -119,6 +119,7 @@ set(GAME_COMPONENTS_HDRS
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.h
 	${GAME_COMPONENTS_SRC_ROOT}/Material.h
 	${GAME_COMPONENTS_SRC_ROOT}/ParticleEmitter.h
+	${GAME_COMPONENTS_SRC_ROOT}/Attachments.h
 )
 SOURCE_GROUP("Header Files\\Game\\Components" FILES ${GAME_COMPONENTS_HDRS})
 
@@ -132,6 +133,7 @@ set(GAME_COMPONENTS_SRCS
 	${GAME_COMPONENTS_SRC_ROOT}/Aircraft.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/Material.cpp
 	${GAME_COMPONENTS_SRC_ROOT}/ParticleEmitter.cpp
+	${GAME_COMPONENTS_SRC_ROOT}/Attachments.cpp
 )
 SOURCE_GROUP("Source Files\\Game\\Components" FILES ${GAME_COMPONENTS_SRCS})
 #---------------------------------------------------------------

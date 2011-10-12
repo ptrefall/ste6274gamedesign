@@ -17,6 +17,7 @@
 #include "Components\Player.h"
 #include "Components\Material.h"
 #include "Components\ParticleEmitter.h"
+#include "Components\Attachments.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -64,6 +65,7 @@ void Game::initializeCore()
 	Components::Material::RegisterToFactory(*componentFactory);
 	Components::SkyboxGeometry::RegisterToFactory(*componentFactory);
 	Components::ParticleEmitter::RegisterToFactory(*componentFactory);
+	Components::Attachments::RegisterToFactory(*componentFactory);
 }
 
 void Game::initializeGame()
@@ -72,24 +74,20 @@ void Game::initializeGame()
 
 	skybox = &entityMgr->create(*componentFactory);
 	skybox->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
-	//dummy->addComponent("TriangleGeometry");
-	//skybox->addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
 	skybox->addComponent<Systems::MaterialSystem>("SkyboxGeometry", *materialSystem);
-	//dummy->addComponent("IdleSpin");
-	//dummy->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -800.0f);
 	skybox->sendEvent3<T_String,T_String,T_String>(loadMaterialEventId, "../../resources/Skybox/", "Nebulea", ".png");
 	skybox->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/skybox.vs";
 	skybox->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/skybox.fs";
 
-	test_particle = &entityMgr->create(*componentFactory);
+	/*test_particle = &entityMgr->create(*componentFactory);
 	test_particle->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 	test_particle->addComponent<Systems::MaterialSystem>("Material", *materialSystem);
 	test_particle->addComponent<Systems::ParticleSystem>("ParticleEmitter", *particleSystem);
 	test_particle->sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Particles/", "FLARE", ".png", false,false,true,false,false);
-	test_particle->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, -10.0f);
+	test_particle->getProperty<glm::vec3>("Position") = glm::vec3(0.0f, 0.0f, 0.0f);
 	test_particle->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/particle.vs";
 	test_particle->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/particle.fs";
-	test_particle->getProperty<glm::vec3>("Scale") = glm::vec3(100.0f);
+	test_particle->getProperty<glm::vec3>("Scale") = glm::vec3(4.0f, 10.0f, 10.0f);*/
 }
 
 void Game::advanceFrame(const F32 &delta)
@@ -138,6 +136,7 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 			entity.addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
 			entity.addComponent<Systems::MeshSystem>("MeshGeometry", *meshSystem);
 			entity.addComponent<Systems::MaterialSystem>("Material", *materialSystem);
+			entity.addComponent("Attachments");
 
 			//If this entity is tied to our client id on the server, add the Player component to it.
 			if(id == client->getId())
@@ -161,6 +160,19 @@ void Game::handleNetGameUpdate(const gp_game_update &update)
 				
 				entity.sendEvent2<T_String,T_String>(loadMeshEventId, "../../resources/Mesh/Ferox/", "Ferox.3DS");
 				entity.sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Textures/", "FEROX", ".tga", true,false,true,true,true);
+
+				{
+					Totem::Entity *engine_flame = &entityMgr->create(*componentFactory);
+					engine_flame->addComponent<Systems::RenderSystem>("Renderable", *renderSystem);
+					engine_flame->addComponent<Systems::MaterialSystem>("Material", *materialSystem);
+					engine_flame->addComponent<Systems::ParticleSystem>("ParticleEmitter", *particleSystem);
+					engine_flame->sendEvent8<T_String,T_String,T_String,bool,bool,bool,bool,bool>(loadMaterialEventId, "../../resources/Particles/", "FLARE", ".png", false,false,true,false,false);
+					engine_flame->addProperty<glm::vec3>("Offset", glm::vec3(-0.5f, 17.0f, 0.0f));
+					engine_flame->getProperty<T_String>("VertexShader")	= "../../resources/Shaders/particle.vs";
+					engine_flame->getProperty<T_String>("FragmentShader")	= "../../resources/Shaders/particle.fs";
+					engine_flame->getProperty<glm::vec3>("Scale") = glm::vec3(4.0f, 10.0f, 10.0f);
+					entity.getPropertyList<Totem::Entity*>("Attachments").push_back(engine_flame);
+				}
 			}
 			else if(entity_type == GP_GAME_OBJECT_TYPE_WORLD)
 			{

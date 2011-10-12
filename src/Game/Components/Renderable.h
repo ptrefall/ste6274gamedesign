@@ -46,6 +46,8 @@ namespace Components
 		Totem::Property<glm::vec3> position;
 		Totem::Property<glm::vec3> scale;
 
+		Totem::Property<glm::mat4> inheritedModelMatrix;
+
 		glm::gtc::quaternion::quat yaw;
 		glm::gtc::quaternion::quat pitch;
 		glm::gtc::quaternion::quat roll;

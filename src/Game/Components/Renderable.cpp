@@ -34,6 +34,8 @@ Renderable::Renderable(Entity &owner, const T_String &name, Systems::RenderSyste
 	position = owner.addProperty<glm::vec3>("Position", glm::vec3(0.0f));
 	scale = owner.addProperty<glm::vec3>("Scale", glm::vec3(1.0f));
 
+	inheritedModelMatrix = owner.addProperty<glm::mat4>("InheritedModelMatrix", glm::mat4(1.0f));
+
 	compiled = owner.addProperty<bool>("Compiled", false);
 }
 
@@ -92,8 +94,8 @@ void Renderable::prepare()
 	translate[3][2] = position.get().z;
 
 	// Then, we calculate the local transformation matrix
-	modelMatrix = glm::mat4(1.0f);
-	modelMatrix *= translate;
+	glm::mat4 tmp_model = glm::mat4(1.0f);
+	tmp_model *= translate;
 
 	qRotation *= (qStepYawRotation.get() * qStepPitchRotation.get() * qStepRollRotation.get());
 	if( qRotation.get() != glm::gtc::quaternion::quat() )
@@ -107,14 +109,19 @@ void Renderable::prepare()
 		qStepPitchRotation = glm::gtc::quaternion::quat();
 		qStepRollRotation = glm::gtc::quaternion::quat();
 	
-		modelMatrix *= rotation;
+		tmp_model *= rotation;
 		/*modelMatrix *= glm::gtc::quaternion::mat4_cast(yaw);
 		modelMatrix *= glm::gtc::quaternion::mat4_cast(pitch);
 		modelMatrix *= glm::gtc::quaternion::mat4_cast(roll);*/
 	}
 
 	if(scale.get() != glm::vec3(1.0f))
-		modelMatrix = glm::gtc::matrix_transform::scale(modelMatrix.get(), scale.get());
+		tmp_model = glm::gtc::matrix_transform::scale(tmp_model, scale.get());
+
+	if(inheritedModelMatrix.get() != glm::mat4(1.0f))
+		tmp_model = inheritedModelMatrix.get() * tmp_model;
+
+	modelMatrix = tmp_model;
 
 	/*GLdouble p[16];
 	GLdouble v[16]; 
