@@ -30,6 +30,7 @@ void ClientThread::run()
 	socketParseTask = new SocketParseTask(*this);
 
 	connect(&client, SIGNAL(signConnectToHost(const QHostAddress&, const quint16 &)), this, SLOT(connectToHost(const QHostAddress&, const quint16 &)));
+	connect(&client, SIGNAL(signDisconnectFromHost()), this, SLOT(disconnectFromHost()));
 	connect(&client, SIGNAL(signLoginToGame()), this, SLOT(loginToGame()));
 	connect(socket, SIGNAL(hostFound()), this, SLOT(hostFound()));
 	connect(socket, SIGNAL(connected()), this, SLOT(connectionSucceeded()));
@@ -56,6 +57,15 @@ void ClientThread::connectToHost(const QHostAddress& address, const quint16 &por
 	this->address = address;
 	this->port = port;
 	connect_to_host = true;
+}
+
+void ClientThread::disconnectFromHost()
+{
+	gp_connect_request request;
+	request.connect_flag = GP_CONNECT_FLAG_DISCONNECT;
+	
+	SocketPackTask<gp_connect_request> task = SocketPackTask<gp_connect_request>(*this, GP_REQUEST_TYPE_CONNECT, false, request, request_count);
+	task.run(false);
 }
 
 void ClientThread::hostFound()
@@ -266,9 +276,11 @@ void ClientThread::handleConnectAnswer(const gp_connect_answer &answer)
 		SocketPackTask<gp_default_server_query> task = SocketPackTask<gp_default_server_query>(*this, GP_REQUEST_TYPE_DEFAULT_SERVER_QUERY, false, request, request_count);
 		task.run(false);
 	}
-	else
+	else if(answer.state == GP_CONNECT_FLAG_DISCONNECT)
 	{
-
+		emit signConnectFailed("Disconnected from server");
+		game_socket->disconnect();
+		socket->disconnect();
 	}
 }
 

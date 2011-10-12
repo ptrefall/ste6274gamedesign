@@ -64,5 +64,6 @@ int main(int argc, char **argv)
     view.show();
 	view.resize(1024, 768);
 
-    return app.exec();
+	int result = app.exec();
+    return result;
 }

@@ -25,6 +25,8 @@ public:
 
 	void setPlayer(Components::Player &player) { this->player = &player; }
 
+	void exitToMenu();
+
 private:
 	void parseNetGamePackets();
 	void handleNetGameUpdate(const gp_game_update &update);
@@ -50,4 +52,5 @@ private:
 	T_HashedString moveEventId;
 
 	Components::Player *player;
+	bool in_menu;
 };

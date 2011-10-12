@@ -18,6 +18,7 @@ Player::Player(Entity &owner, const T_String &name, Game &game)
 	key_map[Qt::Key_Down] = false;
 	key_map[Qt::Key_Left] = false;
 	key_map[Qt::Key_Right] = false;
+	key_map[Qt::Key_Escape] = false;
 
 	x_dir = owner.addProperty<D32>("XDir", 0.0);
 	y_dir = owner.addProperty<D32>("YDir", 0.0);
@@ -47,6 +48,9 @@ Player::~Player()
 
 void Player::update(const F32 &deltaTime)
 {
+	if(key_map[Qt::Key_Escape])
+		game.exitToMenu();
+
 	//reset
 	x_dir = 0.0;
 	y_dir = 0.0;

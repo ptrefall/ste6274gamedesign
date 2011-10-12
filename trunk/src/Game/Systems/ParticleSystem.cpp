@@ -37,7 +37,7 @@ void ParticleSystem::loadParticleEmitter(Components::ParticleEmitter *emitter)
 
 void ParticleSystem::removeParticleEmitter(Components::ParticleEmitter *emitter)
 {
-	const S32 &index = emitter->getIndex();
+	/*const S32 &index = emitter->getIndex();
 	if(index < 0)
 		return;
 
@@ -49,7 +49,7 @@ void ParticleSystem::removeParticleEmitter(Components::ParticleEmitter *emitter)
 	engines.pop_back();
 	delete engine;
 
-	emitter->setIndex(-1);
+	emitter->setIndex(-1);*/
 }
 
 void ParticleSystem::updateParticleEmitter(Components::ParticleEmitter *emitter, const F32 &deltaTime)

@@ -23,7 +23,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Game::Game()
-	: client(NULL_PTR), entityMgr(NULL_PTR), 
+	: client(NULL_PTR), entityMgr(NULL_PTR), in_menu(false),
 	renderSystem(NULL_PTR), meshSystem(NULL_PTR), materialSystem(NULL_PTR), particleSystem(NULL_PTR),
 	componentFactory(NULL_PTR), skybox(NULL_PTR), options(NULL_PTR), player(NULL_PTR),
 	keyPressedEventId("KEY_PRESSED"), keyReleasedEventId("KEY_RELEASED"), 
@@ -117,6 +117,9 @@ void Game::parseNetGamePackets()
 
 void Game::handleNetGameUpdate(const gp_game_update &update)
 {
+	if(in_menu)
+		return;
+
 	for(gp_uint32 i = 0; i < update.count; i++)
 	{
 		const gp_game_object &go = update.list[i];
@@ -205,4 +208,10 @@ void Game::onKeyReleased(const int &key, const unsigned int &modifiers)
 void Game::onMove(const T_String &x, const T_String &y)
 {
 	client->onMoveEvent(x,y);
+}
+
+void Game::exitToMenu()
+{
+	in_menu = true;
+	client->disconnectFromHost();
 }

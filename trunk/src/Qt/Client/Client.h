@@ -36,10 +36,12 @@ public:
 
 signals:
 	void signConnectToHost(const QHostAddress&, const quint16 &);
+	void signDisconnectFromHost();
 	void signLoginToGame();
 
 public slots:
 	void connectToHost(const QHostAddress& address = QHostAddress::LocalHost, const quint16 &port = 1234);
+	void disconnectFromHost();
 	void loginToGame();
 
 private:
