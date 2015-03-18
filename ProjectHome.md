@@ -1,0 +1,1 @@
+Using Qt4, GraphicsView, OpenGL 3.3, Factotum EDK and CMake 2.8.
